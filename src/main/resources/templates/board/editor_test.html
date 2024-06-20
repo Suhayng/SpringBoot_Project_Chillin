@@ -6,59 +6,36 @@
 </head>
 <body>
 
-<div id="editor">
-    <p>content</p>
-</div>
-
-<!--
-
-
-<script th:src="@{/ckeditor5/build/ckeditor.js}"></script>
-<script>
-    ClassicEditor
-        .create( document.querySelector( '#editor' ) , {
-            ckfinder: {
-                uploadUrl: 'http://localhost:8080/editor/image'
-            }
-        })
-        .then( newEditor => {
-            editor = newEditor;
-        }).then( editor => {
-            window.editor = editor;
-
-        }).catch( error => {
-            console.error( 'Oops, something went wrong!' );
-            console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-            console.warn( 'Build id: g64ljk55ssvc-goqlohse75uw' );
-            console.error( error );
-        } );
-</script>
--->
-
-
-<!--
-<form action="" method="POST">
-    <textarea name="text" id="editor"></textarea>
-    <p><input type="submit" value="전송"></p>
+<form action="/editor/content" method="post">
+    <div id="editor">
+    </div>
+    <button type="submit">전송</button>
+    <button type="button" id="showme">보여줘</button>
 </form>
--->
 <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 <script>
-    ClassicEditor.create(document.querySelector('#editor'),{
+    let editor;
+    ClassicEditor.create(document.querySelector('#editor'), {
         ckfinder: {
             uploadUrl: 'http://localhost:8080/editor/image'
         }
-    }).then( newEditor => {
+    }).then(newEditor => {
         editor = newEditor;
-    }).then( editor => {
+    }).then(editor => {
         window.editor = editor;
 
-    }).catch( error => {
-        console.error( 'Oops, something went wrong!' );
-        console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-        console.warn( 'Build id: g64ljk55ssvc-goqlohse75uw' );
-        console.error( error );
-    } );
+    }).catch(error => {
+        console.error('Oops, something went wrong!');
+        console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+        console.warn('Build id: g64ljk55ssvc-goqlohse75uw');
+        console.error(error);
+    });
+
+
+    document.getElementById('showme').onclick = function (){
+        let editorData = editor.getData();
+        console.log(editorData);
+    }
 </script>
 </body>
 </html>
