@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "rep")
@@ -27,5 +29,10 @@ public class Rep {
     @JoinColumn(name = "uid")
     private User user;
 
+    @OneToMany(mappedBy = "rep", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RepBoom> repBoomList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "rep", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RepComplain> repComplainList = new ArrayList<>();
 
 }
