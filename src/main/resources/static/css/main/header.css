@@ -18,14 +18,37 @@ a{
     text-decoration: none;
 }
 
-/*.header {
+/*.header .header_wrap{
+    width: 100%;
+    background-color: white;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
-    margin: 5px 0 5px 0;
+    width: 74%;
+    margin-left: auto;
+    margin-right: auto;
 }*/
 
 .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid #C8C8C8;
+}
+
+.header .header_wrap{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,7 +56,6 @@ a{
     margin-left: auto;
     margin-right: auto;
 }
-
 
 .header ul li {
     list-style: none;
