@@ -13,8 +13,4 @@ public class ComplainBase {
     private Boolean blind;
     private Boolean complete;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uid")
-    private User user;
-
 }

@@ -14,4 +14,10 @@ public class RepComplain extends ComplainBase{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rid")
     private Rep rep;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uid")
+    private User user;
+
 }

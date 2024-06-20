@@ -15,5 +15,9 @@ public class BoardComplain extends ComplainBase {
     @JoinColumn(name = "bid")
     private Board board;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uid")
+    private User user;
+
 
 }
