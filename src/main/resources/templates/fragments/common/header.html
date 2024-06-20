@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<div class="header" th:fragment="header">
+
+    <link rel="stylesheet" th:href="@{/css/main/header.css}">
+
+        <div class="top_logo">
+            <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="logo"></a>
+        </div>
+
+        <nav>
+            <ul class="top_nav">
+                <li><a th:href="@{/}">커뮤니티</a></li>
+                <li><a th:href="@{/}">정보</a></li>
+                <li><a th:href="@{/}">공지사항</a></li>
+            </ul>
+        </nav>
+
+        <div class="top_btn">
+            <ul class="top_btn_1">
+                <li><a th:href="@{/}">로그인</a></li>
+                <li><a th:href="@{/}">회원가입</a></li>
+            </ul>
+        </div>
+
+<!--        <div class="top_line"></div>-->
+
+</div>
+
+</html>
