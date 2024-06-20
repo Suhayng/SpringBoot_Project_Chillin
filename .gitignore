@@ -15,4 +15,4 @@ out/
 !**/src/test/**/out/
 
 
-application.yml
+**/application.yml
