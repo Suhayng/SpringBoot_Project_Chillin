@@ -11,21 +11,23 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mid")
+    @Column(name = "meid")
     private Long messageId;
 
     private String content;
+
     @CreatedDate
     private LocalDateTime time;
 
-    private Boolean read;
+    @Column(name = "is_read")
+    private Boolean isRead;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uid")
+    @JoinColumn(name = "sender")
     private User sender;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "uid")
+    @JoinColumn(name = "receiver")
     private User receiver;
 
 
