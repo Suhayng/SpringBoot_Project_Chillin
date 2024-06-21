@@ -1,7 +1,9 @@
 package com.chillin.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 @Table(name = "board")
 @Setter
 @Getter
+@NoArgsConstructor
 public class Board extends BoardBase{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,12 @@ public class Board extends BoardBase{
     private User user;
 
 
+    @Builder
+    public Board(String title, String content, User user) {
+        super.title = title;
+        super.content = content;
+        this.user = user;
+    }
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rep> repList = new ArrayList<>();

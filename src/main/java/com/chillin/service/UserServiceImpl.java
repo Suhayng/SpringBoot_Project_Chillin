@@ -2,7 +2,7 @@ package com.chillin.service;
 
 import com.chillin.domain.User;
 import com.chillin.dto.UserDTO;
-import com.chillin.repository.UserRepository;
+import com.chillin.repository.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

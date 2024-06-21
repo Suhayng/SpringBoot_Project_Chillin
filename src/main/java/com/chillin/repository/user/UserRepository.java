@@ -1,4 +1,4 @@
-package com.chillin.repository;
+package com.chillin.repository.user;
 
 import com.chillin.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
