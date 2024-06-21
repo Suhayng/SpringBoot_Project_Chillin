@@ -1,10 +1,14 @@
 package com.chillin.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "rep_boom")
-public class RepBoom extends BoomBase{
+@Setter
+@Getter
+public class RepBoom{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

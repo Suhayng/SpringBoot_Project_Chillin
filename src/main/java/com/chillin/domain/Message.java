@@ -1,12 +1,18 @@
 package com.chillin.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message")
+@EntityListeners(AuditingEntityListener.class)
+@Setter
+@Getter
 public class Message {
 
     @Id

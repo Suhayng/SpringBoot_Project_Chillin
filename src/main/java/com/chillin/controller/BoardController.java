@@ -32,13 +32,20 @@ public class BoardController {
     public String editorTest() {
         return "board/editor_test";
     }
+/*
+
+    @GetMapping("/editor_template")
+    public String editorTemplate() {
+        return "board/editor_template";
+    }
+*/
 
     @PostMapping("/editor/image")
     @ResponseBody
     public Map<String, Object> editorImage(@RequestParam("upload") MultipartFile image) {
 
         System.out.println(filePath);
-        Map<String, Object> data = new HashMap<String, Object>();
+        Map<String, Object> data = new HashMap<>();
         if (image != null) {
             data = boardService.fileUpload(filePath, image);
         }

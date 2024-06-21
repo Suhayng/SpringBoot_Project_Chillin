@@ -1,9 +1,13 @@
 package com.chillin.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "bookmark")
+@Setter
+@Getter
 public class Bookmark {
 
     @Id

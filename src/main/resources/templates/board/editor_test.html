@@ -5,13 +5,14 @@
     <title>Title</title>
 </head>
 <body>
+<div id="title_div">
+    <input type="text" id="board_title" placeholder="제목을 입력하세요">
+</div>
+<div id="editor">
+</div>
+<button type="button" id="send_editor">전송</button>
+<button type="button" id="showme">보여줘</button>
 
-<form action="/editor/content" method="post">
-    <div id="editor">
-    </div>
-    <button type="submit">전송</button>
-    <button type="button" id="showme">보여줘</button>
-</form>
 <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 <script>
     let editor;
@@ -32,10 +33,12 @@
     });
 
 
-    document.getElementById('showme').onclick = function (){
+    document.getElementById('showme').onclick = function () {
         let editorData = editor.getData();
         console.log(editorData);
     }
 </script>
+<script th:src="@{/js/sendEditor.js}"></script>
+
 </body>
 </html>
