@@ -3,6 +3,7 @@ package com.chillin.controller;
 import com.chillin.dto.UserDTO;
 import com.chillin.service.BoardService;
 import com.chillin.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -10,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
 
 @Controller
 @Slf4j
@@ -34,26 +34,28 @@ public class UserController {
         return "user/login";
     }
 
-    /**로그인 결과*/
+    /**
+     * 로그인 결과
+     */
     @PostMapping("/login_result")
     public String login_result(@RequestParam String id
             , @RequestParam String password
             , HttpSession session
-    ){
-        if(id!=null && password != null){
+    ) {
+        if (id != null && password != null) {
             UserDTO dto = userService.findByEmail(id);
 
-            boolean result=false;
+            boolean result = false;
 
-            if(password.equals(dto.getPassword())){
-                result=true;
+            if (password.equals(dto.getPassword())) {
+                result = true;
             }
 
-            if(result == true){
+            if (result == true) {
                 Long uid = dto.getUserId();
                 session.setAttribute("uid", uid);
                 return "redirect:";
-            } else{
+            } else {
                 return "redirect:/loginfail";
             }
         } else {
@@ -61,10 +63,24 @@ public class UserController {
         }
     }
 
-    /**로그인 실패시 이동 페이지*/
+    /**
+     * 로그인 실패시 이동 페이지
+     */
     @GetMapping("/loginfail")
-    public String loginfail(){
+    public String loginfail() {
         return "user/loginfail";
+    }
+
+    /**로그아웃*/
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("uid") != null){
+
+            session.invalidate();
+        }
+
+        return "redirect:";
     }
 
     /**
@@ -92,5 +108,33 @@ public class UserController {
         Long result = userService.join(dto);
 
         return "user/join_alert";
+    }
+
+    /**회원가입-닉네임 중복 확인*/
+    @PostMapping("/id_check")
+    public @ResponseBody int id_check(@RequestBody HashMap<String,String> hm){
+        String id = hm.get("id");
+        UserDTO dto = userService.findByEmail(id);
+
+        int result = 0;
+        if(dto.getUserId()!=null){
+            //기존에 아이디가 있으면 1
+            result = 1;
+        } else {
+            //기존에 아이디가 없으면 0
+            result = 0;
+        }
+
+        return result;
+    }
+
+    /**회원가입-닉네임 중복 확인*/
+    @PostMapping("/nick_check")
+    public @ResponseBody Long nick_check(@RequestBody HashMap<String,String> hm){
+        String nickName = hm.get("nickName");
+        //기존에 등록된 닉네임 있는지 확인해서 중복 갯수 리턴
+        Long result = userService.nickNameCheck(nickName);
+
+        return result;
     }
 }

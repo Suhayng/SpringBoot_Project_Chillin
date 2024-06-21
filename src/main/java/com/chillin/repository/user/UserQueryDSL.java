@@ -5,4 +5,6 @@ import com.chillin.dto.UserDTO;
 
 public interface UserQueryDSL {
     User findByEmail(String id);
+
+    Long findByNickName(String nickName);
 }

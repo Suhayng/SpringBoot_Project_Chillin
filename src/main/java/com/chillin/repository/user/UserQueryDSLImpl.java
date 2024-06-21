@@ -6,6 +6,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.chillin.domain.QUser.*;
+
+
 @RequiredArgsConstructor
 @Slf4j
 public class UserQueryDSLImpl implements UserQueryDSL{
@@ -20,5 +23,14 @@ public class UserQueryDSLImpl implements UserQueryDSL{
                 .fetchOne();
 
         return user;
+    }
+
+    @Override
+    public Long findByNickName(String nickName) {
+        Long result = queryFactory.select(user.count())
+                .from(user)
+                .where(user.nickname.eq(nickName))
+                .fetchOne();
+        return result;
     }
 }
