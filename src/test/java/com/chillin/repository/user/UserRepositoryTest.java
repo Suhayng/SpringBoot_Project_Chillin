@@ -30,4 +30,10 @@ class UserRepositoryTest {
         UserDTO dto = service.findByEmail("test@test.com");
         assertThat(dto.getPassword()).isEqualTo("1234");
     }
+
+    @Test
+    public void findNick(){
+        Long nick = service.nickNameCheck("aaa");
+        assertThat(nick).isEqualTo(0);
+    }
 }

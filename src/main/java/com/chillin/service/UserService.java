@@ -8,4 +8,5 @@ public interface UserService {
     UserDTO findByEmail(String id);
 
 
+    Long nickNameCheck(String nickName);
 }

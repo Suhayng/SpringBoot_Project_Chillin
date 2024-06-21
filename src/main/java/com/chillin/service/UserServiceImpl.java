@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 로그인 시 받은 아이디로 회원 정보 리턴
+     * 로그인 시 받은 아이디로 회원 정보 DTO로 리턴
      */
     @Override
     public UserDTO findByEmail(String id) {
@@ -37,6 +37,13 @@ public class UserServiceImpl implements UserService {
         dto = modelMapper.map(user, UserDTO.class);
 
         return dto;
+    }
+/**회원가입시 닉네임 중복 체크*/
+    @Override
+    public Long nickNameCheck(String nickName) {
+        Long result = repository.findByNickName(nickName);
+
+        return result;
     }
 
 
