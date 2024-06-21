@@ -1,7 +1,9 @@
 package com.chillin.controller;
 
 import com.chillin.dto.UserDTO;
+import com.chillin.service.BoardService;
 import com.chillin.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +13,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @Slf4j
 public class UserController {
 
-    private UserService service;
+    private UserService userService;
 
     @Autowired
-    public UserController(UserService service) {
-        this.service = service;
+    public UserController(UserService userService, BoardService boardService) {
+        this.userService = userService;
     }
 
     /**
@@ -29,6 +32,39 @@ public class UserController {
     @GetMapping("/login")
     public String login() {
         return "user/login";
+    }
+
+    /**로그인 결과*/
+    @PostMapping("/login_result")
+    public String login_result(@RequestParam String id
+            , @RequestParam String password
+            , HttpSession session
+    ){
+        if(id!=null && password != null){
+            UserDTO dto = userService.findByEmail(id);
+
+            boolean result=false;
+
+            if(password.equals(dto.getPassword())){
+                result=true;
+            }
+
+            if(result == true){
+                Long uid = dto.getUserId();
+                session.setAttribute("uid", uid);
+                return "redirect:";
+            } else{
+                return "redirect:/loginfail";
+            }
+        } else {
+            return "redirect:/loginfail";
+        }
+    }
+
+    /**로그인 실패시 이동 페이지*/
+    @GetMapping("/loginfail")
+    public String loginfail(){
+        return "user/loginfail";
     }
 
     /**
@@ -53,7 +89,7 @@ public class UserController {
             return "user/join";
         }
 
-        Long result = service.join(dto);
+        Long result = userService.join(dto);
 
         return "user/join_alert";
     }

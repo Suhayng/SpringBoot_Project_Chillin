@@ -20,8 +20,24 @@
 
         <div class="top_btn">
             <ul class="top_btn_1">
-                <li><a th:href="@{/}">로그인</a></li>
-                <li><a th:href="@{/}">회원가입</a></li>
+                <!-- 세션에 값이 없으면 -->
+                <th:block th:if="${session.uid == null}">
+                    <li>
+                        <a th:href="@{/login}">로그인</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/join}">회원가입</a>
+                    </li>
+                </th:block>
+                <!-- 세션에 값이 있으면 -->
+                <th:block th:unless="${session.uid == null}">
+                    <li>
+                        <a th:href="@{/logout}">로그아웃</a>
+                    </li>
+                    <li>
+                        <a th:href="|/mypage/${session.uid}|">마이페이지</a>
+                    </li>
+                </th:block>
             </ul>
         </div>
     </div>

@@ -1,65 +1,94 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout/BaseLayout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <th:block layout:fragment="title">
+
+        <title>Chillin</title>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <!-- 각 페이지의 css -->
+        <link rel="stylesheet" th:href="@{/css/main/index.css}">
+    </th:block>
+
+    <th:block layout:fragment="javascript">
+        <!-- 각 페이지의 javascript -->
+    </th:block>
 </head>
 <body>
+    <th:block layout:fragment="content">
+        <div class="content">
 
-<img th:src="@{/images/logo.png}"/>
-<h1>칠린에 오신것을 환영합니다.</h1>
-
-<h3>회원가입에 필요한 기본정보를 입력해주세요.</h3>
-
-<form th:method="post" th:action="@{/join}" th:object="${dto}">
-    <ul>
-        <li><label for="id">아이디</label></li>
-        <li>
-            <input type="text" th:field="*{id}" name="id" id="id">
-            <button type="submit" id="btn_chek_id">중복확인</button>
-        </li>
-        <li th:if="${#fields.hasErrors('id')}" th:errors="*{id}">id</li>
+            <!--------------------------------------------------------->
 
 
+            <img th:src="@{/images/logo.png}"/>
+            <h1>칠린에 오신것을 환영합니다.</h1>
 
-        <li><label for="password">비밀번호</label></li>
-        <li>
-            <input type="password" th:field="*{password}" name="password" id="password">
-        </li>
-        <li th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password</li>
+            <h3>회원가입에 필요한 기본정보를 입력해주세요.</h3>
 
-        <li><label for="chek_pw">비밀번호 확인</label></li>
-        <li>
-            <input type="password" name="chek_pw" id="chek_pw">
-            <button type="submit" id="btn_chek_pw">중복확인</button>
-        </li>
-
-
-        <li><label for="nickName">닉네임</label></li>
-        <li>
-            <input type="text" th:field="*{nickName}" name="nickName" id="nickName">
-        </li>
-        <li th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}">nickName</li>
+            <form th:method="post" th:action="@{/join}" th:object="${dto}">
+                <ul>
+                    <li><label for="id">아이디</label></li>
+                    <li>
+                        <input type="text" th:field="*{id}" name="id" id="id">
+                        <button type="submit" id="btn_chek_id">중복확인</button>
+                    </li>
+                    <li th:if="${#fields.hasErrors('id')}" th:errors="*{id}">id</li>
 
 
 
-        <li><label for="name">이름</label></li>
-        <li>
-            <input type="text" th:field="*{name}" name="name" id="name">
-        </li>
-        <li th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name</li>
+                    <li><label for="password">비밀번호</label></li>
+                    <li>
+                        <input type="password" th:field="*{password}" name="password" id="password">
+                    </li>
+                    <li th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password</li>
+
+                    <li><label for="chek_pw">비밀번호 확인</label></li>
+                    <li>
+                        <input type="password" name="chek_pw" id="chek_pw">
+                        <button type="submit" id="btn_chek_pw">중복확인</button>
+                    </li>
 
 
-        <li>
-            <button type="submit">회원가입</button>
-        </li>
-    </ul>
+                    <li><label for="nickName">닉네임</label></li>
+                    <li>
+                        <input type="text" th:field="*{nickName}" name="nickName" id="nickName">
+                    </li>
+                    <li th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}">nickName</li>
 
 
-    <div>
-        이미 회원이신가요? <a th:href="@{/login}" th:text="로그인"></a>
-    </div>
 
-</form>
+                    <li><label for="name">이름</label></li>
+                    <li>
+                        <input type="text" th:field="*{name}" name="name" id="name">
+                    </li>
+                    <li th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name</li>
+
+
+                    <li>
+                        <button type="submit">회원가입</button>
+                    </li>
+                </ul>
+
+
+                <div>
+                    이미 회원이신가요? <a th:href="@{/login}" th:text="로그인">로그인</a>
+                </div>
+
+            </form>
+
+
+
+
+            <!--------------------------------------------------------->
+
+
+        </div>
+    </th:block>
 </body>
 </html>
