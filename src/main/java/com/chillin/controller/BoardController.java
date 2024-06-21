@@ -86,7 +86,7 @@ public class BoardController {
         System.out.println(dto.getContent());
         System.out.println("======================\n\n\n");
 
-        Long uid = 2l;
+        Long uid = 1l;
         dto.setUid(uid);
         boolean success = boardService.insertBoard(dto);
 
@@ -124,7 +124,7 @@ public class BoardController {
         /*이 위에 두줄은 지워도 됨..*/
 
         dto.setBid(bid);
-        String id = "himyname";
+        String id = "testid";
         boolean success = boardService.modifyBoard(dto,id);
 
         return dto;
@@ -133,7 +133,7 @@ public class BoardController {
     @GetMapping("/community/delete/{board_id}")
     public String deleteBoard(@PathVariable("board_id") Long bid){
 
-        String id = "himyname";
+        String id = "testid";
         /*세션에서 user uid 받아오는건 보류*/
         boardService.delete(bid,id);
 
