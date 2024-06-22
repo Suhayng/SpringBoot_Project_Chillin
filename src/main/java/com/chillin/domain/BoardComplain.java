@@ -1,9 +1,13 @@
 package com.chillin.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "board_complain")
+@Setter
+@Getter
 public class BoardComplain extends ComplainBase {
 
     @Id

@@ -1,0 +1,97 @@
+#detail_wrap{
+    width: 74%;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 40px;
+}
+
+#title_and_some{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    min-height: 48px;
+}
+
+#title_div{
+    box-sizing: border-box;
+    width: 70%;
+    padding-top: 24px;
+    font-size: 28px;
+}
+
+#some_div{
+    box-sizing: border-box;
+    max-width: 272px;
+    width: 30%;
+}
+.board_some{
+    display: inline-block;
+}
+#some_div ul{
+    padding-left: 0;
+    display: inline-block;
+}
+#some_div ul li{
+    list-style: none;
+    width: 64px;
+    text-align: center;
+}
+
+#some_div img{
+    width: 24px;
+    object-fit: contain;
+}
+
+#writer_div, #write_date_div{
+    text-align: right;
+    padding-right: 8px;
+    margin-top: 12px;
+}
+
+#content_div{
+    width: 100%;
+}
+
+#content_div img{
+    object-fit: contain;
+    max-width: 100%;
+}
+
+.image-style-side{
+    float: right;
+}
+
+#clear_right{
+    clear:right;
+}
+
+#remove_modify{
+    position: relative;
+    min-height: 80px;
+    padding-right: 16px;
+    margin-top: 24px;
+}
+#remove_modify button{
+    position: absolute;
+    width: 72px;
+    height: 36px;
+    border-radius: 6px;
+    font-size: 18px;
+    border : 1px solid #dddddd;
+    font-family: 나눔고딕;
+    font-weight: 800;
+}
+#remove_modify button:hover{
+    cursor: pointer;
+}
+#remove_button{
+    right: 92px;
+    background-color: #f8f8f8;
+    color: black;
+}
+#modify_button{
+    right: 8px;
+    background-color: #EFCEEA;
+    color: #555555;
+}

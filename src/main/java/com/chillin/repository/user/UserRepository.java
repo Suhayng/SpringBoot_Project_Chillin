@@ -9,5 +9,4 @@ public interface UserRepository extends JpaRepository<User, Long>, UserQueryDSL{
 
     @Override
     <S extends User> S save(S entity);
-
 }
