@@ -32,28 +32,37 @@
 
                 <div id="some_div">
                     <div th:class="board_some" th:id="board_complain">
-                        <ul>
-                            <li><img th:src="@{/images/siren.png}"></li>
-                            <li>신고</li>
-                        </ul>
+                        <button type="button" id="board_complain_button">
+                            <ul>
+                                <li><img th:src="@{/images/siren.png}"></li>
+                                <li>신고</li>
+                            </ul>
+                        </button>
                     </div>
                     <div th:class="board_some" th:id="board_bookmark">
-                        <ul>
-                            <li><img th:src="@{/images/bookmark.png}"></li>
-                            <li>북마크</li>
-                        </ul>
+                        <button type="button" id="board_bookmark_button">
+                            <ul>
+                                <li><img th:src="@{/images/bookmark.png}"></li>
+                                <li>북마크</li>
+                            </ul>
+                        </button>
                     </div>
                     <div th:class="board_some" th:id="board_boomup">
-                        <ul>
-                            <li><img th:src="@{/images/boomup.png}"></li>
-                            <li>붐업</li>
-                        </ul>
+                        <button type="button" id="board_boomup_button">
+                            <ul>
+                                <li><img th:src="@{/images/boomup.png}"></li>
+                                <li>붐업</li>
+                                <!--<li th:text="${}"></li>-->
+                            </ul>
+                        </button>
                     </div>
                     <div th:class="board_some" th:id="board_boomdown">
-                        <ul>
-                            <li><img th:src="@{/images/boomdown.png}"></li>
-                            <li>붐따</li>
-                        </ul>
+                        <button type="button" id="board_boomdown_button">
+                            <ul>
+                                <li><img th:src="@{/images/boomdown.png}"></li>
+                                <li>붐따</li>
+                            </ul>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -91,6 +100,7 @@
         <script th:src="@{/js/community/remove_modify.js}"></script>
         <script>setBoardId([[${board.bid}]])</script>
         <script th:src="@{/js/community/community_reps.js}"></script>
+        <script th:src="@{/js/community/some_button.js}"></script>
     </div>
 </th:block>
 </body>

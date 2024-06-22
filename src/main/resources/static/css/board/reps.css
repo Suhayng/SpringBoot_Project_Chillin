@@ -3,9 +3,10 @@
 .rep_div{
     width: 100%;
     box-sizing: border-box;
-    padding : 16px 24px;
-    border: 1px solid #e8e8e8;
-    border-radius: 8px;
+    padding : 16px 16px 2px 16px;
+    border: 1px solid #c9c9c9;
+    border-radius: 16px;
+    margin-bottom: 12px;
 }
 
 .user_button{
@@ -15,12 +16,59 @@
     font-size: 14px;
 }
 
+.content_boom{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
 
+.rep_content{
+    flex-grow: 1;
+    min-height: 64px;
+    margin : 8px 0;
+    white-space: pre-wrap;
+}
 
+.boom_zone{
+    flex-grow: 0;
+    display: inline-block;
+    width : 64px;
+    max-width: 64px;
+    min-width: 64px;
+}
 
+.cddiv{
+    width: 100%;
+    height: 24px;
+}
+.complain_date{
+    display: inline-block;
+    float: right;
+}
 
+.rep_delete_button{
+    background-color: white;
+    border:0;
+    font-size: 12px;
+    margin-right: 12px;
+}
+.rep_delete_button:hover{
+    cursor:pointer;
+}
 
-
+.rep_complain{
+    background-color: white;
+    border:0;
+    font-size: 12px;
+    margin-right: 12px;
+}
+.rep_complain:hover{
+    cursor:pointer;
+}
+.write_date{
+    display: inline-block;
+    font-size: 12px;
+}
 
 
 

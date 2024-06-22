@@ -20,8 +20,6 @@ public class RepController {
 
         List<RepDTO> repDTOList = repService.getReps(bid);
 
-        System.out.println(repDTOList);
-
         return repDTOList;
     }
 
@@ -36,7 +34,6 @@ public class RepController {
         dto.setBid(bid);
         Long rid = repService.insertRep(dto);
 
-        System.out.println("rid ------------- : " + rid);
 
         return dto;
     }

@@ -1,5 +1,6 @@
 #detail_wrap{
     width: 74%;
+    max-width: 1024px;
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -15,16 +16,27 @@
 
 #title_div{
     box-sizing: border-box;
-    width: 70%;
+    flex-grow: 1;
     padding-top: 24px;
     font-size: 28px;
 }
 
 #some_div{
     box-sizing: border-box;
-    max-width: 272px;
-    width: 30%;
+    flex-grow: 0;
+    max-width: 270px;
+    width: 270px;
 }
+
+#some_div button{
+    background-color: white;
+    cursor: pointer;
+    margin-right: 2px;
+    margin-left: 2px;
+    border: 0;
+}
+
+
 .board_some{
     display: inline-block;
 }
@@ -34,8 +46,9 @@
 }
 #some_div ul li{
     list-style: none;
-    width: 64px;
+    width: 40px;
     text-align: center;
+    font-size: 12px;
 }
 
 #some_div img{

@@ -17,4 +17,6 @@ public interface BoardService {
     void delete(Long bid);
 
     boolean modifyBoard(BoardDTO dto);
+
+    Map<String, Object> getBoom(Long uid, Long bid);
 }

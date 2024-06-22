@@ -162,5 +162,26 @@ public class BoardController {
         return "redirect:/community/list";
     }
 
+/*------------------------------------------------------------*/
+/*---------------------이제부터 붐업 붐따------------------------*/
+
+    @GetMapping("/community/board/get_boom/{board_id}")
+    @ResponseBody
+    public Map<String,Object> getBoom(@PathVariable("board_id") Long bid
+    ,HttpSession session){
+
+        /* 붐업수, 붐따수, 너의 현황 이렇게 담아서 보낼거 */
+        Long uid = (Long) session.getAttribute("uid");
+
+        Map<String,Object> map = boardService.getBoom(uid, bid);
+
+        System.out.println("------------------------");
+        System.out.println("you는 말이야");
+        System.out.println(map.get("you"));
+        System.out.println("------------------------");
+
+        return map;
+    }
+
 
 }

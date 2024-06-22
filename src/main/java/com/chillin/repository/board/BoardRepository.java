@@ -15,4 +15,8 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardQueryD
 
     @Query(" select u.userId from User u where u.id= :id ")
     Long getUserId(String id);
+/*
+    @Query(" select bb.upDown from BoardBoom bb " +
+            " where bb.board.boardId =:bid and bb.user.userId =:uid ")
+    Boolean boardMyBoom(Long uid, Long bid);*/
 }
