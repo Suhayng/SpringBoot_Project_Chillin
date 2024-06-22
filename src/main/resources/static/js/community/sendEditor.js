@@ -40,6 +40,10 @@ document.getElementById('send_editor').onclick = function () {
         }
     }).then(data => {
         console.log(data);
+        if(data.success === false){
+            alert("글 작성에 실패했습니다.");
+            location.href = '/community/create';
+        }
         if (data.bid > 0) {
             location.href = '/community/' + data.bid;
         }

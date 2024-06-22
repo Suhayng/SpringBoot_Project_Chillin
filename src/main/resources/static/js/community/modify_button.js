@@ -5,6 +5,10 @@ let setBoardId = function (bid){
     board_id = bid;
 }
 
+document.getElementById('reset_button').onclick = function (){
+    location.href='/community/modify/'+board_id;
+}
+
 document.getElementById('send_editor').onclick = function (){
     let title_input = document.getElementById('board_title');
     let title = title_input.value;
@@ -33,9 +37,11 @@ document.getElementById('send_editor').onclick = function (){
         }
     }).then(data => {
         console.log(data);
-        if (data.bid > 0) {
-            location.href = '/community/' + data.bid;
+        if(data.success === false) {
+            alert("글 수정에 실패했습니다.");
         }
+        location.href = '/community/' + data.bid;
+
     }).catch(error => {
         console.log('subInsert fetch' + error);
     }).finally(() => {

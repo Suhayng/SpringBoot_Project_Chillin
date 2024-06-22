@@ -14,6 +14,7 @@ public interface BoardService {
     BoardDTO getDetail(Long bid);
 
     void delete(Long bid, String id);
+    void delete(Long bid);
 
-    boolean modifyBoard(BoardDTO dto, String id);
+    boolean modifyBoard(BoardDTO dto);
 }

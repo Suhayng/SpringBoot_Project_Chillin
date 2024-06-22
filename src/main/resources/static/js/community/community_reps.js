@@ -3,7 +3,7 @@ window.onload = function () {
 
 }
 
-let append_reps = function (){
+let append_reps = function () {
 
     fetch('/getReps/' + board_id, {
         method: 'GET',
@@ -27,10 +27,18 @@ let append_reps = function (){
             let now = data[i];
 
             let rep_div = document.createElement('div');
+            rep_div.classList.add('rep_div');
 
             let user_div = document.createElement('div');
-            let user_text = document.createTextNode('작성자 : ' + now.id);
-            user_div.appendChild(user_text);
+            let user_button = document.createElement('button');
+            user_button.type = 'button';
+            user_button.classList.add('user_button')
+            user_button.onclick = function (){
+                user_see(now.uid);
+            }
+            let user_text = document.createTextNode('작성자 : ' + now.nickname);
+            user_button.appendChild(user_text);
+            user_div.appendChild(user_button);
 
             let content_boom = document.createElement('div');
 
@@ -47,6 +55,16 @@ let append_reps = function (){
 
 
             let complain_date = document.createElement('div');
+
+            let rep_delete = document.createElement('button');
+            rep_delete.type = 'button';
+            rep_delete.classList.add('rep_delete_button');
+            let rd_text = document.createTextNode('댓글 삭제');
+            rep_delete.appendChild(rd_text);
+            rep_delete.onclick = function () {
+                delete_rep(now.rid);
+            }
+            complain_date.appendChild(rep_delete);
 
             let complain_div = document.createElement('div');
             let complain_temp = document.createTextNode('임시 신고');
@@ -77,19 +95,54 @@ let append_reps = function (){
 
 }
 
-document.getElementById('rep_create').onclick = function (){
+let delete_rep = function (rid) {
+
+    if (confirm('댓글을 삭제하시겠습니까?')) {
+
+        fetch('/community/delete_rep/' + rid, {
+            method: 'DELETE'
+            , headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('rep-delete Error');
+            } else {
+                return response.json();
+            }
+        }).then(data => {
+            if (data === true) {
+                document.getElementById('rep_list').innerHTML = '';
+                document.getElementById('rep_area').value = '';
+                append_reps();
+            } else {
+                alert('댓글 삭제 실패 ㅠ');
+            }
+        }).catch(error => {
+            console.log('sub delete fetch' + error);
+        }).finally(() => {
+            console.log('sub delete - finally')
+        });
+    } else {
+
+    }
+
+
+}
+
+document.getElementById('rep_create').onclick = function () {
     let rep_content = document.getElementById('rep_area').value;
     let rep_data = {
-        'bid' : board_id,
-        'content' : rep_content
+        'bid': board_id,
+        'content': rep_content
     };
     fetch('/insertRep/' + board_id, {
         method: 'POST',
         headers: {
-            'Content-type' : 'application/json',
+            'Content-type': 'application/json',
             'Accept': 'application/json'
         },
-        body : JSON.stringify(rep_data)
+        body: JSON.stringify(rep_data)
     }).then(response => {
         if (!response.ok) {
             throw new Error('create error')
@@ -110,4 +163,9 @@ document.getElementById('rep_create').onclick = function (){
         console.log('subInsert - finally')
     });
 
+}
+
+let user_see = function (uid){
+
+    alert('어 버튼 맞아' + uid);
 }

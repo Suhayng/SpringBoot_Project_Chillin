@@ -17,6 +17,6 @@ public class RepDTO {
     private LocalDateTime writeDate;
     private String content;
 
-    private String id;
+    private String nickname;
 
 }

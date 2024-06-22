@@ -1,0 +1,26 @@
+
+
+.rep_div{
+    width: 100%;
+    box-sizing: border-box;
+    padding : 16px 24px;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+}
+
+.user_button{
+    border : 0;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+

@@ -2,6 +2,7 @@ package com.chillin.controller;
 
 import com.chillin.dto.BoardDTO;
 import com.chillin.service.BoardService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -34,15 +35,16 @@ public class BoardController {
     public String editorTest() {
         return "board/editor_test";
     }
-/*
 
-    @GetMapping("/editor_template")
-    public String editorTemplate() {
-        return "board/editor_template";
-    }
-*/
+    /*
+
+        @GetMapping("/editor_template")
+        public String editorTemplate() {
+            return "board/editor_template";
+        }
+    */
     @GetMapping("/community/create")
-    public String createBoard(){
+    public String createBoard() {
         return "board/community_create";
     }
 
@@ -61,18 +63,18 @@ public class BoardController {
     @GetMapping("/getImage/{file_name}")
     @ResponseBody
     public ResponseEntity<byte[]> getImage(
-            @PathVariable(name = "file_name") String fileName){
+            @PathVariable(name = "file_name") String fileName) {
 
         InputStream in = null;
         ResponseEntity<byte[]> entity = null;
-        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("+","%20");
-        try{
-            in = new FileInputStream(filePath+"/"+fileName);
-            HttpHeaders headers=new HttpHeaders();
-            entity=new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(in)
-                    ,headers,  HttpStatus.OK);
-        }catch (IOException e){
-            System.out.println("getImage 에서 에러"+e);
+        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replace("+", "%20");
+        try {
+            in = new FileInputStream(filePath + "/" + fileName);
+            HttpHeaders headers = new HttpHeaders();
+            entity = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(in)
+                    , headers, HttpStatus.OK);
+        } catch (IOException e) {
+            System.out.println("getImage 에서 에러" + e);
             entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return entity;
@@ -80,63 +82,83 @@ public class BoardController {
 
     @PostMapping("/board/create_board")
     @ResponseBody
-    public BoardDTO createBoard(@RequestBody BoardDTO dto){
+    public BoardDTO createBoard(@RequestBody BoardDTO dto
+            , HttpSession session) {
         System.out.println("\n\n\n======================");
         System.out.println(dto.getTitle());
         System.out.println(dto.getContent());
         System.out.println("======================\n\n\n");
 
-        Long uid = 1l;
-        dto.setUid(uid);
-        boolean success = boardService.insertBoard(dto);
+        Long uid = (Long) session.getAttribute("uid");
+
+        if (uid == null) {
+            dto.setSuccess(false);
+        } else {
+            dto.setUid(uid);
+            boolean success = boardService.insertBoard(dto);
+            dto.setSuccess(success);
+        }
 
         return dto;
     }
 
 
-
     @GetMapping("/community/{board_id}")
-    public String detailBoard(@PathVariable("board_id") Long bid, Model model){
+    public String detailBoard(@PathVariable("board_id") Long bid, Model model) {
         BoardDTO dto = boardService.getDetail(bid);
-        model.addAttribute("board",dto);
+        model.addAttribute("board", dto);
         return "board/community_detail";
     }
 
     @GetMapping("/community/modify/{board_id}")
-    public String modifyBoard(@PathVariable("board_id") Long bid, Model model){
+    public String modifyBoard(@PathVariable("board_id") Long bid
+            , Model model
+            , HttpSession session) {
+
+        Long uid = (Long) session.getAttribute("uid");
+
         BoardDTO dto = boardService.getDetail(bid);
-        model.addAttribute("board",dto);
+        if (uid == null || !uid.equals(dto.getUid()) || dto.getUid() != uid) {
+            return "redirect:/community/" + bid;
+        }
+
+        model.addAttribute("board", dto);
         return "board/community_modify";
     }
 
     @PostMapping("/community/modify/{board_id}")
     @ResponseBody
     public BoardDTO modifyBoard(@PathVariable("board_id") Long bid
-            ,@RequestBody BoardDTO dto){
+            , @RequestBody BoardDTO dto
+            , HttpSession session) {
 
-        System.out.println("\n\n\n======================");
-        System.out.println(dto.getTitle());
-        System.out.println(dto.getContent());
-        System.out.println("======================\n\n\n");
-/*
-        Long uid = 2l;
-        dto.setUid(uid);*/
-        /*이 위에 두줄은 지워도 됨..*/
+        Long uid = (Long) session.getAttribute("uid");
 
-        dto.setBid(bid);
-        String id = "testid";
-        boolean success = boardService.modifyBoard(dto,id);
+        BoardDTO originBoard = boardService.getDetail(bid);
+        if(uid == null || !uid.equals(originBoard.getUid()) || uid != originBoard.getUid()){
+            dto.setSuccess(false);
+        }else{
+            dto.setBid(bid);
+            //String id = "testid";
+            dto.setUid(uid);
+            boolean success = boardService.modifyBoard(dto);
+            dto.setSuccess(success);
+        }
 
         return dto;
     }
 
     @GetMapping("/community/delete/{board_id}")
-    public String deleteBoard(@PathVariable("board_id") Long bid){
+    public String deleteBoard(@PathVariable("board_id") Long bid, HttpSession session) {
 
-        String id = "testid";
-        /*세션에서 user uid 받아오는건 보류*/
-        boardService.delete(bid,id);
+        Long uid = (Long) session.getAttribute("uid");
 
+        BoardDTO originBoard = boardService.getDetail(bid);
+        if(uid == null || !uid.equals(originBoard.getUid()) || uid != originBoard.getUid()){
+            return "redirect:/community/"+bid;
+        }else{
+            boardService.delete(bid);
+        }
         return "redirect:/community/list";
     }
 

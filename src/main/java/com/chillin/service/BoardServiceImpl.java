@@ -74,6 +74,7 @@ public class BoardServiceImpl implements BoardService{
                 .writeDate(find.getWriteDate())
                 .modifyDate(find.getModifyDate())
                 .uid(find.getUser().getUserId())
+                .nickname(find.getUser().getNickname())
                 .build();
         return dto;
     }
@@ -92,22 +93,28 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public void delete(Long bid) {
+        Board board = boardRepository.findById(bid).orElseThrow(()->new RuntimeException());
+        boardRepository.delete(board);
+    }
+
+    @Override
     @Transactional
-    public boolean modifyBoard(BoardDTO dto,String id) {
+    public boolean modifyBoard(BoardDTO dto) {
 
         boolean result = false;
 
-        Long uid = boardRepository.getUserId(id);
+        Long uid = dto.getUid();
         Board prev = boardRepository.findById(dto.getBid())
                 .orElseThrow(RuntimeException::new);
 
         if(uid.equals(prev.getUser().getUserId())){
             prev.setTitle(dto.getTitle());
             prev.setContent(dto.getContent());
+            boardRepository.save(prev);
 
             result = true;
         }
-        boardRepository.save(prev);
 
         return result;
     }
