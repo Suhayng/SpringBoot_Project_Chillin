@@ -24,7 +24,7 @@ public class UserDTO {
 
     @NotEmpty(message = "닉네임을 입력하세요")
     @Pattern(regexp = "^[a-zA-Z0-9가-힣]+$"
-            ,message = "닉네임은 숫자, 한글, 영문자만 가능합니다.  ")
+            ,message = "닉네임은 숫자, 한글, 영문자만 가능합니다.")
     private String nickName;
 
     @NotEmpty(message = "이름을 입력하세요")
