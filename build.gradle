@@ -42,6 +42,15 @@ dependencies {
     // Thymeleaf Layout Dialect 추가
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.0.0'
+    // 크롤링을 위한 Selinium 의존성
+    implementation 'org.seleniumhq.selenium:selenium-java:4.21.0'
+//    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    // WebDriver Manager
+//    implementation 'io.github.bonigarcia:webdrivermanager:5.8.0'
+
+//    implementation 'org.apache.httpcomponents.core5:httpcore5:5.1.4' // 최신 버전으로 교체
+//    implementation 'org.apache.httpcomponents.client5:httpclient5:5.1.4' // 최신 버전으로 교체
+
 }
 
 tasks.named('test') {
