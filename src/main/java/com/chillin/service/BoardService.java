@@ -19,4 +19,8 @@ public interface BoardService {
     boolean modifyBoard(BoardDTO dto);
 
     Map<String, Object> getBoom(Long uid, Long bid);
+
+    String boomupBoard(Long uid, Long bid, String status);
+
+    String boomdownBoard(Long uid, Long bid, String status);
 }

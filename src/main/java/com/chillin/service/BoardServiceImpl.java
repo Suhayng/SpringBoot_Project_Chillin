@@ -1,6 +1,7 @@
 package com.chillin.service;
 
 import com.chillin.domain.Board;
+import com.chillin.domain.BoardBoom;
 import com.chillin.domain.User;
 import com.chillin.dto.BoardDTO;
 import com.chillin.repository.board.BoardRepository;
@@ -123,7 +124,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Map<String, Object> getBoom(Long uid, Long bid) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = boardRepository.getBoardBoom(bid);
 
         if (uid == null) {
             map.put("you", "no");
@@ -144,7 +145,47 @@ public class BoardServiceImpl implements BoardService {
             }
         }
 
+
         return map;
+    }
+
+    @Override
+    @Transactional
+    public String boomupBoard(Long uid, Long bid, String status) {
+        if(status.equals("no")){
+            /*insert -> 1*/
+            boardRepository.insertBoom(true,bid,uid);
+            return "up";
+        }else if(status.equals("up")){
+            /*delete*/
+            boardRepository.deleteBoom(bid,uid);
+            return "no";
+        }else if(status.equals("down")){
+            /*update -> 1*/
+            boardRepository.changeDown(true,bid,uid);
+            return "up";
+        }else{
+            return "fail";
+        }
+    }
+
+    @Override
+    public String boomdownBoard(Long uid, Long bid, String status) {
+        if(status.equals("no")){
+            /*insert -> 0*/
+            boardRepository.insertBoom(false,bid,uid);
+            return "down";
+        }else if(status.equals("down")){
+            /*delete*/
+            boardRepository.deleteBoom(bid,uid);
+            return "no";
+        }else if(status.equals("up")){
+            boardRepository.changeDown(false,bid,uid);
+            /*update -> 0*/
+            return "down";
+        }else{
+            return "fail";
+        }
     }
 
     private String uploading(String filePath, MultipartFile image) {

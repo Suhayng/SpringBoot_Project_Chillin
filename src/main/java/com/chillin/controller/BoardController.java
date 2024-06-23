@@ -175,12 +175,39 @@ public class BoardController {
 
         Map<String,Object> map = boardService.getBoom(uid, bid);
 
-        System.out.println("------------------------");
-        System.out.println("you는 말이야");
-        System.out.println(map.get("you"));
-        System.out.println("------------------------");
-
         return map;
+    }
+    @PostMapping("/community/boomup/{board_id}/{status}")
+    @ResponseBody
+    public String boomupBoard(
+            @PathVariable("board_id") Long bid
+            ,@PathVariable("status") String status
+            ,HttpSession session){
+
+        Long uid = (Long) session.getAttribute("uid");
+
+        if(uid == null){
+            return "fail";
+        }else{
+            return boardService.boomupBoard(uid,bid,status);
+        }
+
+    }
+    @PostMapping("/community/boomdown/{board_id}/{status}")
+    @ResponseBody
+    public String boomdownBoard(
+            @PathVariable("board_id") Long bid
+            ,@PathVariable("status") String status
+            ,HttpSession session){
+
+        Long uid = (Long) session.getAttribute("uid");
+
+        if(uid == null){
+            return "fail";
+        }else{
+            return boardService.boomdownBoard(uid,bid,status);
+        }
+
     }
 
 

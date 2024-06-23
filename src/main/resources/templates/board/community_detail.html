@@ -34,7 +34,7 @@
                     <div th:class="board_some" th:id="board_complain">
                         <button type="button" id="board_complain_button">
                             <ul>
-                                <li><img th:src="@{/images/siren.png}"></li>
+                                <li class="some_img_li"><img th:src="@{/images/siren.png}"></li>
                                 <li>신고</li>
                             </ul>
                         </button>
@@ -42,7 +42,7 @@
                     <div th:class="board_some" th:id="board_bookmark">
                         <button type="button" id="board_bookmark_button">
                             <ul>
-                                <li><img th:src="@{/images/bookmark.png}"></li>
+                                <li class="some_img_li"><img th:src="@{/images/bookmark.png}"></li>
                                 <li>북마크</li>
                             </ul>
                         </button>
@@ -50,7 +50,7 @@
                     <div th:class="board_some" th:id="board_boomup">
                         <button type="button" id="board_boomup_button">
                             <ul>
-                                <li><img th:src="@{/images/boomup.png}"></li>
+                                <li class="some_img_li"><!--<img th:src="@{/images/boomup.png}">--></li>
                                 <li>붐업</li>
                                 <!--<li th:text="${}"></li>-->
                             </ul>
@@ -59,7 +59,7 @@
                     <div th:class="board_some" th:id="board_boomdown">
                         <button type="button" id="board_boomdown_button">
                             <ul>
-                                <li><img th:src="@{/images/boomdown.png}"></li>
+                                <li class="some_img_li"><!--<img th:src="@{/images/boomdown.png}">--></li>
                                 <li>붐따</li>
                             </ul>
                         </button>
@@ -98,7 +98,9 @@
 
         <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
         <script th:src="@{/js/community/remove_modify.js}"></script>
-        <script>setBoardId([[${board.bid}]])</script>
+        <script>
+            setBoardId([[${board.bid}]])
+        </script>
         <script th:src="@{/js/community/community_reps.js}"></script>
         <script th:src="@{/js/community/some_button.js}"></script>
     </div>

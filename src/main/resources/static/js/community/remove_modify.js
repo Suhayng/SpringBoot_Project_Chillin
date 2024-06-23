@@ -1,3 +1,8 @@
+/*
+let session_uid = '';
+let setUserId = function (uid){
+    session_uid = uid;
+}*/
 
 let board_id;
 let setBoardId = function (bid){

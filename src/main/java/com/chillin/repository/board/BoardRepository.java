@@ -6,6 +6,7 @@ import com.chillin.repository.user.UserQueryDSL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardQueryDSL {
@@ -15,6 +16,8 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardQueryD
 
     @Query(" select u.userId from User u where u.id= :id ")
     Long getUserId(String id);
+
+
 /*
     @Query(" select bb.upDown from BoardBoom bb " +
             " where bb.board.boardId =:bid and bb.user.userId =:uid ")
