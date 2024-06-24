@@ -214,5 +214,35 @@ public class BoardController {
 
     }
 
+    @GetMapping("/community/board/isBookmarked/{board_id}")
+    @ResponseBody
+    public String isBookmarked(@PathVariable("board_id") Long bid,
+                               HttpSession session){
+        Long uid = (Long) session.getAttribute("uid");
+
+        if(uid == null){
+            return "no";
+        }else{
+            return boardService.isBookmarked(uid,bid);
+        }
+    }
+
+    @PostMapping("/community/bookmark/{board_id}/{status}")
+    @ResponseBody
+    public String bookmarking(
+            @PathVariable("board_id") Long bid
+            ,@PathVariable("status") String status
+            ,HttpSession session){
+
+        Long uid = (Long) session.getAttribute("uid");
+
+        if(uid == null){
+            return "fail";
+        }else{
+            return boardService.bookmaring(uid,bid,status);
+        }
+
+    }
+
 
 }

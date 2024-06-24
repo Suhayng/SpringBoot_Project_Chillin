@@ -1,7 +1,7 @@
 window.onload = function () {
     append_reps();
     board_boomup_count();
-
+    isBookmarked();
 }
 
 let append_reps = function () {
@@ -51,8 +51,11 @@ let append_reps = function () {
 
             let boom_div = document.createElement('div');
             boom_div.classList.add('boom_zone');
-            let boom_temp = document.createTextNode('임시 붐따');
-            boom_div.appendChild(boom_temp);
+
+            rep_boom_create(boom_div,now.rid);
+
+            /*let boom_temp = document.createTextNode('임시 붐따');
+            boom_div.appendChild(boom_temp);*/
 
             content_boom.appendChild(content_div);
             content_boom.appendChild(boom_div);
@@ -81,7 +84,9 @@ let append_reps = function () {
 
             let date_div = document.createElement('div');
             date_div.classList.add('write_date');
-            let date_text = document.createTextNode(now.writeDate);
+            let raw_date = now.writeDate.toString();
+            let clean_date = raw_date.slice(2,10) +'  ' + raw_date.slice(11,19);
+            let date_text = document.createTextNode(clean_date);
             date_div.appendChild(date_text);
 
             complain_date.appendChild(rep_delete);

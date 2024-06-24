@@ -204,6 +204,36 @@ public class BoardServiceImpl implements BoardService {
         return map;
     }
 
+    @Override
+    public String isBookmarked(Long uid, Long bid) {
+
+        Long bookmarkObject = boardRepository.isBookmarked(uid,bid);
+        if(bookmarkObject == null){
+            return "no";
+        }else{
+            if(bookmarkObject > 0) {
+                return "yes";
+            }else{
+                return "no";
+            }
+        }
+    }
+
+    @Override
+    public String bookmaring(Long uid, Long bid, String status) {
+        if("no".equals(status)){
+            /*yes 로 return 하고 , insert 를 보냄 */
+            boardRepository.insertBookmark(bid,uid);
+            return "yes";
+        }else if("yes".equals(status)){
+            /*no 로 return 하고 , delete 를 보냄 */
+            boardRepository.deleteBookmark(bid,uid);
+            return "no";
+        }else {
+            return "fail";
+        }
+    }
+
     private String uploading(String filePath, MultipartFile image) {
 
         UUID uuid = UUID.randomUUID();

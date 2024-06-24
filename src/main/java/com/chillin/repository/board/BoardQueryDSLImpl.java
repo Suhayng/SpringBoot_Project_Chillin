@@ -4,6 +4,8 @@ import com.chillin.domain.BoardBoom;
 
 import static com.chillin.domain.QBoardBoom.*;
 
+import static com.chillin.domain.QBookmark.*;
+
 import com.chillin.dto.RepDTO;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -109,13 +111,45 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
                 .fetchOne();
 
         Integer boomup = tuple.get(0, Integer.class);
-        if(boomup == null) boomup = 0;
+        if (boomup == null) boomup = 0;
         Integer boomdown = tuple.get(1, Integer.class);
-        if(boomdown == null) boomdown = 0;
+        if (boomdown == null) boomdown = 0;
 
         map.put("boomup", boomup);
         map.put("boomdown", boomdown);
 
         return map;
+    }
+
+    @Override
+    public Long isBookmarked(Long uid, Long bid) {
+
+        Long result = queryFactory.select(bookmark.count())
+                .from(bookmark)
+                .where(bookmark.board.boardId.eq(bid).and(bookmark.user.userId.eq(uid)))
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    @Modifying
+    public void insertBookmark(Long bid, Long uid) {
+        String sql = "INSERT INTO bookmark(bid,uid) VALUES (:bid , :uid)";
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("bid", bid);
+        query.setParameter("uid", uid);
+        query.executeUpdate();
+    }
+
+    @Override
+    @Transactional
+    @Modifying
+    public void deleteBookmark(Long bid, Long uid) {
+        queryFactory.delete(bookmark)
+                .where(bookmark.board.boardId.eq(bid)
+                        .and(bookmark.user.userId.eq(uid)))
+                .execute();
     }
 }

@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +21,16 @@ public class RepController {
     public List<RepDTO> getReps(@PathVariable("board_id") Long bid) {
 
         List<RepDTO> repDTOList = repService.getReps(bid);
+
+        return repDTOList;
+    }
+
+    @GetMapping("/getReps2/{board_id}")
+    public List<RepDTO> getReps2(@PathVariable("board_id") Long bid,
+                                 HttpSession session) {
+
+        Long uid = (Long)session.getAttribute("uid");
+        List<RepDTO> repDTOList = repService.getReps2(bid,uid);
 
         return repDTOList;
     }
@@ -50,6 +62,18 @@ public class RepController {
             delete_success = repService.repDelete(rid, uid);
         }
         return delete_success;
+    }
+
+
+    @GetMapping("/community/getRepBoom/{rid}")
+    public Map<String, Object> getRepBoom(@PathVariable Long rid
+            ,HttpSession session){
+
+        Map<String, Object> map = new HashMap<>();
+        /* map 에는 boomup개수, boomdown 개수, 내 상태 */
+
+
+        return map;
     }
 
 }

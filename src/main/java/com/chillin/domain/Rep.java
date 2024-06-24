@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -39,6 +40,7 @@ public class Rep {
     private User user;
 
     @OneToMany(mappedBy = "rep", cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 100)
     private List<RepBoom> repBoomList = new ArrayList<>();
 
     @OneToMany(mappedBy = "rep", cascade = CascadeType.ALL, orphanRemoval = true)

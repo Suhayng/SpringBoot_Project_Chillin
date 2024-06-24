@@ -23,4 +23,8 @@ public interface BoardService {
     Map<String, Object> boomupBoard(Long uid, Long bid, String status);
 
     Map<String, Object> boomdownBoard(Long uid, Long bid, String status);
+
+    String isBookmarked(Long uid, Long bid);
+
+    String bookmaring(Long uid, Long bid, String status);
 }

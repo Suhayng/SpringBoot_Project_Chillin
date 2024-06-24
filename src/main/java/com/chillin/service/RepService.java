@@ -10,4 +10,6 @@ public interface RepService {
     Long insertRep(RepDTO dto);
 
     boolean repDelete(Long rid, Long uid);
+
+    List<RepDTO> getReps2(Long bid, Long uid);
 }

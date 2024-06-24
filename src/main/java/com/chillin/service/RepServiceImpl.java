@@ -53,4 +53,11 @@ public class RepServiceImpl implements RepService{
         }
         return delete_success;
     }
+
+    @Override
+    public List<RepDTO> getReps2(Long bid, Long uid) {
+        List<RepDTO> list = repRepository.getReps2(bid,uid);
+
+        return list;
+    }
 }

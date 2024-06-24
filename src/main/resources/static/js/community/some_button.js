@@ -1,7 +1,6 @@
 
 let board_boom_status;
 
-/** 아직 미완성임. 이거 하려면 그 숫자 받아와야함 */
 let board_boomup_count = function(){
 
     fetch('/community/board/get_boom/'+board_id,{
@@ -144,3 +143,75 @@ let boom_img = function(status){
     boomdown_li.appendChild(boomdown_img);
 
 }
+
+
+let bookmark_status;
+
+let isBookmarked = function(){
+
+    fetch('/community/board/isBookmarked/'+board_id,{
+        method: 'GET'
+        ,headers :{
+            'Accept' : 'text/plain'
+        }
+    }).then(response=>{
+        if(!response.ok){
+            throw new Error('bookmark_get error');
+        }else{
+            return response.text();
+        }
+    }).then(data=>{
+        console.log(data);
+
+        bookmark_img(data);
+
+    }).catch(error=>{
+        console.log(error + " bookmark 받아오는 데 에러 ");
+    })
+}
+
+
+let bookmark_img = function (status){
+    let bookmark_li = document.querySelector('#board_bookmark .some_img_li');
+    bookmark_li.replaceChildren();
+    let bookmark_img = document.createElement('img');
+    if(status === "yes"){
+        bookmark_img.src = "/images/bookmarked.png";
+        bookmark_status = "yes";
+    }else{
+        bookmark_img.src = "/images/bookmark.png";
+        bookmark_status = "no";
+    }
+    bookmark_li.appendChild(bookmark_img);
+}
+
+
+
+document.getElementById('board_bookmark_button').onclick=function (){
+    fetch('/community/bookmark/'+board_id+'/'+bookmark_status,{
+        method : 'POST',
+        headers : {
+            'Accept' : 'text/plain'
+        }
+    }).then(response=>{
+        if(!response.ok){
+            throw new Error('bookmark 과정 중 error')
+        }else{
+            return response.text()
+        }
+    }).then(data =>{
+
+        if(data === 'fail'){
+            alert('북마크 실패...');
+        }else{
+            bookmark_img(data)
+        }
+
+    }).catch(error =>{
+        console.log(error + 'bookmark 하는 도중 실패');
+    })
+}
+
+
+
+

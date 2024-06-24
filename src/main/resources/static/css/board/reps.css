@@ -32,9 +32,9 @@
 .boom_zone{
     flex-grow: 0;
     display: inline-block;
-    width : 64px;
-    max-width: 64px;
-    min-width: 64px;
+    width : 80px;
+    max-width: 80px;
+    min-width: 80px;
 }
 
 .cddiv{
