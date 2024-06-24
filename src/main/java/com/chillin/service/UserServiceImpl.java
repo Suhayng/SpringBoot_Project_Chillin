@@ -3,23 +3,20 @@ package com.chillin.service;
 import com.chillin.domain.User;
 import com.chillin.dto.UserDTO;
 import com.chillin.repository.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private UserRepository repository;
-    private ModelMapper modelMapper;
+    private final UserRepository repository;
+    private final ModelMapper modelMapper;
 
-    @Autowired
-    private UserServiceImpl(UserRepository repository, ModelMapper modelMapper) {
-        this.repository = repository;
-        this.modelMapper = modelMapper;
-    }
 
     /**
      * 로그인 시 받은 아이디로 회원 정보 DTO로 리턴

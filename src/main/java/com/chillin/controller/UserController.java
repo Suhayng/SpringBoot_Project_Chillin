@@ -6,6 +6,7 @@ import com.chillin.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,15 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 
 @Controller
+@RequiredArgsConstructor
 @Slf4j
 public class UserController {
 
-    private UserService userService;
-
-    @Autowired
-    public UserController(UserService userService, BoardService boardService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     /**
      * 로그인 페이지로 이동
@@ -97,7 +94,7 @@ public class UserController {
      * 회원가입 결과
      */
     @PostMapping("/join")
-    public String join_result(@Valid @ModelAttribute("dto") UserDTO dto
+    public String join_result(@Valid UserDTO dto
             , BindingResult bindingResult
     ) {
 
