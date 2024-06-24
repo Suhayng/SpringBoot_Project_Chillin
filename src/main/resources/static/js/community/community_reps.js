@@ -98,9 +98,9 @@ let append_reps = function () {
 
         }
     }).catch(error => {
-        console.log('subInsert fetch' + error);
+        console.log('getReps fetch' + error);
     }).finally(() => {
-        console.log('subInsert - finally')
+        console.log('getReps - finally')
     });
 
 }
@@ -147,7 +147,7 @@ document.getElementById('rep_create').onclick = function () {
         'content': rep_content
     };
 
-    if (rep_content == '' || rep_content == null) {
+    if (rep_content != '' || rep_content != null) {
 
         fetch('/insertRep/' + board_id, {
             method: 'POST',
