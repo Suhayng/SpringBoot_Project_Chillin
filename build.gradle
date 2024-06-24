@@ -42,6 +42,8 @@ dependencies {
     // Thymeleaf Layout Dialect 추가
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation group: 'nz.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version: '3.0.0'
+    // 크롤링을 위한 Selinium 의존성
+    implementation 'org.seleniumhq.selenium:selenium-java:4.21.0'
 }
 
 tasks.named('test') {

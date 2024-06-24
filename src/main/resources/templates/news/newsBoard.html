@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout/BaseLayout}">
+<head>
+    <meta charset="UTF-8">
+
+    <th:block layout:fragment="title">
+        <title>Chillin</title>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <!-- 각 페이지의 css -->
+        <link rel="stylesheet" th:href="@{/css/main/news.css}">
+    </th:block>
+
+    <th:block layout:fragment="javascript">
+        <!-- 각 페이지의 javascript -->
+    </th:block>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <form action="/info" method="get">
+            <input type="text" name="searchTxt">
+            <button type="submit">검색</button>
+        </form>
+        <table>
+            <thead>
+            <tr>
+                <th>제목</th>
+                <th>언론사</th>
+                <th>작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:if="!${list.isEmpty()}">
+            <tr th:each="item:${list}">
+                <td>
+                    <a th:href="${item.link}">
+                        <th:block th:text="${item.title}"></th:block>
+                    </a>
+                </td>
+                <td th:text="${item.publisher}"></td>
+                <td th:text="${#temporals.format(item.writeDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <!-- 이전 버튼 -->
+        <th:block th:if="${startPage>1}">
+            <a th:href="@{/info(page=${startPage}-1, searchTxt=${searchtxt})}" th:text="이전"></a>
+        </th:block>
+
+        <!-- 페이지 블록 -->
+        <th:block th:each="index:${#numbers.sequence(startPage, endPage)}">
+            <span th:if="${index==list.pageable.getPageNumber()+1}" th:text="${index}"></span>
+            <span th:if="${index!=list.pageable.getPageNumber()+1}">
+        <a th:href="@{/info(page=${index},searchTxt=${searchtxt})}"><span th:text="${index}"/></a>
+    </span>
+        </th:block>
+
+        <!-- 다음 버튼 -->
+        <th:block th:if="${endPage < list.totalPages}">
+            <a th:href="@{/info(page=${endPage}+1, searchTxt=${searchtxt})}" th:text="다음"></a>
+        </th:block>
+
+
+    </div>
+</th:block>
+</body>
+</html>
