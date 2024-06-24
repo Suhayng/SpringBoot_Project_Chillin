@@ -1,10 +1,16 @@
 package com.chillin.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "board_boom")
-public class BoardBoom extends BoomBase{
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class BoardBoom{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

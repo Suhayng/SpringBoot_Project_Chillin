@@ -57,6 +57,10 @@ a{
     margin-right: auto;
 }
 
+#editor{
+    height: 300px;
+}
+
 .header ul li {
     list-style: none;
     text-decoration: none;
