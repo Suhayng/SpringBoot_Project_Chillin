@@ -12,7 +12,7 @@
 
     <th:block layout:fragment="css">
         <!-- 각 페이지의 css -->
-        <link rel="stylesheet" th:href="@{/css/main/index.css}">
+        <link rel="stylesheet" th:href="@{/css/user/login.css}">
     </th:block>
 
     <th:block layout:fragment="javascript">
@@ -26,11 +26,12 @@
 
         <!-------------------------------------------------->
 
+        <div id="login_wrap">
 
-        <img th:src="@{/images/logo.png}"/>
-        <h1>칠린에 오신것을 환영합니다.</h1>
+        <img th:src="@{/images/logo.png}" id="login_logo"/>
+        <h1 id="login_h1">칠린에 오신것을 환영합니다</h1>
 
-        <h3>칠린 아이디로 로그인</h3>
+        <h3 id="login_h3">칠린 아이디로 로그인</h3>
 
         <form th:method="post" th:action="@{/login_result}">
             <ul>
@@ -46,7 +47,7 @@
                 </li>
 
 
-                <li>
+                <li id="login_button">
                     <button type="submit">로그인</button>
                 </li>
 
@@ -56,6 +57,8 @@
 
             </ul>
         </form>
+
+        </div>
 
 
         <!-------------------------------------------------->
