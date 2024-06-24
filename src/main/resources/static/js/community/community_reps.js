@@ -2,6 +2,8 @@ window.onload = function () {
     append_reps();
     board_boomup_count();
     isBookmarked();
+
+    append_reps2()
 }
 
 let append_reps = function () {
@@ -51,11 +53,13 @@ let append_reps = function () {
 
             let boom_div = document.createElement('div');
             boom_div.classList.add('boom_zone');
+/*
 
             rep_boom_create(boom_div,now.rid);
+*/
 
-            /*let boom_temp = document.createTextNode('임시 붐따');
-            boom_div.appendChild(boom_temp);*/
+            let boom_temp = document.createTextNode('임시 붐따');
+            boom_div.appendChild(boom_temp);
 
             content_boom.appendChild(content_div);
             content_boom.appendChild(boom_div);
@@ -191,3 +195,28 @@ let user_see = function (uid) {
 
     alert('어 버튼 맞아' + uid);
 }
+
+
+let append_reps2 = function(){
+
+    fetch('/getReps2/' + board_id, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('create error')
+        } else {
+            return response.json()
+        }
+    }).then(data => {
+
+        console.log(data)
+
+    }).catch(error=>{
+        console.log(error);
+    })
+}
+
+

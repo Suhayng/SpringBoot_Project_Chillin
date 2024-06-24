@@ -22,7 +22,7 @@ public class RepBoom{
     @JoinColumn(name = "uid")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "rid")
     private Rep rep;
 }
