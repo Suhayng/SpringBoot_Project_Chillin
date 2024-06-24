@@ -52,40 +52,43 @@ public class RepQueryDSLImpl implements RepQueryDSL {
                                 , rep.board.boardId.as("bid")
                                 , rep.user.nickname
                         )).from(rep)
-                        .leftJoin(repBoom)
+                        .leftJoin(repBoom) /* 영속성으로 쿼리가 덜 날라가지 않을까.. 하는 마음*/
                         .on(rep.repId.eq(repBoom.rep.repId))
                         .fetchJoin()
                         .where(rep.board.boardId.eq(bid))
                         .fetch();
 
-        QRepBoom repBoom1 = new QRepBoom("repBoom1");
         List<RepDTO> boomRepList = dtoList.stream()
                 .map(repDTO -> {
 
                     Tuple tuple = queryFactory.select(
                                     repBoom.upDown.when(true).then(1).otherwise(0).sum().as("boomup")
                                     , repBoom.upDown.when(false).then(1).otherwise(0).sum().as("boomdown")
-                                    , JPAExpressions.select(repBoom1.user.userId.eq(uid).count())
-                                            .from(repBoom1)
-                                            .where(repBoom1.rep.repId.eq(repDTO.getRid()))
                             )
                             .from(repBoom)
                             .where(repBoom.rep.repId.eq(repDTO.getRid()))
                             .fetchOne();
 
-                    Tuple
-
+                    String status = queryFactory.select(
+                                    repBoom.upDown.when(true).then("up")
+                                            .otherwise("down")
+                            ).from(repBoom)
+                            .where(repBoom.rep.repId.eq(repDTO.getRid()).
+                                    and(repBoom.user.userId.eq(uid)))
+                            .fetchOne();
+                    repDTO.setBoomup(tuple.get(0,Integer.class));
+                    repDTO.setBoomdown(tuple.get(1,Integer.class));
                     return repDTO;
                 }).collect(Collectors.toList());
 
-        /*
-                                , repBoom.upDown.when(true).then(1).otherwise(0).sum().as("boomup")
-                                , repBoom.upDown.when(false).then(1).otherwise(0).sum().as("boomdown")
-                                , repBoom.user.userId.when(uid)
-                                        .then(repBoom.upDown.when(true).then("up").otherwise("down"))
-                                        .otherwise("no").as("status")
-        * */
 
-        return dtoList;
+        return boomRepList;
     }
 }
+  /*
+  , repBoom.upDown.when(true).then(1).otherwise(0).sum().as("boomup")
+  , repBoom.upDown.when(false).then(1).otherwise(0).sum().as("boomdown")
+  , repBoom.user.userId.when(uid)
+  .then(repBoom.upDown.when(true).then("up").otherwise("down"))
+  .otherwise("no").as("status")
+        * */
