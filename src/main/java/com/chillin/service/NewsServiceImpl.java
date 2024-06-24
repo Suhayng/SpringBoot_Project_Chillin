@@ -5,6 +5,7 @@ import com.chillin.dto.NewsDTO;
 import com.chillin.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +13,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,6 +23,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +31,7 @@ import java.util.List;
 public class NewsServiceImpl implements NewsService {
 
     private final NewsRepository newsRepository;
+    private final ModelMapper modelMapper;
     private WebDriver webDriver;  // 셀레니움 webDriver
 
     @Override
@@ -48,7 +54,7 @@ public class NewsServiceImpl implements NewsService {
 
             // 교육 탭 클릭
             educationTab.click();
-            log.info("교육 탭 클릭 ");
+//            log.info("교육 탭 클릭 ");
 
             // 뉴스 리스트 엘리먼트 찾기
             List<WebElement> newsElements = webDriver.findElements(By.cssSelector(".section_latest_article._CONTENT_LIST._PERSIST_META  ul .sa_text"));
@@ -64,7 +70,7 @@ public class NewsServiceImpl implements NewsService {
                     log.info("......link....{}", link);
 
                     // 링크 존재하는지 확인
-                    if(newsRepository.existsByLink(link)){
+                    if (newsRepository.existsByLink(link)) {
                         log.info("이미 존재하는 뉴스 링크..{}", link);
                         continue;
                     }
@@ -105,10 +111,21 @@ public class NewsServiceImpl implements NewsService {
         }
     }
 
+    /** 뉴스 목록 */
     @Override
-    public List<NewsDTO> findNews() {
-        return null;
+    public Page<NewsDTO> newsList(String searchTxt, Pageable pageable) {
+
+        Page<News> newsPage = newsRepository.findByTitleContaining(searchTxt, pageable);
+
+        return newsPage.map(news -> NewsDTO.builder()
+                .newsId(news.getNewsId())
+                .title(news.getTitle())
+                .publisher(news.getPublisher())
+                .link(news.getLink())
+                .writeDate(news.getWriteDate())
+                .build());
     }
+
 
 }
 
