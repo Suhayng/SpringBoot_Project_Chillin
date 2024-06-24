@@ -27,8 +27,9 @@ public class RepServiceImpl implements RepService{
     }
 
     @Override
-    public Long insertRep(RepDTO dto, String suid) {
-        User user = repRepository.getUserBySuid(suid);
+    public Long insertRep(RepDTO dto) {
+
+        User user = repRepository.getUserByUid(dto.getUid());
         Board board = repRepository.getBoardByBid(dto.getBid());
         Rep rep = Rep.builder()
                 .content(dto.getContent())
@@ -38,7 +39,18 @@ public class RepServiceImpl implements RepService{
         Rep saved = repRepository.save(rep);
         dto.setRid(saved.getRepId());
         dto.setWriteDate(saved.getWriteDate());
-        dto.setId(suid);
+        dto.setNickname(saved.getUser().getNickname());
         return saved.getRepId();
+    }
+
+    @Override
+    public boolean repDelete(Long rid, Long uid) {
+        boolean delete_success = false;
+        Rep rep = repRepository.findById(rid).orElseThrow(RuntimeException::new);
+        if(rep.getUser().getUserId().equals(uid)){
+            repRepository.delete(rep);
+            delete_success = true;
+        }
+        return delete_success;
     }
 }

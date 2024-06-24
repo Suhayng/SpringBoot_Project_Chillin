@@ -26,7 +26,7 @@ public class RepQueryDSLImpl implements RepQueryDSL {
                                 , rep.writeDate
                                 , rep.user.userId.as("uid")
                                 , rep.board.boardId.as("bid")
-                                , rep.user.id
+                                , rep.user.nickname
                         )).from(rep)
                         .where(rep.board.boardId.eq(bid))
                         .fetch();

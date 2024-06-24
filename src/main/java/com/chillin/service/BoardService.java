@@ -14,6 +14,13 @@ public interface BoardService {
     BoardDTO getDetail(Long bid);
 
     void delete(Long bid, String id);
+    void delete(Long bid);
 
-    boolean modifyBoard(BoardDTO dto, String id);
+    boolean modifyBoard(BoardDTO dto);
+
+    Map<String, Object> getBoom(Long uid, Long bid);
+
+    String boomupBoard(Long uid, Long bid, String status);
+
+    String boomdownBoard(Long uid, Long bid, String status);
 }

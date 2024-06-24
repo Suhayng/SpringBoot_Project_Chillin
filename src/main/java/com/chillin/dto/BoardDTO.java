@@ -21,4 +21,7 @@ public class BoardDTO {
     private LocalDateTime modifyDate;
 
     private Long uid;
+    private String nickname;
+
+    private Boolean success;
 }

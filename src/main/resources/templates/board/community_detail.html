@@ -14,6 +14,7 @@
         <!-- 각 페이지의 css -->
         <link rel="stylesheet" th:href="@{/css/main/index.css}">
         <link rel="stylesheet" th:href="@{/css/board/detail.css}">
+        <link rel="stylesheet" th:href="@{/css/board/reps.css}">
     </th:block>
 
     <th:block layout:fragment="javascript">
@@ -31,33 +32,42 @@
 
                 <div id="some_div">
                     <div th:class="board_some" th:id="board_complain">
-                        <ul>
-                            <li><img th:src="@{/images/siren.png}"></li>
-                            <li>신고</li>
-                        </ul>
+                        <button type="button" id="board_complain_button">
+                            <ul>
+                                <li class="some_img_li"><img th:src="@{/images/siren.png}"></li>
+                                <li>신고</li>
+                            </ul>
+                        </button>
                     </div>
                     <div th:class="board_some" th:id="board_bookmark">
-                        <ul>
-                            <li><img th:src="@{/images/bookmark.png}"></li>
-                            <li>북마크</li>
-                        </ul>
+                        <button type="button" id="board_bookmark_button">
+                            <ul>
+                                <li class="some_img_li"><img th:src="@{/images/bookmark.png}"></li>
+                                <li>북마크</li>
+                            </ul>
+                        </button>
                     </div>
                     <div th:class="board_some" th:id="board_boomup">
-                        <ul>
-                            <li><img th:src="@{/images/boomup.png}"></li>
-                            <li>붐업</li>
-                        </ul>
+                        <button type="button" id="board_boomup_button">
+                            <ul>
+                                <li class="some_img_li"><!--<img th:src="@{/images/boomup.png}">--></li>
+                                <li>붐업</li>
+                                <!--<li th:text="${}"></li>-->
+                            </ul>
+                        </button>
                     </div>
                     <div th:class="board_some" th:id="board_boomdown">
-                        <ul>
-                            <li><img th:src="@{/images/boomdown.png}"></li>
-                            <li>붐따</li>
-                        </ul>
+                        <button type="button" id="board_boomdown_button">
+                            <ul>
+                                <li class="some_img_li"><!--<img th:src="@{/images/boomdown.png}">--></li>
+                                <li>붐따</li>
+                            </ul>
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div id="writer_div" th:text="'작성자 : '+${board.title}"></div>
+            <div id="writer_div" th:text="'작성자 : '+${board.nickname}"></div>
             <div id="write_date_div"
                  th:text="'작성일 : '+${#temporals.format(board.writeDate,'yyyy-MM-dd HH:mm:ss')}"></div>
             <div id="content_div" th:utext="${board.content}"></div>
@@ -88,8 +98,11 @@
 
         <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
         <script th:src="@{/js/community/remove_modify.js}"></script>
-        <script>setBoardId([[${board.bid}]])</script>
+        <script>
+            setBoardId([[${board.bid}]])
+        </script>
         <script th:src="@{/js/community/community_reps.js}"></script>
+        <script th:src="@{/js/community/some_button.js}"></script>
     </div>
 </th:block>
 </body>
