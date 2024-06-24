@@ -151,41 +151,57 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public String boomupBoard(Long uid, Long bid, String status) {
+    public Map<String, Object> boomupBoard(Long uid, Long bid, String status) {
+        Map<String, Object> map = null;
+
         if(status.equals("no")){
             /*insert -> 1*/
             boardRepository.insertBoom(true,bid,uid);
-            return "up";
+
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","up");
         }else if(status.equals("up")){
             /*delete*/
             boardRepository.deleteBoom(bid,uid);
-            return "no";
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","no");
+
         }else if(status.equals("down")){
             /*update -> 1*/
             boardRepository.changeDown(true,bid,uid);
-            return "up";
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","up");
         }else{
-            return "fail";
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","fail");
         }
+        return map;
     }
 
     @Override
-    public String boomdownBoard(Long uid, Long bid, String status) {
+    @Transactional
+    public Map<String, Object> boomdownBoard(Long uid, Long bid, String status) {
+        Map<String, Object> map = null;
         if(status.equals("no")){
             /*insert -> 0*/
             boardRepository.insertBoom(false,bid,uid);
-            return "down";
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","down");
         }else if(status.equals("down")){
             /*delete*/
             boardRepository.deleteBoom(bid,uid);
-            return "no";
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","no");
         }else if(status.equals("up")){
             boardRepository.changeDown(false,bid,uid);
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","down");
             /*update -> 0*/
-            return "down";
         }else{
-            return "fail";
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","fail");
         }
+        return map;
     }
 
     private String uploading(String filePath, MultipartFile image) {

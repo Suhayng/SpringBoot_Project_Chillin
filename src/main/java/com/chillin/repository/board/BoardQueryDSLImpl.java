@@ -97,6 +97,7 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> getBoardBoom(Long bid) {
         Map<String, Object> map = new HashMap<>();
 

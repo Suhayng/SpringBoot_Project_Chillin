@@ -20,7 +20,7 @@ public interface BoardService {
 
     Map<String, Object> getBoom(Long uid, Long bid);
 
-    String boomupBoard(Long uid, Long bid, String status);
+    Map<String, Object> boomupBoard(Long uid, Long bid, String status);
 
-    String boomdownBoard(Long uid, Long bid, String status);
+    Map<String, Object> boomdownBoard(Long uid, Long bid, String status);
 }

@@ -179,7 +179,7 @@ public class BoardController {
     }
     @PostMapping("/community/boomup/{board_id}/{status}")
     @ResponseBody
-    public String boomupBoard(
+    public Map<String, Object> boomupBoard(
             @PathVariable("board_id") Long bid
             ,@PathVariable("status") String status
             ,HttpSession session){
@@ -187,7 +187,9 @@ public class BoardController {
         Long uid = (Long) session.getAttribute("uid");
 
         if(uid == null){
-            return "fail";
+            Map<String, Object> map = new HashMap<>();
+            map.put("status","fail");
+            return map;
         }else{
             return boardService.boomupBoard(uid,bid,status);
         }
@@ -195,7 +197,7 @@ public class BoardController {
     }
     @PostMapping("/community/boomdown/{board_id}/{status}")
     @ResponseBody
-    public String boomdownBoard(
+    public Map<String, Object> boomdownBoard(
             @PathVariable("board_id") Long bid
             ,@PathVariable("status") String status
             ,HttpSession session){
@@ -203,7 +205,9 @@ public class BoardController {
         Long uid = (Long) session.getAttribute("uid");
 
         if(uid == null){
-            return "fail";
+            Map<String, Object> map = new HashMap<>();
+            map.put("status","fail");
+            return map;
         }else{
             return boardService.boomdownBoard(uid,bid,status);
         }

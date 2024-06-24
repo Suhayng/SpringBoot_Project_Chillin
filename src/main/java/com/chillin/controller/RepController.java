@@ -30,11 +30,13 @@ public class RepController {
 
 
         Long uid = (Long) session.getAttribute("uid");
-        dto.setUid(uid);
-        dto.setBid(bid);
-        Long rid = repService.insertRep(dto);
-
-
+        if(uid != null) {
+            dto.setUid(uid);
+            dto.setBid(bid);
+            Long rid = repService.insertRep(dto);
+        }else{
+            return dto;
+        }
         return dto;
     }
 

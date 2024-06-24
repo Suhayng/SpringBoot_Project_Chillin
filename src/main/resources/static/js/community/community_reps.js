@@ -164,6 +164,10 @@ document.getElementById('rep_create').onclick = function () {
             }
         }).then(data => {
 
+            if(data.uid == null || data.uid === ''){
+                throw new Error('로그인은 하고 댓글 써주세요');
+            }
+
             document.getElementById('rep_list').innerHTML = '';
             document.getElementById('rep_area').value = '';
             append_reps();
