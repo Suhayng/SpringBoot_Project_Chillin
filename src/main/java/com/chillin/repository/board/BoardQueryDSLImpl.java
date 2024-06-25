@@ -3,12 +3,14 @@ package com.chillin.repository.board;
 import com.chillin.domain.BoardBoom;
 
 import static com.chillin.domain.QBoardBoom.*;
-
 import static com.chillin.domain.QBookmark.*;
+import static com.chillin.domain.QBoard.*;
 
+import com.chillin.dto.BoardDTO;
 import com.chillin.dto.RepDTO;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -151,5 +153,33 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
                 .where(bookmark.board.boardId.eq(bid)
                         .and(bookmark.user.userId.eq(uid)))
                 .execute();
+    }
+
+    @Override
+    public List<BoardDTO> getRecentList(String search, int startRow, int pageSize) {
+
+        BooleanExpression searchCondition = null;
+        if(search != null){
+            searchCondition = board.title.eq(search);
+        }
+
+        List<BoardDTO> list = queryFactory.select(Projections.fields(
+                BoardDTO.class
+                ,board.boardId.as("bid")
+                ,board.title
+                ,board.content
+                ,board.writeDate
+                ,board.user.userId.as("uid")
+                ,board.user.nickname
+        )).from(board)
+                .where(searchCondition)
+                .offset(startRow).limit(pageSize)
+                .fetch();
+
+        list.stream().forEach(boardDTO -> {
+            /* 붐업 붐따 가져오기 */
+        });
+
+        return list;
     }
 }

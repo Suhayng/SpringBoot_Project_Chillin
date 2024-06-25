@@ -8,8 +8,11 @@ import com.chillin.repository.rep.RepRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -59,5 +62,69 @@ public class RepServiceImpl implements RepService{
         List<RepDTO> list = repRepository.getReps2(bid,uid);
 
         return list;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> boomup(Long rid, Long uid) {
+        Map<String, Object> map = new HashMap<>();
+
+
+        if(uid != null) {
+            String status = repRepository.getStatusMine(rid,uid);
+            if("up".equals(status)){
+                /* 삭제 */
+                repRepository.deleteBoom(rid,uid);
+                map.put("status","no");
+
+            }else if("down".equals(status)){
+                /* update -> true */
+                repRepository.updateBoom(rid,uid,true);
+                map.put("status","up");
+
+            }else if("no".equals(status)){
+                /* insert -> true */
+                repRepository.insertBoom(rid,uid,true);
+                map.put("status","up");
+
+            }else{
+                map.put("status","fail");
+            }
+
+        }else{
+            map.put("status","fail");
+        }
+        repRepository.getOneRepBoom(rid,map);
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> boomdown(Long rid, Long uid) {
+        Map<String, Object> map = new HashMap<>();
+
+
+        if(uid != null) {
+            String status = repRepository.getStatusMine(rid,uid);
+            if("up".equals(status)){
+                repRepository.updateBoom(rid,uid,false);
+                map.put("status","down");
+
+            }else if("down".equals(status)){
+                repRepository.deleteBoom(rid,uid);
+                map.put("status","no");
+
+            }else if("no".equals(status)){
+                repRepository.insertBoom(rid,uid,false);
+                map.put("status","down");
+
+            }else{
+                map.put("status","fail");
+            }
+
+        }else{
+            map.put("status","fail");
+        }
+        repRepository.getOneRepBoom(rid,map);
+        return map;
     }
 }

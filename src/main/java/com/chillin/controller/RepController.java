@@ -29,8 +29,8 @@ public class RepController {
     public List<RepDTO> getReps2(@PathVariable("board_id") Long bid,
                                  HttpSession session) {
 
-        Long uid = (Long)session.getAttribute("uid");
-        List<RepDTO> repDTOList = repService.getReps2(bid,uid);
+        Long uid = (Long) session.getAttribute("uid");
+        List<RepDTO> repDTOList = repService.getReps2(bid, uid);
 
         return repDTOList;
     }
@@ -42,11 +42,11 @@ public class RepController {
 
 
         Long uid = (Long) session.getAttribute("uid");
-        if(uid != null) {
+        if (uid != null) {
             dto.setUid(uid);
             dto.setBid(bid);
             Long rid = repService.insertRep(dto);
-        }else{
+        } else {
             return dto;
         }
         return dto;
@@ -64,16 +64,39 @@ public class RepController {
         return delete_success;
     }
 
+    @PostMapping("/community/rep_boomup/{rid}")
+    @ResponseBody
+    public Map<String, Object> repBoomup(@PathVariable Long rid
+            , HttpSession session) {
+        Long uid = (Long) session.getAttribute("uid");
 
-    @GetMapping("/community/getRepBoom/{rid}")
-    public Map<String, Object> getRepBoom(@PathVariable Long rid
-            ,HttpSession session){
+        Map<String, Object> map = repService.boomup(rid,uid);
 
-        Map<String, Object> map = new HashMap<>();
-        /* map 에는 boomup개수, boomdown 개수, 내 상태 */
+        return map;
+    }
+    @PostMapping("/community/rep_boomdown/{rid}")
+    @ResponseBody
+    public Map<String, Object> repBoomdown(@PathVariable Long rid
+            , HttpSession session) {
+        Long uid = (Long) session.getAttribute("uid");
 
+        Map<String, Object> map = repService.boomdown(rid,uid);
 
         return map;
     }
 
 }
+/*
+*
+
+    @GetMapping("/community/getRepBoom/{rid}")
+    public Map<String, Object> getRepBoom(@PathVariable Long rid
+            , HttpSession session) {
+
+        Map<String, Object> map = new HashMap<>();
+        /* map 에는 boomup개수, boomdown 개수, 내 상태
+
+        return map;
+                }
+
+*/

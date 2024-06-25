@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -241,8 +242,45 @@ public class BoardController {
         }else{
             return boardService.bookmaring(uid,bid,status);
         }
-
     }
 
+    @GetMapping("/community")
+    public String communityList(
+            @RequestParam(value = "search",required = false) String search
+            ,@RequestParam(value = "page",required = false,defaultValue = "1") String page
+            ,Model model){
+
+        int iPage = 1;
+        try{
+            iPage = Integer.parseInt(page);
+        }catch (Exception e){
+            System.out.println("니 숫자 안넣었지");
+            iPage = 1;
+        }
+
+        int pageSize = 10;
+
+        /* title로만 할거여서.. */
+        List<BoardDTO> recentList = boardService.getRecentList(search,iPage,pageSize);
+        model.addAttribute("recent",recentList);
+
+        if(search == null || "".equals(search) || iPage == 1){
+            /* 이럴 때만 일간, 주간 인기글 나오게 */
+            List<BoardDTO> dayList = boardService.getDayList(search,iPage,pageSize);
+            List<BoardDTO> weekList = boardService.getWeekList(search,iPage,pageSize);
+            model.addAttribute("day_week",true);
+            model.addAttribute("day_list",dayList);
+            model.addAttribute("week_list",weekList);
+        }else{
+            model.addAttribute("day_week",false);
+        }
+
+        /*
+        * 페이징에 관련된 부분 넣기
+        * */
+
+
+        return "board/community_list";
+    }
 
 }

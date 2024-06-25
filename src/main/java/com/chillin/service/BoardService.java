@@ -4,6 +4,7 @@ import com.chillin.dto.BoardDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
@@ -27,4 +28,6 @@ public interface BoardService {
     String isBookmarked(Long uid, Long bid);
 
     String bookmaring(Long uid, Long bid, String status);
+
+    List<BoardDTO> getRecentList(String search, int iPage, int pageSize);
 }

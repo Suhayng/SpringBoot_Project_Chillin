@@ -15,10 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -232,6 +229,15 @@ public class BoardServiceImpl implements BoardService {
         }else {
             return "fail";
         }
+    }
+
+    @Override
+    public List<BoardDTO> getRecentList(String search, int iPage, int pageSize) {
+        int startRow = (iPage - 1)*pageSize;
+        List<BoardDTO> recentList
+                = boardRepository.getRecentList(search, startRow,pageSize);
+
+        return recentList;
     }
 
     private String uploading(String filePath, MultipartFile image) {

@@ -1,5 +1,8 @@
 package com.chillin.repository.board;
 
+import com.chillin.dto.BoardDTO;
+
+import java.util.List;
 import java.util.Map;
 
 public interface BoardQueryDSL {
@@ -18,4 +21,6 @@ public interface BoardQueryDSL {
     void insertBookmark(Long bid, Long uid);
 
     void deleteBookmark(Long bid, Long uid);
+
+    List<BoardDTO> getRecentList(String search, int startRow, int pageSize);
 }
