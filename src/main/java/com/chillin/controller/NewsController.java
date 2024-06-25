@@ -22,7 +22,7 @@ public class NewsController {
 
     @GetMapping("/info")
     public String newsList(@RequestParam(required = false, defaultValue = "") String searchTxt
-            , @PageableDefault(size = 10, page = 0, sort = "newsId", direction = Sort.Direction.DESC) Pageable pageable
+            , @PageableDefault(size = 15, page = 0, sort = "newsId", direction = Sort.Direction.DESC) Pageable pageable
             , Model model) {
 
         Page<NewsDTO> list = newsService.newsList(searchTxt, pageable);
