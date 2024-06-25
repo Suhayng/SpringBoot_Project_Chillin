@@ -33,17 +33,27 @@ public class MypageController {
 
     /**회원정보 수정 결과*/
     @PostMapping("/user_modi")
-    public @ResponseBody long userModify(@Valid @ModelAttribute("dto") UserDTO dto
-            , BindingResult bindingResult){
+    public String userModify(@ModelAttribute("dto") UserDTO dto){
 
-        if (bindingResult.hasErrors()) {
-            return 0;
-        }else{
+            long userId = mypageService.modifyUser(dto);
 
-            long id = mypageService.modifyUser(dto);
+            return "redirect:/mypage_modify_alert/"+userId;
 
-            return id;
-        }
+    }
 
+    /**회원정보 수정 알림 페이지*/
+    @GetMapping("/mypage_modify_alert/{userId}")
+    public String userModifyAlert(@PathVariable long userId, Model model){
+        model.addAttribute("userId", userId);
+        return "/mypage/mypage_modify_alert";
+
+    }
+
+    /**회원 탈퇴하기*/
+    @GetMapping("/delete_user/{userId}")
+    public @ResponseBody long userDelete(@PathVariable Long userId){
+        long id = mypageService.deleteUser(userId);
+
+        return id;
     }
 }

@@ -47,7 +47,7 @@
                     <li><label for="password">비밀번호</label></li>
                     <li>
                         <input type="password" th:field="*{password}" name="password" id="password"
-                        placeholder="4자이상 10자 이하로 입력해주세요.">
+                        placeholder="4자이상 10자 이하로 입력해주세요." required>
                     </li>
                     <li th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password</li>
 
