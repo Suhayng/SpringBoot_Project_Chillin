@@ -4,6 +4,12 @@ let setUserId = function (uid){
     session_uid = uid;
 }*/
 
+let isLogin = false;
+
+let login = function (){
+    isLogin = true;
+}
+
 let board_id;
 let setBoardId = function (bid){
     board_id = bid;
