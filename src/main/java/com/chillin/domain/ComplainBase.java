@@ -14,7 +14,6 @@ public class ComplainBase {
 
     private String reason;
     private String detail;
-    private Boolean blind;
     private Boolean complete;
 
 }
