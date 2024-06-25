@@ -1,5 +1,7 @@
 package com.chillin.controller;
 
+import com.chillin.domain.Board;
+import com.chillin.dto.BoardDTO;
 import com.chillin.dto.MessageDTO;
 import com.chillin.dto.UserDTO;
 import com.chillin.service.BoardService;
@@ -63,7 +65,13 @@ public class MypageController {
 
     /**마이페이지-북마크로 이동*/
     @GetMapping("/mypage/bookmark/{userId}")
-    public String mypageBookmark(@PathVariable Long userId){
+    public String mypageBookmark(@PathVariable Long userId, Model model){
+
+        List<BoardDTO> list = mypageService.getBookmarkList(userId);
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("list", list);
+
         return "mypage/mypage_bookmark";
     }
 
@@ -82,9 +90,9 @@ public class MypageController {
     }
 
     /**마이페이지-쪽지 상세페이지로 이동*/
-    @GetMapping("/mypage/messagedetail")
-    public String mypageMessageDetail(@RequestParam Long userId
-            , @RequestParam Long messageId, Model model
+    @GetMapping("/mypage/messagedetail/{userId}/{messageId}")
+    public String mypageMessageDetail(@PathVariable Long userId
+            , @PathVariable Long messageId, Model model
     ) {
 
         //userId는 로그인한 사용자 messageID는 상대방 계정
@@ -101,16 +109,29 @@ public class MypageController {
     /**마이페이지-쪽지 보내기*/
     @PostMapping("/write_message")
     public String writeMessage(@ModelAttribute("dto") MessageDTO dto, Model model){
-
+        mypageService.writeMessage(dto);
         return "redirect:/message_alert/"+dto.getSender()+"/"+dto.getReceiver();
     }
 
-    /**마이페이지-쪽지송신 알림*/
+    /**마이페이지-쪽지 송신 알림창*/
     @GetMapping("/message_alert/{userId}/{messageId}")
-    public String writeMessageAlert(@PathVariable Long userId, @PathVariable Long messageId, Model model){
+    public String writeMessageAlert(@PathVariable Long userId
+            , @PathVariable Long messageId
+            , Model model
+    ){
         model.addAttribute("userId", userId);
         model.addAttribute("messageId", messageId);
 
         return "mypage/mypage_message_alert";
+    }
+    /**내가 쓴 글 보기*/
+    @GetMapping("/mypage/board/{userId}")
+    public String mypageBoard(@PathVariable Long userId, Model model){
+        List<BoardDTO> list = mypageService.getMyBoardList(userId);
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("list", list);
+
+        return "mypage/mypage_boardlist";
     }
 }

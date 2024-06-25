@@ -27,4 +27,8 @@ public interface BoardQueryDSL {
     List<BoardDTO> getDayList();
 
     List<BoardDTO> getWeekList();
+
+    List<BoardDTO> getBookmarkList(Long uid);
+
+    List<BoardDTO> getMyBoardList(Long uid);
 }

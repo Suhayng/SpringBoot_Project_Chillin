@@ -36,11 +36,11 @@
                         </a></li>
                         <li><a th:href="@{|/mypage/board/${userId}|}">
                             <img th:src="@{/images/writing.png}"/>
-                            <span>내가 쓴 글</span>
+                            <span id="mypage_select">내가 쓴 글</span>
                         </a></li>
                         <li><a th:href="@{|/mypage/bookmark/${userId}|}">
-                            <img th:src="@{/images/myBookmark_click.png}"/>
-                            <span id="mypage_select">북마크</span>
+                            <img th:src="@{/images/myBookmark.png}"/>
+                            <span>북마크</span>
                         </a></li>
 
                         <li><a th:href="@{|/mypage/message/${userId}|}">
@@ -55,7 +55,7 @@
 
                 <section>
 
-                    <h3>북마크</h3>
+                    <h3>내가 쓴 글</h3>
 
                     <div class="recent_list">
                         <table class="recent_table">

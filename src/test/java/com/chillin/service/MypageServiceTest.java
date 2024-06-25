@@ -1,5 +1,6 @@
 package com.chillin.service;
 
+import com.chillin.dto.MessageDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +33,16 @@ class MypageServiceTest {
         assertThat(service.getMessageDetailList(6L, 7L).size()).isEqualTo(2);
     }
 
+    @Test
+    public void writeMessagae(){
+        MessageDTO dto= MessageDTO.builder()
+                .sender(1L)
+                .receiver(2L)
+                .is_read(false)
+                .content("test다!!")
+                .build();
+        assertThat(service.writeMessage(dto)).isEqualTo(true);
+    }
 
 
 }

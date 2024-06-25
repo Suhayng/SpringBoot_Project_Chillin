@@ -33,8 +33,12 @@
                             <img th:src="@{/images/user.png}"/>
                             <span>회원정보</span>
                         </a></li>
+                        <li><a th:href="@{|/mypage/board/${userId}|}">
+                            <img th:src="@{/images/writing.png}"/>
+                            <span>내가 쓴 글</span>
+                        </a></li>
                         <li><a th:href="@{|/mypage/bookmark/${userId}|}">
-                            <img th:src="@{/images/bookmark.png}"/>
+                            <img th:src="@{/images/myBookmark.png}"/>
                             <span>북마크</span>
                         </a></li>
                         <li><a th:href="@{|/mypage/message/${userId}|}">
@@ -55,8 +59,7 @@
                         <tbody>
                         <tr th:each="item:${list}">
                             <td th:text="${item.check ? item.receiverNickName : item.senderNickName}"></td>
-                            <td><a th:href="@{/mypage/messagedetail
-                            (userId=${userId}, messageId=${item.check ? item.receiver : item.sender})}">
+                            <td><a th:href="@{|/mypage/messagedetail/${userId}/${item.check ? item.receiver : item.sender}|}">
                                 [[${item.getContent()}]]</a></td>
                             <td th:text="${#temporals.format(item.time,'yy-MM-dd HH:mm')}"></td>
                         </tr>

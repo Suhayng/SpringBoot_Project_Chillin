@@ -1,5 +1,6 @@
 package com.chillin.repository.board;
 
+import com.chillin.domain.Board;
 import com.chillin.domain.BoardBoom;
 
 import static com.chillin.domain.QBoardBoom.*;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 import static com.chillin.domain.QRep.rep;
 import static com.chillin.domain.QRepBoom.repBoom;
+import static com.chillin.domain.QBookmark.*;
 
 @RequiredArgsConstructor
 public class BoardQueryDSLImpl implements BoardQueryDSL {
@@ -309,5 +311,45 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
         });
 
         return weekList;
+    }
+
+    /**북마크한 리스트 가져오기*/
+    public List<BoardDTO> getBookmarkList(Long uid){
+        List<BoardDTO> list =
+                queryFactory.select(Projections.fields(
+                                BoardDTO.class
+                                ,board.boardId.as("bid")
+                                ,board.title
+                                ,board.content
+                                ,board.writeDate
+                                ,board.user.userId.as("uid")
+                                ,board.user.nickname))
+                        .from(bookmark)
+                        .innerJoin(board)
+                        .on(bookmark.board.boardId.eq(board.boardId))
+                        .where(bookmark.user.userId.eq(uid))
+                        .orderBy(board.writeDate.desc())
+                        .fetch();
+
+        return list;
+    }
+
+    /**내가 쓴 글 리스트 가져오기*/
+    @Override
+    public List<BoardDTO> getMyBoardList(Long uid) {
+
+        List<BoardDTO> list = queryFactory.select(Projections.fields(
+                        BoardDTO.class
+                        , board.boardId.as("bid")
+                        , board.title
+                        , board.content
+                        , board.writeDate
+                        , board.user.userId.as("uid")
+                        , board.user.nickname))
+                .from(board)
+                .where(board.user.userId.eq(uid))
+                .orderBy(board.writeDate.desc())
+                .fetch();
+        return list;
     }
 }
