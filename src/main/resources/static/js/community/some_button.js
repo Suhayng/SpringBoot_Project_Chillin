@@ -1,5 +1,6 @@
 let board_boom_status;
 
+
 let board_boomup_count = function () {
 
     fetch('/community/board/get_boom/' + board_id, {
@@ -15,8 +16,8 @@ let board_boomup_count = function () {
         }
     }).then(data => {
         console.log(data);
-        /* 아직 미완성임. 이거 하려면 그 숫자 받아와야함 */
-        boom_img(data.you);
+
+        boom_img(data.status);
 
         let boomup_li = document.getElementById('board_boomup_number');
         let boomdown_li = document.getElementById('board_boomdown_number');
@@ -40,6 +41,7 @@ let boom_count_li = function (boomup_li, boomup, boomdown_li, boomdown) {
 /*붐업*/
 document.getElementById('board_boomup_button').onclick = function () {
 
+    console.log(board_boom_status)
     fetch('/community/boomup/' + board_id + "/" + board_boom_status, {
         method: 'POST',
         headers: {
@@ -110,6 +112,7 @@ document.getElementById('board_boomdown_button').onclick = function () {
 /** 붐업 붐따의 이미지를 띄우는 곳 */
 let boom_img = function (status) {
 
+
     let boomup_li =
         document.querySelector('#board_boomup .some_img_li');
     boomup_li.replaceChildren();
@@ -121,7 +124,7 @@ let boom_img = function (status) {
     let boomdown_img =
         document.createElement('img');
 
-    if (status === "no") {
+    if (status === "no" || status === "fail") {
         boomup_img.src = "/images/boomup.png";
         boomdown_img.src = "/images/boomdown.png";
         board_boom_status = "no";

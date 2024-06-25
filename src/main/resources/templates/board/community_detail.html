@@ -99,7 +99,7 @@
                 <div id="complain_modal">
                     <form th:action="@{/board/complain}" method="post">
                         <h2>신고</h2>
-                        <label for="bc_reason">신고하는 이유를 선택해주세요</label>
+                        <label for="bc_reason">신고 이유를 선택해주세요</label>
                         <br>
                         <select name="reason" id="bc_reason" required>
                             <option value="성적인 게시물">성적인 게시물</option>
@@ -117,7 +117,9 @@
                         <input type="hidden" name="bid" th:value="${board.bid}">
 
                         <button type="submit" id="bc_complain_submit">전송</button>
-                        <button type="button" id="bc_complain_reset">취소</button>
+                        <button type="button" id="bc_complain_reset">
+                            <img th:src="@{/images/cancel_cross.png}" alt="취소">
+                        </button>
                     </form>
                 </div>
             </div>

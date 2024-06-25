@@ -125,7 +125,7 @@ public class BoardServiceImpl implements BoardService {
         Map<String, Object> map = boardRepository.getBoardBoom(bid);
 
         if (uid == null) {
-            map.put("you", "no");
+            map.put("status", "no");
         } else {
             Boolean myBoom = false;
             Object boomTest = null;
@@ -134,12 +134,12 @@ public class BoardServiceImpl implements BoardService {
             boomTest = boardRepository.boardMyBoom(uid, bid);
 
             if(boomTest == null){
-                map.put("you","no");
+                map.put("status","no");
             }else{
                 myBoom = (Boolean) boomTest;
 
-                if (myBoom == true) map.put("you", "up");
-                if (myBoom == false) map.put("you", "down");
+                if (myBoom == true) map.put("status", "up");
+                if (myBoom == false) map.put("status", "down");
             }
         }
 
