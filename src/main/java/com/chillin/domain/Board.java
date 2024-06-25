@@ -24,6 +24,7 @@ public class Board extends BoardBase{
     @JoinColumn(name = "uid")
     private User user;
 
+    private Boolean blind;
 
     @Builder
     public Board(String title, String content, User user) {

@@ -95,6 +95,19 @@
             </div>
 
         </div>
+        <div id="complain_modal">
+            <form th:action="@{/board/complain}" method="post">
+                <label for="reason">이유</label>
+                <select name="reason" id="reason">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                </select>
+
+                <label for="detail">세부 사항</label>
+
+            </form>
+        </div>
 
         <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
         <script th:src="@{/js/community/remove_modify.js}"></script>

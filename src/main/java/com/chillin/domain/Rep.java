@@ -39,6 +39,8 @@ public class Rep {
     @JoinColumn(name = "uid")
     private User user;
 
+    private Boolean blind;
+
     @OneToMany(mappedBy = "rep", cascade = CascadeType.ALL, orphanRemoval = true)
     @BatchSize(size = 100)
     private List<RepBoom> repBoomList = new ArrayList<>();
