@@ -3,6 +3,7 @@ package com.chillin.service;
 import com.chillin.domain.User;
 import com.chillin.dto.UserDTO;
 import com.chillin.repository.board.BoardRepository;
+import com.chillin.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MypageServiceImpl implements MypageService {
 
+    private final UserRepository userRepository;
     private final BoardRepository boardRepository;
     private final ModelMapper modelMapper;
 
@@ -46,5 +48,13 @@ public class MypageServiceImpl implements MypageService {
             return user.getUserId();
         }
 
+    }
+
+    @Override
+    @Transactional
+    public long deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+
+        return userId;
     }
 }

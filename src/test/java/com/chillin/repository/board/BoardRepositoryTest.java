@@ -27,5 +27,10 @@ public class BoardRepositoryTest {
 
     }
 
+    @Test
+    public void test1(){
+        repository.getDayList();
+    }
+
 
 }

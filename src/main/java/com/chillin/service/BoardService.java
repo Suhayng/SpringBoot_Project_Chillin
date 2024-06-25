@@ -4,6 +4,7 @@ import com.chillin.dto.BoardDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 public interface BoardService {
@@ -20,7 +21,17 @@ public interface BoardService {
 
     Map<String, Object> getBoom(Long uid, Long bid);
 
-    String boomupBoard(Long uid, Long bid, String status);
+    Map<String, Object> boomupBoard(Long uid, Long bid, String status);
 
-    String boomdownBoard(Long uid, Long bid, String status);
+    Map<String, Object> boomdownBoard(Long uid, Long bid, String status);
+
+    String isBookmarked(Long uid, Long bid);
+
+    String bookmaring(Long uid, Long bid, String status);
+
+    List<BoardDTO> getRecentList(String search, int iPage, int pageSize);
+
+    List<BoardDTO> getDayList();
+
+    List<BoardDTO> getWeekList();
 }
