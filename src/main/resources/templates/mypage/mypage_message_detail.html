@@ -33,8 +33,12 @@
                         <img th:src="@{/images/user.png}"/>
                         <span>회원정보</span>
                     </a></li>
+                    <li><a th:href="@{|/mypage/board/${userId}|}">
+                        <img th:src="@{/images/writing.png}"/>
+                        <span>내가 쓴 글</span>
+                    </a></li>
                     <li><a th:href="@{|/mypage/bookmark/${userId}|}">
-                        <img th:src="@{/images/bookmark.png}"/>
+                        <img th:src="@{/images/myBookmark.png}"/>
                         <span>북마크</span>
                     </a></li>
                     <li><a th:href="@{|/mypage/message/${userId}|}">
@@ -52,9 +56,8 @@
                 <form method="post" th:action="@{/write_message}">
                     <input type="hidden" name="sender" th:value="${userId}">
                     <input type="hidden" name="receiver" th:value="${messageId}">
-                    <input type="hidden" name="is_read" th:value="0">
                     <ul>
-                        <li><textarea id="content" name="content" placeholder="내용을 입력하세요"></textarea></li>
+                        <li><textarea id="content" name="content" placeholder="내용을 입력하세요" required></textarea></li>
                         <li><button type="submit">보내기</button></li>
                     </ul>
                 </form>

@@ -10,4 +10,7 @@ public interface MessageQueryDSL {
 
 
     List<Message> getMessageDetailList(Long userId, Long messageId);
+
+
+    void writeMessage(MessageDTO dto);
 }

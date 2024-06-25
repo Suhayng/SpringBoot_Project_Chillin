@@ -1,7 +1,9 @@
 package com.chillin.service;
 
+import com.chillin.domain.Board;
 import com.chillin.domain.Message;
 import com.chillin.domain.User;
+import com.chillin.dto.BoardDTO;
 import com.chillin.dto.MessageDTO;
 import com.chillin.dto.UserDTO;
 import com.chillin.repository.board.BoardRepository;
@@ -142,6 +144,30 @@ public class MypageServiceImpl implements MypageService {
 
         }
         return dtolist;
+    }
+
+    /**쪽지 보내기*/
+    @Override
+    public Long writeMessage(MessageDTO dto) {
+        messageRepository.writeMessage(dto);
+
+        return dto.getSender();
+
+    }
+
+    /**북마크 리스트*/
+    @Override
+    public List<BoardDTO> getBookmarkList(Long userId) {
+        List<BoardDTO> bookmarkList = boardRepository.getBookmarkList(userId);
+
+        return bookmarkList;
+    }
+
+    /**작성한 글 리스트*/
+    @Override
+    public List<BoardDTO> getMyBoardList(Long userId) {
+        List<BoardDTO> myList = boardRepository.getMyBoardList(userId);
+        return myList;
     }
 
 

@@ -50,8 +50,12 @@
                         <img th:src="@{/images/user_click.png}"/>
                         <span id="mypage_select">회원정보</span>
                     </a></li>
+                    <li><a th:href="@{|/mypage/board/${userId}|}">
+                        <img th:src="@{/images/writing.png}"/>
+                        <span>내가 쓴 글</span>
+                    </a></li>
                     <li><a th:href="@{|/mypage/bookmark/${dto.getUserId()}|}">
-                        <img th:src="@{/images/bookmark.png}"/>
+                        <img th:src="@{/images/myBookmark.png}"/>
                         <span>북마크</span>
                     </a></li>
                     <li><a th:href="@{|/mypage/message/${dto.getUserId()}|}">
