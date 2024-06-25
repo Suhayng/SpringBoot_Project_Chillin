@@ -36,7 +36,7 @@ import static com.chillin.domain.QNews.news;
 public class NewsServiceImpl implements NewsService {
 
     private final NewsRepository newsRepository;
-    private  WebDriver webDriver;  // 셀레니움 webDriver
+    private WebDriver webDriver;  // 셀레니움 webDriver
 
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -119,7 +119,9 @@ public class NewsServiceImpl implements NewsService {
         }
     }
 
-    /** 뉴스 목록 */
+    /**
+     * 뉴스 목록
+     */
     @Override
     public Page<NewsDTO> newsList(String searchTxt, Pageable pageable) {
 
@@ -134,10 +136,11 @@ public class NewsServiceImpl implements NewsService {
                 .build());
     }
 
-    /** 메인 뉴스 목록 */
+    /**
+     * 메인 뉴스 목록
+     */
     @Override
     public List<NewsDTO> mainNewsList() {
-        //List<News> news = newsRepository.mainNewsList();
 
         // news 목록 최신순 5개 가져오기
         List<Tuple> fetch = jpaQueryFactory.select(news.title, news.link)
@@ -147,14 +150,23 @@ public class NewsServiceImpl implements NewsService {
                 .limit(5)
                 .fetch();
 
-        for (Tuple e : fetch) {
-            System.out.println(e.get(news.newsId));
-        }
+  /*      for (Tuple e : fetch) {
+            System.out.println(e.get(news.title));
+        }*/
 
         // NewsDTO 타입으로 바꾸기
-        List<NewsDTO> newsDTOS
-                = fetch.stream().map(item ->
-                modelMapper.map(item, NewsDTO.class)).collect(Collectors.toList());
+        List<NewsDTO> newsDTOS = fetch.stream().map(item -> {
+            NewsDTO dto = NewsDTO.builder()
+                    .title(item.get(news.title))
+                    .link(item.get(news.link))
+                    .build();
+            return dto;
+        }).collect(Collectors.toList());
+
+
+/*        for (NewsDTO e : newsDTOS) {
+            System.out.println(e.getTitle());
+        }*/
 
         return newsDTOS;
     }

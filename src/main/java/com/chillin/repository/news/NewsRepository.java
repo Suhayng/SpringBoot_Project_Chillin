@@ -22,8 +22,4 @@ public interface NewsRepository extends JpaRepository<News, Long>, NewsBoardQuer
     /** 뉴스 목록 (검색, 페이징) */
     Page<News> findByTitleContaining(String title, Pageable pageable);
 
-    @Query(" select n.title, n.link " +
-            " from News n " +
-            " order by n.newsId desc")
-    List<News> mainNewsList();
 }

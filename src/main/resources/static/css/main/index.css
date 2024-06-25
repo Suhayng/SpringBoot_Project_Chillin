@@ -12,13 +12,7 @@
 
 .sidebar {
     width: 20%;
-    /* background-color: #ffffff; */
-    /* color: #ecf0f1; */
-    /* padding: 20px; */
-    /* border: 1px solid silver; */
-    /* height: 23rem; */
     margin-right: 1.5vw;
-    /* margin-top: 0.5rem; */
 }
 
 .sidebar img {
@@ -82,7 +76,7 @@
 }
 
 .block_content li:last-child {
-    border-bottom: none;
+    /*border-bottom: none;*/
 }
 
 input{

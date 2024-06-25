@@ -77,11 +77,12 @@
                             </a>
                         </div>
                         <div class="block_content" th:if="!${newsList.isEmpty()}">
-                            <ul th:each="newsList:${newsList}">
+                            <ul th:each="item:${newsList}">
                                 <li>
-                                    <a th:href="${newsList.link}">
-                                        <th:block th:text="${newsList.title}"></th:block>
-                                    </a></li>
+                                    <a th:href="${item.link}">
+                                        <th:block th:text="${item.title}"></th:block>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>

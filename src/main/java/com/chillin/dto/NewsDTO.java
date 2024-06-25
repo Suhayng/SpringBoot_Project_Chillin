@@ -16,5 +16,4 @@ public class NewsDTO {
     private String publisher;
     private LocalDateTime writeDate;
 
-
 }
