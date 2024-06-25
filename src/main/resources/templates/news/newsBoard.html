@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
 
     <th:block layout:fragment="title">
-        <title>Chillin</title>
+        <link rel="icon" th:href="@{/images/title.png}">
+        <title>칠 린 | 정보게시판</title>
     </th:block>
 
     <th:block layout:fragment="css">
@@ -28,9 +29,9 @@
                 <form action="/info" method="get">
                     <!--                    <img th:src="@{/images/find.png}" alt="돋보기">-->
                     <input type="text" name="searchTxt" placeholder="관심 있는 내용을 검색해보세요!">
-                    <!--                <button type="submit">검색</button>-->
                 </form>
             </div>
+
             <div class="title_box">
                 <h3>교육 뉴스</h3>
             </div>
@@ -44,6 +45,7 @@
                 </thead>
                 <tbody>
                 <th:block th:class="block-list" th:if="!${list.isEmpty()}">
+
                     <tr th:each="item:${list}">
                         <td>
                             <a th:href="${item.link}">

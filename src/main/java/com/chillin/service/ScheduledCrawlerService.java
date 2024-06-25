@@ -16,7 +16,7 @@ public class ScheduledCrawlerService {
 //    @Scheduled(fixedRate = 3600000)
     @Scheduled(cron = "0 0 0/1 * * *")
     public void Crawling() {
-//        newsService.startCrawling();
+        newsService.startCrawling();
     }
 
 }

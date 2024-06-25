@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
 
     <th:block layout:fragment="title">
-
-        <title>Chillin</title>
+        <link rel="icon" th:href="@{/images/title.png}">
+        <title>칠 린</title>
     </th:block>
 
     <th:block layout:fragment="css">
@@ -27,12 +27,21 @@
         <div class="wrap">
             <div class="container">
                 <aside class="sidebar">
-                    <div class="banner">
-                        <h2>배너</h2>
-                        <p>~~배너~~</p>
-                    </div>
+                    <img th:src="@{/images/banner_2.png}" alt="배너">
                 </aside>
+                <!--
+                                <div class="main_wrap">
+                -->
+
+                <!--     <div th:class="search">
+                         <form action="/main" method="get">
+                             &lt;!&ndash;                    <img th:src="@{/images/find.png}" alt="돋보기">&ndash;&gt;
+                             <input type="text" name="searchTxt" placeholder="관심 있는 내용을 검색해보세요!">
+                         </form>
+                     </div>-->
+
                 <main class="main_content">
+
                     <div class="block">
                         <div class="block_title">
                             <h2>커뮤니티</h2>
@@ -67,13 +76,12 @@
                                 <h2>정보</h2>
                             </a>
                         </div>
-                        <div class="block_content">
-                            <ul>
-                                <li>게시글 1</li>
-                                <li>게시글 2</li>
-                                <li>게시글 3</li>
-                                <li>게시글 4</li>
-                                <li>게시글 5</li>
+                        <div class="block_content" th:if="!${newsList.isEmpty()}">
+                            <ul th:each="newsList:${newsList}">
+                                <li>
+                                    <a th:href="${newsList.link}">
+                                        <th:block th:text="${newsList.title}"></th:block>
+                                    </a></li>
                             </ul>
                         </div>
                     </div>
@@ -95,6 +103,7 @@
             </div>
         </div>
     </div>
+    <!--    </div>-->
 </th:block>
 </body>
 </html>

@@ -14,4 +14,6 @@ public interface NewsService {
     /** 뉴스 목록 */
     Page<NewsDTO> newsList(String searchTxt, Pageable pageable);
 
+    /** 메인 - 뉴스 목록 */
+    List<NewsDTO> mainNewsList();
 }

@@ -1,4 +1,4 @@
-package com.chillin.repository;
+package com.chillin.repository.news;
 
 import com.chillin.domain.News;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NewsRepository extends JpaRepository<News, Long> {
+public interface NewsRepository extends JpaRepository<News, Long>, NewsBoardQueryDSL {
 
     @Override
     <S extends News> List<S> saveAll(Iterable<S> entities);
@@ -22,4 +22,8 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     /** 뉴스 목록 (검색, 페이징) */
     Page<News> findByTitleContaining(String title, Pageable pageable);
 
+    @Query(" select n.title, n.link " +
+            " from News n " +
+            " order by n.newsId desc")
+    List<News> mainNewsList();
 }

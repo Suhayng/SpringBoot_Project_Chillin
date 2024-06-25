@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class NewsDTO {
 
     private Long newsId;
