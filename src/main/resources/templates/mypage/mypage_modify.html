@@ -46,9 +46,17 @@
             <aside>
                 <h2>내 계정</h2>
                 <ul>
-                    <li><img th:src="@{/images/user_click.png}"/><span id="mypage_select">회원정보</span></li>
-                    <li><img th:src="@{/images/bookmark.png}"/><span>북마크</span></li>
-                    <li><img th:src="@{/images/message.png}"/><span>쪽지</span></li>
+                    <li><a th:href="@{|/mypage/${dto.getUserId()}|}">
+                        <img th:src="@{/images/user_click.png}"/>
+                        <span id="mypage_select">회원정보</span>
+                    </a></li>
+                    <li><a th:href="@{|/mypage/bookmark/${dto.getUserId()}|}">
+                        <img th:src="@{/images/bookmark.png}"/>
+                        <span>북마크</span>
+                    </a></li>
+                    <li><a th:href="@{|/mypage/message/${dto.getUserId()}|}">
+                        <img th:src="@{/images/message.png}"/><span>쪽지</span>
+                    </a></li>
                 </ul>
             </aside>
 
@@ -109,8 +117,8 @@
                         <li id="form_bottom">
                             <a th:href="@{|/delete_user/${dto.getUserId()}|}">회원 탈퇴 하기</a>
                             <div id="buttons">
-                            <button type="submit" id="btn_modi">수정</button>
-                            <button type="reset" id="reset">초기화</button>
+                                <button type="submit" id="btn_modi">수정</button>
+                                <button type="reset" id="reset">초기화</button>
                             </div>
                         </li>
                     </ul>

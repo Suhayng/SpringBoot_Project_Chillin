@@ -1,0 +1,49 @@
+.message_detail_wrap{
+    width: 74%;
+    margin: 0 auto;
+    display: flex;
+}
+
+aside{
+    margin: 0 40px 0 0;
+    width: 160px;
+}
+aside h2 {
+    font-size: 14px;
+    color: #4F4E4E;
+}
+
+aside ul{
+    padding:0;
+}
+
+aside ul li a{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+aside img{
+    width: 24px;
+}
+
+aside ul li span{
+    padding: 0 8px;
+}
+
+#mypage_select{
+    color: #45A5E2;
+}
+
+#user_line{
+    min-height: 90vh;
+    border-left: 1px solid #45A5E2;
+
+}
+
+section{
+    padding: 0 40px;
+    width: 52%;
+}
+
+/*-----------------------------------*/

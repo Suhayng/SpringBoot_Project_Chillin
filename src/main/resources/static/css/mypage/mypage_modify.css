@@ -17,7 +17,7 @@ aside ul{
     padding:0;
 }
 
-aside ul li{
+aside ul li a{
     display: flex;
     align-items: center;
     margin: 10px;
@@ -42,10 +42,11 @@ aside ul li span{
 }
 
 section{
-    /*border-left: 1px solid #45A5E2;*/
     padding: 0 40px;
     width: 52%;
 }
+
+/*---------------마이페이지 공통사항-----------------------------*/
 
 section ul{
     padding: 0;
@@ -88,6 +89,7 @@ form{
     border: none;
     border-radius: 5px;
     color: #4F4E4E;
+    font-size: 0.9rem;
 }
 
 #form_bottom #btn_modi{

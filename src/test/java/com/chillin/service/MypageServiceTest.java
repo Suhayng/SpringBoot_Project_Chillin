@@ -21,6 +21,17 @@ class MypageServiceTest {
 
     }
 
+    @Test
+    public void getMessageTest(){
+        assertThat(service.getMessageList(6L).size()).isEqualTo(2);
+    }
+
+    @Test
+    public void getDetailTest(){
+        assertThat(service.getMessageDetailList(6L, 7L).get(0).getMeid()).isEqualTo(6);
+        assertThat(service.getMessageDetailList(6L, 7L).size()).isEqualTo(2);
+    }
+
 
 
 }

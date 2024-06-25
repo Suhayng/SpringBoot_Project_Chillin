@@ -1,5 +1,6 @@
 package com.chillin.controller;
 
+import com.chillin.dto.MessageDTO;
 import com.chillin.dto.UserDTO;
 import com.chillin.service.BoardService;
 import com.chillin.service.MypageService;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -55,5 +58,59 @@ public class MypageController {
         long id = mypageService.deleteUser(userId);
 
         return id;
+    }
+
+
+    /**마이페이지-북마크로 이동*/
+    @GetMapping("/mypage/bookmark/{userId}")
+    public String mypageBookmark(@PathVariable Long userId){
+        return "mypage/mypage_bookmark";
+    }
+
+
+    /**마이페이지-쪽지로 이동*/
+    @GetMapping("/mypage/message/{userId}")
+    public String mypageMessage(@PathVariable Long userId, Model model){
+
+        List<MessageDTO> list = mypageService.getMessageList(userId);
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("list", list);
+
+
+        return "mypage/mypage_message";
+    }
+
+    /**마이페이지-쪽지 상세페이지로 이동*/
+    @GetMapping("/mypage/messagedetail")
+    public String mypageMessageDetail(@RequestParam Long userId
+            , @RequestParam Long messageId, Model model
+    ) {
+
+        //userId는 로그인한 사용자 messageID는 상대방 계정
+
+        List<MessageDTO> list = mypageService.getMessageDetailList(userId, messageId);
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("messageId", messageId);
+        model.addAttribute("list", list);
+
+        return "mypage/mypage_message_detail";
+    }
+
+    /**마이페이지-쪽지 보내기*/
+    @PostMapping("/write_message")
+    public String writeMessage(@ModelAttribute("dto") MessageDTO dto, Model model){
+
+        return "redirect:/message_alert/"+dto.getSender()+"/"+dto.getReceiver();
+    }
+
+    /**마이페이지-쪽지송신 알림*/
+    @GetMapping("/message_alert/{userId}/{messageId}")
+    public String writeMessageAlert(@PathVariable Long userId, @PathVariable Long messageId, Model model){
+        model.addAttribute("userId", userId);
+        model.addAttribute("messageId", messageId);
+
+        return "mypage/mypage_message_alert";
     }
 }

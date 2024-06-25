@@ -1,23 +1,37 @@
 package com.chillin.service;
 
+import com.chillin.domain.Message;
 import com.chillin.domain.User;
+import com.chillin.dto.MessageDTO;
 import com.chillin.dto.UserDTO;
 import com.chillin.repository.board.BoardRepository;
+import com.chillin.repository.message.MessageRepository;
 import com.chillin.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MypageServiceImpl implements MypageService {
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+
+    private final MessageRepository messageRepository;
     private final ModelMapper modelMapper;
 
 
+    /**
+     * 유저 정보 가져오기
+     */
     @Override
     public UserDTO getUser(Long userId) {
         User user = boardRepository.getUser(userId);
@@ -27,6 +41,9 @@ public class MypageServiceImpl implements MypageService {
         return dto;
     }
 
+    /**
+     * 유저 정보 수정
+     */
     @Override
     @Transactional
     public long modifyUser(UserDTO dto) {
@@ -50,6 +67,9 @@ public class MypageServiceImpl implements MypageService {
 
     }
 
+    /**
+     * 유저 삭제
+     */
     @Override
     @Transactional
     public long deleteUser(Long userId) {
@@ -57,4 +77,72 @@ public class MypageServiceImpl implements MypageService {
 
         return userId;
     }
+
+    /**
+     * 쪽지 리스트 가져오기
+     */
+    @Override
+    public List<MessageDTO> getMessageList(Long userId) {
+        List<Message> messageList = messageRepository.getMessageList(userId);
+
+        List<MessageDTO> dtolist = new ArrayList<>();
+
+        for(Message item:messageList){
+            MessageDTO dto = new MessageDTO();
+
+            dto.setMeid(item.getMessageId());
+            dto.setContent(item.getContent());
+            dto.setTime(item.getTime());
+            dto.setIs_read(item.getIsRead());
+            dto.setSender(item.getSender().getUserId());
+            dto.setReceiver(item.getReceiver().getUserId());
+            dto.setSenderNickName(item.getSender().getNickname());
+            dto.setReceiverNickName(item.getReceiver().getNickname());
+
+            if(userId == item.getSender().getUserId()){
+                dto.setCheck(true);
+            }else {
+                dto.setCheck(false);
+            }
+
+            dtolist.add(dto);
+
+        }
+
+        return dtolist;
+    }
+
+    /**쪽지 상세페이지 목록*/
+    @Override
+    public List<MessageDTO> getMessageDetailList(Long userId, Long messageId) {
+
+        List<Message> messageList = messageRepository.getMessageDetailList(userId, messageId);
+
+        List<MessageDTO> dtolist = new ArrayList<>();
+
+        for(Message item:messageList){
+            MessageDTO dto = new MessageDTO();
+
+            dto.setMeid(item.getMessageId());
+            dto.setContent(item.getContent());
+            dto.setTime(item.getTime());
+            dto.setIs_read(item.getIsRead());
+            dto.setSender(item.getSender().getUserId());
+            dto.setReceiver(item.getReceiver().getUserId());
+            dto.setSenderNickName(item.getSender().getNickname());
+            dto.setReceiverNickName(item.getReceiver().getNickname());
+
+            if(userId == item.getSender().getUserId()){
+                dto.setCheck(true);
+            }else {
+                dto.setCheck(false);
+            }
+
+            dtolist.add(dto);
+
+        }
+        return dtolist;
+    }
+
+
 }
