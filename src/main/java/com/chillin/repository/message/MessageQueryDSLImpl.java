@@ -5,6 +5,7 @@ import com.chillin.dto.MessageDTO;
 import com.chillin.dto.RepDTO;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -26,29 +27,6 @@ public class MessageQueryDSLImpl implements MessageQueryDSL {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-
-//    @Override
-//    public List<MessageDTO> getMessageList(Long userId) {
-//
-//        List<MessageDTO> dtoList = queryFactory.select(Projections.fields(
-//                        MessageDTO.class
-//                        , message.messageId.as("meid")
-//                        , message.content
-//                        , message.time
-//                        , message.isRead
-//                        , message.sender.userId.as("sender")
-//                        , message.receiver.userId.as("receiver")
-//                )).from(message)
-//                .where(message.sender.userId.eq(userId)
-//                        .or(message.receiver.userId.eq(userId)))
-//                .orderBy(message.time.desc())
-//                .fetch();
-//        return dtoList;
-//
-//
-//    }
-
 
     public List<Message> getMessageList(Long userId){
 
@@ -80,6 +58,19 @@ public class MessageQueryDSLImpl implements MessageQueryDSL {
         List<Message> resultList = query.getResultList();
 
         return resultList;
+    }
+
+    @Override
+    public List<Message> getMessageDetailList(Long userId, Long messageId) {
+
+        List<Message> messageList = queryFactory.select(message)
+                .from(message)
+                .where(message.sender.userId.eq(userId).and(message.receiver.userId.eq(messageId))
+                        .or(message.sender.userId.eq(messageId).and(message.receiver.userId.eq(userId))))
+                .orderBy(message.time.desc())
+                .fetch();
+
+        return messageList;
     }
 
 

@@ -13,4 +13,6 @@ public interface MypageService {
     long deleteUser(Long userId);
 
     List<MessageDTO> getMessageList(Long userId);
+
+    List<MessageDTO> getMessageDetailList(Long userId, Long messageId);
 }

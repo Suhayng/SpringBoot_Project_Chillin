@@ -112,5 +112,37 @@ public class MypageServiceImpl implements MypageService {
         return dtolist;
     }
 
+    /**쪽지 상세페이지 목록*/
+    @Override
+    public List<MessageDTO> getMessageDetailList(Long userId, Long messageId) {
+
+        List<Message> messageList = messageRepository.getMessageDetailList(userId, messageId);
+
+        List<MessageDTO> dtolist = new ArrayList<>();
+
+        for(Message item:messageList){
+            MessageDTO dto = new MessageDTO();
+
+            dto.setMeid(item.getMessageId());
+            dto.setContent(item.getContent());
+            dto.setTime(item.getTime());
+            dto.setIs_read(item.getIsRead());
+            dto.setSender(item.getSender().getUserId());
+            dto.setReceiver(item.getReceiver().getUserId());
+            dto.setSenderNickName(item.getSender().getNickname());
+            dto.setReceiverNickName(item.getReceiver().getNickname());
+
+            if(userId == item.getSender().getUserId()){
+                dto.setCheck(true);
+            }else {
+                dto.setCheck(false);
+            }
+
+            dtolist.add(dto);
+
+        }
+        return dtolist;
+    }
+
 
 }

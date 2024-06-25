@@ -9,4 +9,5 @@ public interface MessageQueryDSL {
     List<Message> getMessageList(Long userId);
 
 
+    List<Message> getMessageDetailList(Long userId, Long messageId);
 }

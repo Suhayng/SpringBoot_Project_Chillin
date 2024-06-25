@@ -86,7 +86,31 @@ public class MypageController {
     public String mypageMessageDetail(@RequestParam Long userId
             , @RequestParam Long messageId, Model model
     ) {
+
+        //userId는 로그인한 사용자 messageID는 상대방 계정
+
+        List<MessageDTO> list = mypageService.getMessageDetailList(userId, messageId);
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("messageId", messageId);
+        model.addAttribute("list", list);
+
         return "mypage/mypage_message_detail";
     }
 
+    /**마이페이지-쪽지 보내기*/
+    @PostMapping("/write_message")
+    public String writeMessage(@ModelAttribute("dto") MessageDTO dto, Model model){
+
+        return "redirect:/message_alert/"+dto.getSender()+"/"+dto.getReceiver();
+    }
+
+    /**마이페이지-쪽지송신 알림*/
+    @GetMapping("/message_alert/{userId}/{messageId}")
+    public String writeMessageAlert(@PathVariable Long userId, @PathVariable Long messageId, Model model){
+        model.addAttribute("userId", userId);
+        model.addAttribute("messageId", messageId);
+
+        return "mypage/mypage_message_alert";
+    }
 }
