@@ -240,6 +240,16 @@ public class BoardServiceImpl implements BoardService {
         return recentList;
     }
 
+    @Override
+    public List<BoardDTO> getDayList() {
+        return boardRepository.getDayList();
+    }
+
+    @Override
+    public List<BoardDTO> getWeekList() {
+        return boardRepository.getWeekList();
+    }
+
     private String uploading(String filePath, MultipartFile image) {
 
         UUID uuid = UUID.randomUUID();

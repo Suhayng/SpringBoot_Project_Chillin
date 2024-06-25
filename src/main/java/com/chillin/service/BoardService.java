@@ -30,4 +30,8 @@ public interface BoardService {
     String bookmaring(Long uid, Long bid, String status);
 
     List<BoardDTO> getRecentList(String search, int iPage, int pageSize);
+
+    List<BoardDTO> getDayList();
+
+    List<BoardDTO> getWeekList();
 }

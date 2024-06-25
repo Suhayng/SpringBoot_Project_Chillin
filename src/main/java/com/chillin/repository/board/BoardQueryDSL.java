@@ -23,4 +23,8 @@ public interface BoardQueryDSL {
     void deleteBookmark(Long bid, Long uid);
 
     List<BoardDTO> getRecentList(String search, int startRow, int pageSize);
+
+    List<BoardDTO> getDayList();
+
+    List<BoardDTO> getWeekList();
 }

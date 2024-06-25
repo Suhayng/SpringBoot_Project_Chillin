@@ -134,7 +134,7 @@ let delete_rep = function (rid) {
             if (data === true) {
                 document.getElementById('rep_list').innerHTML = '';
                 document.getElementById('rep_area').value = '';
-                append_reps();
+                append_reps2();
             } else {
                 alert('댓글 삭제 실패 ㅠ');
             }
@@ -180,7 +180,7 @@ document.getElementById('rep_create').onclick = function () {
 
             document.getElementById('rep_list').innerHTML = '';
             document.getElementById('rep_area').value = '';
-            append_reps();
+            append_reps2();
             /*잘 됐으면 자연스럽게 추가하는 메서드도 넣어야지
             * 위에 있는 어마어마한 fetch를 그냥 function 으로 두고 그걸 호출하자*/
 
