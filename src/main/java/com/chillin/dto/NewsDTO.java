@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class NewsDTO {
 
     private Long newsId;
@@ -13,6 +15,5 @@ public class NewsDTO {
     private String link;
     private String publisher;
     private LocalDateTime writeDate;
-
 
 }

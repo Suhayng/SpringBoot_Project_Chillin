@@ -63,4 +63,11 @@ public class NewsServiceImplTest {
         // 뉴스 제목 출력
         System.out.println("첫 번째 뉴스 제목: " + firstNewsTitle.getText());
     }
+
+    @Test
+    public void QueryFactoryTest(){
+
+    }
+
+
 }

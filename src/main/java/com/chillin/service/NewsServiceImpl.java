@@ -1,8 +1,12 @@
 package com.chillin.service;
 
+import com.chillin.config.QueryDSLConfig;
 import com.chillin.domain.News;
+import com.chillin.domain.QNews;
 import com.chillin.dto.NewsDTO;
-import com.chillin.repository.NewsRepository;
+import com.chillin.repository.news.NewsRepository;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -13,17 +17,18 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.chillin.domain.QNews.news;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +36,11 @@ import java.util.stream.Collectors;
 public class NewsServiceImpl implements NewsService {
 
     private final NewsRepository newsRepository;
-    private final ModelMapper modelMapper;
     private WebDriver webDriver;  // 셀레니움 webDriver
+
+
+    private final JPAQueryFactory jpaQueryFactory;
+    private final ModelMapper modelMapper;
 
     @Override
     public void startCrawling() {
@@ -111,7 +119,9 @@ public class NewsServiceImpl implements NewsService {
         }
     }
 
-    /** 뉴스 목록 */
+    /**
+     * 뉴스 목록
+     */
     @Override
     public Page<NewsDTO> newsList(String searchTxt, Pageable pageable) {
 
@@ -124,6 +134,41 @@ public class NewsServiceImpl implements NewsService {
                 .link(news.getLink())
                 .writeDate(news.getWriteDate())
                 .build());
+    }
+
+    /**
+     * 메인 뉴스 목록
+     */
+    @Override
+    public List<NewsDTO> mainNewsList() {
+
+        // news 목록 최신순 5개 가져오기
+        List<Tuple> fetch = jpaQueryFactory.select(news.title, news.link)
+                .from(news)
+                .orderBy(news.newsId.desc())
+                .offset(0)
+                .limit(5)
+                .fetch();
+
+  /*      for (Tuple e : fetch) {
+            System.out.println(e.get(news.title));
+        }*/
+
+        // NewsDTO 타입으로 바꾸기
+        List<NewsDTO> newsDTOS = fetch.stream().map(item -> {
+            NewsDTO dto = NewsDTO.builder()
+                    .title(item.get(news.title))
+                    .link(item.get(news.link))
+                    .build();
+            return dto;
+        }).collect(Collectors.toList());
+
+
+/*        for (NewsDTO e : newsDTOS) {
+            System.out.println(e.getTitle());
+        }*/
+
+        return newsDTOS;
     }
 
 

@@ -1,4 +1,4 @@
-package com.chillin.repository;
+package com.chillin.repository.news;
 
 import com.chillin.domain.News;
 import org.springframework.data.domain.Page;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface NewsRepository extends JpaRepository<News, Long> {
+public interface NewsRepository extends JpaRepository<News, Long>, NewsBoardQueryDSL {
 
     @Override
     <S extends News> List<S> saveAll(Iterable<S> entities);
