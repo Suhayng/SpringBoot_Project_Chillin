@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout/BaseLayout}">
+<head>
+    <meta charset="UTF-8">
+
+    <th:block layout:fragment="title">
+
+        <title>Chillin</title>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <!-- 각 페이지의 css -->
+        <link rel="stylesheet" th:href="@{/css/main/index.css}">
+    </th:block>
+
+    <th:block layout:fragment="javascript">
+        <!-- 각 페이지의 javascript -->
+    </th:block>
+</head>
+<body>
+
+    <th:block layout:fragment="content">
+        <div class="content">
+            <!-- 각 페이지의 content 작성-->
+            <div class="wrap">
+            쪽지 상세페이지
+            </div>
+        </div>
+    </th:block>
+</body>
+</html>
