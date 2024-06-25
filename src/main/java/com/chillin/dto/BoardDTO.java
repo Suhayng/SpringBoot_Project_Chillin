@@ -24,4 +24,9 @@ public class BoardDTO {
     private String nickname;
 
     private Boolean success;
+
+
+    private Integer boomup;
+    private Integer boomdown;
+
 }

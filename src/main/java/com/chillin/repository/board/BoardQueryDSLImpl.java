@@ -3,10 +3,15 @@ package com.chillin.repository.board;
 import com.chillin.domain.BoardBoom;
 
 import static com.chillin.domain.QBoardBoom.*;
+import static com.chillin.domain.QBookmark.*;
+import static com.chillin.domain.QBoard.*;
+import static com.chillin.domain.QUser.*;
 
+import com.chillin.dto.BoardDTO;
 import com.chillin.dto.RepDTO;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -15,11 +20,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static com.chillin.domain.QRep.rep;
+import static com.chillin.domain.QRepBoom.repBoom;
 
 @RequiredArgsConstructor
 public class BoardQueryDSLImpl implements BoardQueryDSL {
@@ -97,6 +105,7 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
     }
 
     @Override
+    @Transactional
     public Map<String, Object> getBoardBoom(Long bid) {
         Map<String, Object> map = new HashMap<>();
 
@@ -108,13 +117,197 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
                 .fetchOne();
 
         Integer boomup = tuple.get(0, Integer.class);
-        if(boomup == null) boomup = 0;
+        if (boomup == null) boomup = 0;
         Integer boomdown = tuple.get(1, Integer.class);
-        if(boomdown == null) boomdown = 0;
+        if (boomdown == null) boomdown = 0;
 
         map.put("boomup", boomup);
         map.put("boomdown", boomdown);
 
         return map;
+    }
+
+    @Override
+    public Long isBookmarked(Long uid, Long bid) {
+
+        Long result = queryFactory.select(bookmark.count())
+                .from(bookmark)
+                .where(bookmark.board.boardId.eq(bid).and(bookmark.user.userId.eq(uid)))
+                .fetchOne();
+
+        return result;
+    }
+
+    @Override
+    @Transactional
+    @Modifying
+    public void insertBookmark(Long bid, Long uid) {
+        String sql = "INSERT INTO bookmark(bid,uid) VALUES (:bid , :uid)";
+        Query query = entityManager.createNativeQuery(sql);
+        query.setParameter("bid", bid);
+        query.setParameter("uid", uid);
+        query.executeUpdate();
+    }
+
+    @Override
+    @Transactional
+    @Modifying
+    public void deleteBookmark(Long bid, Long uid) {
+        queryFactory.delete(bookmark)
+                .where(bookmark.board.boardId.eq(bid)
+                        .and(bookmark.user.userId.eq(uid)))
+                .execute();
+    }
+
+    @Override
+    public List<BoardDTO> getRecentList(String search, int startRow, int pageSize) {
+
+        BooleanExpression searchCondition = null;
+        if(search != null){
+            searchCondition = board.title.contains(search);
+        }
+
+        List<BoardDTO> list =
+                queryFactory.select(Projections.fields(
+                            BoardDTO.class
+                            ,board.boardId.as("bid")
+                            ,board.title
+                            ,board.content
+                            ,board.writeDate
+                            ,board.user.userId.as("uid")
+                            ,board.user.nickname))
+                        .from(board)
+                        .innerJoin(user)
+                        .on(board.user.userId.eq(user.userId))
+                        .where(searchCondition)
+                        .orderBy(board.writeDate.desc())
+                        .offset(startRow).limit(pageSize)
+                        .fetch();
+
+        list.stream().forEach(boardDTO -> {
+            /* 붐업 붐따 가져오기 */
+            Tuple tuple = queryFactory.select(
+                            boardBoom.upDown.when(true).then(1).otherwise(0).sum().as("boomup")
+                            , boardBoom.upDown.when(false).then(1).otherwise(0).sum().as("boomdown")
+                    )
+                    .from(board)
+                    .leftJoin(boardBoom)
+                    .on(board.boardId.eq(boardBoom.board.boardId))
+                    .where(boardBoom.board.boardId.eq(boardDTO.getBid()))
+                    .fetchOne();
+            Integer boomup = tuple.get(0,Integer.class);
+            if(boomup == null) boomup = 0;
+            Integer boomdown = tuple.get(1,Integer.class);
+            if(boomdown == null) boomdown = 0;
+            boardDTO.setBoomup(boomup);
+            boardDTO.setBoomdown(boomdown);
+        });
+
+        return list;
+    }
+
+    @Override
+    public List<BoardDTO> getDayList() {
+
+
+        List<Tuple> bid_boomsum = queryFactory.select(
+                boardBoom.board.boardId
+                ,boardBoom.upDown.when(true).then(1)
+                        .otherwise(-3).sum().as("boomsum"))
+                .from(boardBoom)
+                .innerJoin(board)
+                .on(boardBoom.board.boardId.eq(board.boardId))
+                .where(board.writeDate.after(LocalDateTime.now().minusDays(1)))
+                .groupBy(boardBoom.board.boardId)
+                .orderBy(boardBoom.upDown.when(true).then(1)
+                        .otherwise(-3).sum().desc()
+                ,board.writeDate.desc())
+                .offset(0).limit(5)
+                .fetch();
+
+        List<BoardDTO> dayList = new ArrayList<>();
+        for(int i = 0 ; i <bid_boomsum.size() ; i++) {
+            dayList.add(
+            queryFactory.select(
+                            Projections.fields(
+                                    BoardDTO.class
+                                    , board.boardId.as("bid")
+                                    , board.title
+                                    , board.writeDate
+                                    , board.user.userId.as("uid")
+                                    , board.user.nickname
+                            ))
+                    .from(board)
+                    .where(board.boardId.eq(bid_boomsum.get(i).get(0, Long.class)))
+                    .offset(0).limit(5)
+                    .fetchOne()
+            );
+        }
+        dayList.stream().forEach(boardDTO -> {
+            Tuple tuple = queryFactory.select(
+                            boardBoom.upDown.when(true).then(1).otherwise(0).sum().as("boomup")
+                            , boardBoom.upDown.when(false).then(1).otherwise(0).sum().as("boomdown")
+                    )
+                    .from(boardBoom)
+                    .where(boardBoom.board.boardId.eq(boardDTO.getBid()))
+                    .fetchOne();
+            boardDTO.setBoomup(tuple.get(0,Integer.class));
+            boardDTO.setBoomdown(tuple.get(1,Integer.class));
+        });
+
+        return dayList;
+    }
+
+    @Override
+    public List<BoardDTO> getWeekList() {
+
+        List<Tuple> bid_boomsum = queryFactory.select(
+                        boardBoom.board.boardId
+                        ,boardBoom.upDown.when(true).then(1)
+                                .otherwise(-3).sum().as("boomsum"))
+                .from(boardBoom)
+                .innerJoin(board)
+                .on(boardBoom.board.boardId.eq(board.boardId))
+                .where(board.writeDate.after(LocalDateTime.now().minusDays(7)))
+                .groupBy(boardBoom.board.boardId)
+                .orderBy(boardBoom.upDown.when(true).then(1)
+                        .otherwise(-3).sum().desc()
+                        ,board.writeDate.desc())
+                .offset(0).limit(5)
+                .fetch();
+
+        List<BoardDTO> weekList = new ArrayList<>();
+        for(int i = 0 ; i <bid_boomsum.size() ; i++){
+            weekList.add(
+                    queryFactory.select(
+                                    Projections.fields(
+                                            BoardDTO.class
+                                            ,board.boardId.as("bid")
+                                            ,board.title
+                                            ,board.writeDate
+                                            ,board.user.userId.as("uid")
+                                            ,board.user.nickname
+                                    ))
+                            .from(board)
+                            .where(board.boardId.eq(bid_boomsum.get(i).get(0,Long.class)))
+                            .offset(0).limit(5)
+                            .fetchOne()
+            );
+        }
+
+
+        weekList.stream().forEach(boardDTO -> {
+            Tuple tuple = queryFactory.select(
+                            boardBoom.upDown.when(true).then(1).otherwise(0).sum().as("boomup")
+                            , boardBoom.upDown.when(false).then(1).otherwise(0).sum().as("boomdown")
+                    )
+                    .from(boardBoom)
+                    .where(boardBoom.board.boardId.eq(boardDTO.getBid()))
+                    .fetchOne();
+            boardDTO.setBoomup(tuple.get(0,Integer.class));
+            boardDTO.setBoomdown(tuple.get(1,Integer.class));
+        });
+
+        return weekList;
     }
 }

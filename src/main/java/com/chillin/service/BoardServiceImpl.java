@@ -15,10 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -151,41 +148,106 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public String boomupBoard(Long uid, Long bid, String status) {
+    public Map<String, Object> boomupBoard(Long uid, Long bid, String status) {
+        Map<String, Object> map = null;
+
         if(status.equals("no")){
             /*insert -> 1*/
             boardRepository.insertBoom(true,bid,uid);
-            return "up";
+
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","up");
         }else if(status.equals("up")){
             /*delete*/
             boardRepository.deleteBoom(bid,uid);
-            return "no";
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","no");
+
         }else if(status.equals("down")){
             /*update -> 1*/
             boardRepository.changeDown(true,bid,uid);
-            return "up";
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","up");
         }else{
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","fail");
+        }
+        return map;
+    }
+
+    @Override
+    @Transactional
+    public Map<String, Object> boomdownBoard(Long uid, Long bid, String status) {
+        Map<String, Object> map = null;
+        if(status.equals("no")){
+            /*insert -> 0*/
+            boardRepository.insertBoom(false,bid,uid);
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","down");
+        }else if(status.equals("down")){
+            /*delete*/
+            boardRepository.deleteBoom(bid,uid);
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","no");
+        }else if(status.equals("up")){
+            boardRepository.changeDown(false,bid,uid);
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","down");
+            /*update -> 0*/
+        }else{
+            map = boardRepository.getBoardBoom(bid);
+            map.put("status","fail");
+        }
+        return map;
+    }
+
+    @Override
+    public String isBookmarked(Long uid, Long bid) {
+
+        Long bookmarkObject = boardRepository.isBookmarked(uid,bid);
+        if(bookmarkObject == null){
+            return "no";
+        }else{
+            if(bookmarkObject > 0) {
+                return "yes";
+            }else{
+                return "no";
+            }
+        }
+    }
+
+    @Override
+    public String bookmaring(Long uid, Long bid, String status) {
+        if("no".equals(status)){
+            /*yes 로 return 하고 , insert 를 보냄 */
+            boardRepository.insertBookmark(bid,uid);
+            return "yes";
+        }else if("yes".equals(status)){
+            /*no 로 return 하고 , delete 를 보냄 */
+            boardRepository.deleteBookmark(bid,uid);
+            return "no";
+        }else {
             return "fail";
         }
     }
 
     @Override
-    public String boomdownBoard(Long uid, Long bid, String status) {
-        if(status.equals("no")){
-            /*insert -> 0*/
-            boardRepository.insertBoom(false,bid,uid);
-            return "down";
-        }else if(status.equals("down")){
-            /*delete*/
-            boardRepository.deleteBoom(bid,uid);
-            return "no";
-        }else if(status.equals("up")){
-            boardRepository.changeDown(false,bid,uid);
-            /*update -> 0*/
-            return "down";
-        }else{
-            return "fail";
-        }
+    public List<BoardDTO> getRecentList(String search, int iPage, int pageSize) {
+        int startRow = (iPage - 1)*pageSize;
+        List<BoardDTO> recentList
+                = boardRepository.getRecentList(search, startRow,pageSize);
+
+        return recentList;
+    }
+
+    @Override
+    public List<BoardDTO> getDayList() {
+        return boardRepository.getDayList();
+    }
+
+    @Override
+    public List<BoardDTO> getWeekList() {
+        return boardRepository.getWeekList();
     }
 
     private String uploading(String filePath, MultipartFile image) {

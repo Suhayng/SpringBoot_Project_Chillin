@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +25,16 @@ public class RepController {
         return repDTOList;
     }
 
+    @GetMapping("/getReps2/{board_id}")
+    public List<RepDTO> getReps2(@PathVariable("board_id") Long bid,
+                                 HttpSession session) {
+
+        Long uid = (Long) session.getAttribute("uid");
+        List<RepDTO> repDTOList = repService.getReps2(bid, uid);
+
+        return repDTOList;
+    }
+
     @PostMapping("/insertRep/{board_id}")
     public RepDTO insertRep(@PathVariable("board_id") Long bid
             , @RequestBody RepDTO dto
@@ -30,11 +42,13 @@ public class RepController {
 
 
         Long uid = (Long) session.getAttribute("uid");
-        dto.setUid(uid);
-        dto.setBid(bid);
-        Long rid = repService.insertRep(dto);
-
-
+        if (uid != null) {
+            dto.setUid(uid);
+            dto.setBid(bid);
+            Long rid = repService.insertRep(dto);
+        } else {
+            return dto;
+        }
         return dto;
     }
 
@@ -50,4 +64,39 @@ public class RepController {
         return delete_success;
     }
 
+    @PostMapping("/community/rep_boomup/{rid}")
+    @ResponseBody
+    public Map<String, Object> repBoomup(@PathVariable Long rid
+            , HttpSession session) {
+        Long uid = (Long) session.getAttribute("uid");
+
+        Map<String, Object> map = repService.boomup(rid,uid);
+
+        return map;
+    }
+    @PostMapping("/community/rep_boomdown/{rid}")
+    @ResponseBody
+    public Map<String, Object> repBoomdown(@PathVariable Long rid
+            , HttpSession session) {
+        Long uid = (Long) session.getAttribute("uid");
+
+        Map<String, Object> map = repService.boomdown(rid,uid);
+
+        return map;
+    }
+
 }
+/*
+*
+
+    @GetMapping("/community/getRepBoom/{rid}")
+    public Map<String, Object> getRepBoom(@PathVariable Long rid
+            , HttpSession session) {
+
+        Map<String, Object> map = new HashMap<>();
+        /* map 에는 boomup개수, boomdown 개수, 내 상태
+
+        return map;
+                }
+
+*/

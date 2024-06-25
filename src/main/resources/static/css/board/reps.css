@@ -31,11 +31,35 @@
 
 .boom_zone{
     flex-grow: 0;
-    display: inline-block;
-    width : 64px;
-    max-width: 64px;
-    min-width: 64px;
+    display: flex;
+    width : 80px;
+    max-width: 80px;
+    min-width: 80px;
 }
+
+.boom_zone button{
+    background-color: white;
+    border: 0;
+}
+
+.boom_zone ul{
+    display: inline-block;
+    width: 32px;
+    padding: 0;
+}
+
+.boom_zone ul img{
+    display: inline-block;
+    width: 24px;
+    object-fit: contain;
+}
+.boom_zone ul img:hover{
+    cursor: pointer;
+}
+
+
+
+
 
 .cddiv{
     width: 100%;

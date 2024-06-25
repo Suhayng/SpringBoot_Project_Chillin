@@ -51,7 +51,7 @@
                         <button type="button" id="board_boomup_button">
                             <ul>
                                 <li class="some_img_li"><!--<img th:src="@{/images/boomup.png}">--></li>
-                                <li>붐업</li>
+                                <li id="board_boomup_number">붐업</li>
                                 <!--<li th:text="${}"></li>-->
                             </ul>
                         </button>
@@ -60,7 +60,7 @@
                         <button type="button" id="board_boomdown_button">
                             <ul>
                                 <li class="some_img_li"><!--<img th:src="@{/images/boomdown.png}">--></li>
-                                <li>붐따</li>
+                                <li id="board_boomdown_number">붐따</li>
                             </ul>
                         </button>
                     </div>
@@ -102,6 +102,7 @@
             setBoardId([[${board.bid}]])
         </script>
         <script th:src="@{/js/community/community_reps.js}"></script>
+        <script th:src="@{/js/community/reps_boom.js}"></script>
         <script th:src="@{/js/community/some_button.js}"></script>
     </div>
 </th:block>

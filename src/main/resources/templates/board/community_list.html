@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout/BaseLayout}">
+<head>
+    <meta charset="UTF-8">
+
+    <th:block layout:fragment="title">
+
+        <title>Chillin</title>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <!-- 각 페이지의 css -->
+        <link rel="stylesheet" th:href="@{/css/main/index.css}">
+        <link rel="stylesheet" th:href="@{/css/board/community_list.css}">
+
+    </th:block>
+
+    <th:block layout:fragment="javascript">
+        <!-- 각 페이지의 javascript -->
+    </th:block>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="content">
+        <div id="community_list_wrap">
+            <div class="search_div">
+                <form method="get" th:action="@{/community}">
+                    <input type="text" name="search" maxlength="20"
+                           placeholder="제목으로 내용을 검색해보세요">
+                    <button class="search_button" type="submit">
+                        <img th:src="@{/images/magnifier.png}" alt="검색">
+                    </button>
+                </form>
+            </div>
+            <th:block th:if="${day_week eq true}">
+                <div id="day_week">
+                    <div class="day_week_list">
+                        <h3>오늘의 인기글</h3>
+                        <hr>
+                        <ol>
+                            <li th:each="item:${day_list}">
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <span th:text="${item.title}"></span>
+                                </a>
+                                <div class="li_boom_zone">
+                                    <img th:src="@{/images/boomup.png}">
+                                    <span th:text="${item.boomup}"></span>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="day_week_list">
+                        <h3>주간 인기글</h3>
+                        <hr>
+                        <ol>
+                            <li th:each="item:${week_list}">
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <span th:text="${item.title}"></span>
+                                </a>
+                                <div class="li_boom_zone">
+                                    <img th:src="@{/images/boomup.png}">
+                                    <span th:text="${item.boomup}"></span>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </th:block>
+            <div class="recent_list">
+                <table class="recent_table">
+                    <thead>
+                    <tr>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${recent}">
+                        <td>
+                            <div class="recent_title">
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <span th:text="${item.title}"></span>
+                                </a>
+                                <span>
+                                    <img th:src="@{/images/boomup.png}">
+                                    <span th:text="${item.boomup}"></span>
+                                </span>
+                            </div>
+                        </td>
+                        <td class="td_center" th:text="${item.nickname}"></td>
+                        <td class="td_center" th:text="${#temporals.format(item.writeDate,'yy.MM.dd')}"></td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
