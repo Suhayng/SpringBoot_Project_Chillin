@@ -49,6 +49,7 @@ public class BoardServiceImpl implements BoardService {
                 .title(dto.getTitle())
                 .content(dto.getContent())
                 .user(user)
+                .blind(false)
                 .build();
         Board saved = boardRepository.save(board);
 
