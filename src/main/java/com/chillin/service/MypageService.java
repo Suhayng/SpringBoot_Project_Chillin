@@ -6,4 +6,6 @@ public interface MypageService {
     UserDTO getUser(Long userId);
 
     long modifyUser(UserDTO dto);
+
+    long deleteUser(Long userId);
 }

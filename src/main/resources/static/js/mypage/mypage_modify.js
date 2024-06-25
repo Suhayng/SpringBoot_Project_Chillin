@@ -21,6 +21,10 @@ window.onload = function () {
     //닉네임 input
     let input_nick = document.getElementById('nickName');
 
+    // 비밀번호 input
+    let input_pw = document.getElementById('password');
+    let input_chek_pw = document.getElementById('chek_pw');
+
     /**저장 버튼 비활성화 함수*/
     let modi_disabled = function () {
         btn_modi.disabled = true;
@@ -175,7 +179,6 @@ window.onload = function () {
 
     /**초기화 버튼 클릭 시 입력창 막아둔것 풀기*/
     document.getElementById('reset').onclick = function () {
-        join_disabled();
         input_nick.readOnly = false;
         input_id.readOnly = false;
         input_pw.readOnly = false;
@@ -187,9 +190,7 @@ window.onload = function () {
     }
 
 
-    // 비밀번호 값 가져오기
-    let input_pw = document.getElementById('password');
-    let input_chek_pw = document.getElementById('chek_pw');
+
 
     /**비밀번호 확인하기*/
     input_chek_pw.onchange = function () {
