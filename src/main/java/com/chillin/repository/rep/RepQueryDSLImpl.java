@@ -163,8 +163,13 @@ public class RepQueryDSLImpl implements RepQueryDSL {
                 .from(repBoom)
                 .where(repBoom.rep.repId.eq(rid))
                 .fetchOne();
-        map.put("boomup",tuple.get(0,Integer.class));
-        map.put("boomdown",tuple.get(1,Integer.class));
+        Integer boomup = tuple.get(0,Integer.class);
+        if(boomup == null) boomup = 0;
+        map.put("boomup",boomup);
+
+        Integer boomdown = tuple.get(1,Integer.class);
+        if(boomdown == null) boomdown = 0;
+        map.put("boomdown",boomdown);
     }
 }
   /*

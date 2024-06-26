@@ -49,9 +49,10 @@ public class Rep {
     private List<RepComplain> repComplainList = new ArrayList<>();
 
     @Builder
-    public Rep(String content, Board board, User user) {
+    public Rep(String content, Board board, User user, Boolean blind) {
         this.content = content;
         this.board = board;
         this.user = user;
+        this.blind = blind;
     }
 }
