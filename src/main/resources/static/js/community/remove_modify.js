@@ -5,9 +5,11 @@ let setUserId = function (uid){
 }*/
 
 let isLogin = false;
-
-let login = function (){
+let my_id = '';
+let login = function (uid){
     isLogin = true;
+    my_id = uid;
+    console.log(my_id)
 }
 
 let board_id;
