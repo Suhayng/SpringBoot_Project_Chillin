@@ -160,7 +160,7 @@ public class BoardController {
         }else{
             boardService.delete(bid);
         }
-        return "redirect:/community/list";
+        return "redirect:/community";
     }
 
 /*------------------------------------------------------------*/

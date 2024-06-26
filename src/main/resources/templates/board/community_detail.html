@@ -11,8 +11,8 @@
     </th:block>
 
     <th:block layout:fragment="css">
-        <!-- 각 페이지의 css -->
-        <link rel="stylesheet" th:href="@{/css/main/index.css}">
+        <!-- 각 페이지의 css --><!--
+        <link rel="stylesheet" th:href="@{/css/main/index.css}">-->
         <link rel="stylesheet" th:href="@{/css/board/detail.css}">
         <link rel="stylesheet" th:href="@{/css/board/reps.css}">
     </th:block>
@@ -26,7 +26,6 @@
 <th:block layout:fragment="content">
     <div class="content">
         <div id="detail_wrap">
-
             <div id="title_and_some">
                 <div id="title_div" th:text="${board.title}"></div>
 
@@ -95,22 +94,43 @@
             </div>
 
         </div>
-        <div id="complain_modal">
-            <form th:action="@{/board/complain}" method="post">
-                <label for="reason">이유</label>
-                <select name="reason" id="reason">
-                    <option value="1"></option>
-                    <option value="2"></option>
-                    <option value="3"></option>
-                </select>
+        <div id="hidden_div" class="hidden_modal">
+            <div id="modalContainer">
+                <div id="complain_modal">
+                    <form method="post" id="complain_form">
+                        <h2>신고</h2>
+                        <label for="bc_reason">신고 이유를 선택해주세요</label>
+                        <br>
+                        <select name="reason" id="bc_reason" required>
+                            <option value="성적인 게시물">성적인 게시물</option>
+                            <option value="혐오스러운 게시물">혐오스러운 게시물</option>
+                            <option value="괴롭힘 또는 폭력">괴롭힘 또는 폭력</option>
+                            <option value="잘못된 정보">잘못된 정보</option>
+                            <option value="아동 학대">아동 학대</option>
+                            <option value="스팸 게시물">스팸 게시물</option>
+                        </select>
+                        <br><br>
+                        <label for="bcdetail">세부 내용</label>
+                        <br>
+                        <textarea id="bcdetail" name="detail" placeholder="세부적인 신고 사항을 기입해주세요"></textarea>
 
-                <label for="detail">세부 사항</label>
+                        <input type="hidden" id="complain_id">
 
-            </form>
+                        <input type="hidden" name="return_board" th:value="${board.bid}">
+
+                        <button type="submit" id="bc_complain_submit">전송</button>
+                        <button type="button" id="bc_complain_reset">
+                            <img th:src="@{/images/cancel_cross.png}" alt="취소">
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-
         <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
         <script th:src="@{/js/community/remove_modify.js}"></script>
+        <th:block th:if="${session.uid!=null}">
+            <script>login()</script>
+        </th:block>
         <script>
             setBoardId([[${board.bid}]])
         </script>

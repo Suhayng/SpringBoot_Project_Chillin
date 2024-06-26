@@ -27,10 +27,11 @@ public class Board extends BoardBase{
     private Boolean blind;
 
     @Builder
-    public Board(String title, String content, User user) {
+    public Board(String title, String content, User user, Boolean blind) {
         super.title = title;
         super.content = content;
         this.user = user;
+        this.blind = blind;
     }
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -36,17 +36,14 @@ let rep_boom_create = function (boom_div, rid , boomup, boomdown,status){
     if(status === "no"){
         boomup_img.src="/images/boomup.png";
         boomdown_img.src="/images/boomdown.png";
-        board_boom_status = "no";
     }
     else if(status === "up"){
         boomup_img.src="/images/boomup_complete.png";
         boomdown_img.src="/images/boomdown.png";
-        board_boom_status = "up";
     }
     else if(status === "down"){
         boomup_img.src="/images/boomup.png";
         boomdown_img.src="/images/boomdown_complete.png";
-        board_boom_status = "down";
     }
     boomup_img_li.appendChild(boomup_img);
     boomdown_img_li.appendChild(boomdown_img);
@@ -146,17 +143,14 @@ let rep_boom_img_change = function(boomup, boomdown, status, boomup_button, boom
     if(status === "no"){
         boomup_img.src="/images/boomup.png";
         boomdown_img.src="/images/boomdown.png";
-        board_boom_status = "no";
     }
     else if(status === "up"){
         boomup_img.src="/images/boomup_complete.png";
         boomdown_img.src="/images/boomdown.png";
-        board_boom_status = "up";
     }
     else if(status === "down"){
         boomup_img.src="/images/boomup.png";
         boomdown_img.src="/images/boomdown_complete.png";
-        board_boom_status = "down";
     }
     boomup_img_li.appendChild(boomup_img);
     boomdown_img_li.appendChild(boomdown_img);

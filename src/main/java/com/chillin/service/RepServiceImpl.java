@@ -38,6 +38,7 @@ public class RepServiceImpl implements RepService{
                 .content(dto.getContent())
                 .board(board)
                 .user(user)
+                .blind(false)
                 .build();
         Rep saved = repRepository.save(rep);
         dto.setRid(saved.getRepId());
