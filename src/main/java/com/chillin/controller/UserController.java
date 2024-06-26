@@ -94,7 +94,7 @@ public class UserController {
      * 회원가입 결과
      */
     @PostMapping("/join")
-    public String join_result(@Valid UserDTO dto
+    public String join_result(@Valid @ModelAttribute("dto") UserDTO dto
             , BindingResult bindingResult
     ) {
 
