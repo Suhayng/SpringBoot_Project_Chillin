@@ -18,16 +18,21 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String MemberManagement(HttpSession session
-                                  , Model model){
+                                  , Model model) {
 
         Long sessionUid = (Long) session.getAttribute("uid");
+
+        // null 값 체크
+        if (sessionUid == null) {
+            sessionUid = 0L;
+        }
 
         // 관리자 uid와 세션 uid 같은지 체크
         if (sessionUid == 7) {
 
 
             return "/admin/memberManagement";
-        }else {
+        } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");
             return "redirect:/";
         }
