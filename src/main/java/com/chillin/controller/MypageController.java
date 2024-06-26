@@ -99,8 +99,13 @@ public class MypageController {
 
         List<MessageDTO> list = mypageService.getMessageDetailList(userId, messageId);
 
+        // 상대방 계정 닉네임 가져오기
+        UserDTO messageUser = mypageService.getUser(messageId);
+        String messageNickname = messageUser.getNickName();
+
         model.addAttribute("userId", userId);
         model.addAttribute("messageId", messageId);
+        model.addAttribute("messageNickname", messageNickname);
         model.addAttribute("list", list);
 
         return "mypage/mypage_message_detail";

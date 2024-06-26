@@ -53,21 +53,24 @@
             <section>
                 <h3>쪽지</h3>
 
+                <h4 th:text="|${messageNickname}님께 쪽지 보내기|"></h4>
+
+
                 <form method="post" th:action="@{/write_message}">
                     <input type="hidden" name="sender" th:value="${userId}">
                     <input type="hidden" name="receiver" th:value="${messageId}">
                     <ul>
                         <li><textarea id="content" name="content" placeholder="내용을 입력하세요" required></textarea></li>
-                        <li><button type="submit">보내기</button></li>
+                        <li class="messge_btn"><button type="submit">보내기</button></li>
                     </ul>
                 </form>
 
-                <table>
+                <table class="message_table">
                     <tbody>
                     <tr th:each="item:${list}">
-                        <td th:text="${item.senderNickName}"></td>
-                        <td th:text="${item.getContent()}"></td>
-                        <td th:text="${#temporals.format(item.time,'yy-MM-dd HH:mm')}"></td>
+                        <td class="td_center message_col1" th:text="${item.senderNickName}"></td>
+                        <td  class="message_col2" th:text="${item.getContent()}"></td>
+                        <td class="message_col3" th:text="${#temporals.format(item.time,'yy-MM-dd HH:mm')}"></td>
                     </tr>
                     </tbody>
                 </table>
