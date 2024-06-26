@@ -150,6 +150,14 @@ public class MypageServiceImpl implements MypageService {
         return dtolist;
     }
 
+
+    /**쪽지 읽음 처리*/
+    @Override
+    @Transactional
+    public void setIsRead(List<MessageDTO> list, Long userId) {
+
+    }
+
     /**
      * 쪽지 보내기
      */
@@ -193,6 +201,7 @@ public class MypageServiceImpl implements MypageService {
         List<BoardDTO> myList = boardRepository.getMyBoardList(userId);
         return myList;
     }
+
 
 
 }
