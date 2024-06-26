@@ -11,5 +11,6 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long>, MessageQueryDSL {
 
-
+    @Override
+    <S extends Message> S save(S entity);
 }

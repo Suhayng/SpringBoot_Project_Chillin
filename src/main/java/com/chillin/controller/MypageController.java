@@ -109,7 +109,10 @@ public class MypageController {
     /**마이페이지-쪽지 보내기*/
     @PostMapping("/write_message")
     public String writeMessage(@ModelAttribute("dto") MessageDTO dto, Model model){
+
         mypageService.writeMessage(dto);
+
+
         return "redirect:/message_alert/"+dto.getSender()+"/"+dto.getReceiver();
     }
 
