@@ -1,12 +1,16 @@
 package com.chillin.service;
 
 import com.chillin.dto.BoardComplainDTO;
+import com.chillin.dto.ComplainManageDTO;
 import com.chillin.dto.RepComplainDTO;
 import com.chillin.repository.board.BoardRepository;
 import com.chillin.repository.complain.BoardComplainRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +47,25 @@ public class BoardComplainServiceImpl implements BoardComplainService{
             bcRepository.write(dto,uid,false); // complete 를 0 으로 둬서 5개 쌓이면 블라인드 주게
         }
 
+    }
+
+    @Override
+    public List<ComplainManageDTO> getBoardList(int page, int pageSize,String type) {
+
+        int startRow = (page - 1)*pageSize;
+
+        List<ComplainManageDTO> list =  bcRepository.getBoardList(startRow,pageSize,type);
+
+        return list;
+    }
+
+    @Override
+    public void blinding(Long bid, String action) {
+        bcRepository.blinding(bid,action);
+    }
+
+    @Override
+    public void completing(Long cid) {
+        bcRepository.completing(cid);
     }
 }

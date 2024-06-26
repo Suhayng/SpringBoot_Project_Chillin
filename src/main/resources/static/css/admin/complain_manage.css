@@ -1,0 +1,46 @@
+
+
+#complain_section{
+    width: 64%;
+}
+
+.complain_div{
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #999999;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    padding: 6px 0 6px 8px;
+}
+
+.manage_left{
+    flex: 1;
+    display: inline-block;
+}
+.manage_right{
+    flex: 0;
+    display: inline-block;
+    width: 120px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.union{
+    font-size: 12px;
+}
+
+.complain_user{
+    font-size: 14px;
+}
+
+.section_a{
+    font-size: 14px;
+    margin-right: 12px;
+    color: #45A5E2;
+}
+
+
+
+
+
