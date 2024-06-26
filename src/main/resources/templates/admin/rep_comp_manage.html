@@ -46,21 +46,23 @@
 
 
             <section id="complain_section">
-                <h2>글 신고</h2>
+                <h2>댓글 신고</h2>
                 <div>
-                    <a href="/admin/complain_manage/rep/all">댓글 관리</a>
+                    <a href="/admin/complain_manage/board/all">글 관리</a>
                 </div>
-                <a class="section_a" href="/admin/complain_manage/board/all">전체보기</a>
-                <a class="section_a" href="/admin/complain_manage/board/blind">블라인드 글</a>
-                <a class="section_a" href="/admin/complain_manage/board/complete">완료 글</a>
-                <a class="section_a" href="/admin/complain_manage/board/non_complete">미완료 글</a>
+                <div>
+                    <a class="section_a" href="/admin/complain_manage/rep/all">전체보기</a>
+                    <a class="section_a" href="/admin/complain_manage/rep/blind">블라인드 댓글</a>
+                    <a class="section_a" href="/admin/complain_manage/rep/complete">완료 댓글</a>
+                    <a class="section_a" href="/admin/complain_manage/rep/non_complete">미완료 댓글</a>
+                </div>
                 <hr>
                 <div class="complain_div" th:each="item:${list}">
                     <div class="manage_left">
                         <div class="complain_title">
-                            <span>원글 : </span>
+                            <span>댓글 : </span>
                             <a th:href="@{'/community/'+${item.target}}" th:text="${item.title}"></a>
-                            <span><a th:href="@{'/admin/complain/board/'+${item.cid}}" class="union">&nbsp;&nbsp;&nbsp;모아보기</a></span>
+                            <span><a th:href="@{'/admin/complain/rep/'+${item.cid}}" class="union">&nbsp;&nbsp;&nbsp;모아보기</a></span>
                         </div>
                         <div class="complain_reason" th:text="'사유 : '+${item.reason}"></div>
                         <div class="complain_detail" th:text="'세부 사항 : '+${item.detail}"></div>
@@ -82,14 +84,19 @@
                         </div>
                         <div class="manage_button_div">
                             <th:block th:if="${item.blind}">
-                                <a th:href="@{'/board/blind/cancel/'+${item.target}}">블라인드 해제</a>
+                                <a th:href="@{'/rep/blind/cancel/'+${item.cid}}">블라인드 해제</a>
                             </th:block>
                             <th:block th:unless="${item.blind}">
-                                <a th:href="@{'/board/blind/do/'+${item.target}}">블라인드 처리</a>
+                                <a th:href="@{'/rep/blind/do/'+${item.cid}}">블라인드 처리</a>
                             </th:block>
                         </div>
                         <div class="manage_button_div">
-                            <a th:href="@{'/board/complain/complete/'+${item.cid}}">처리 완료</a>
+                            <th:block th:unless="${item.complete}">
+                                <a th:href="@{'/rep/complain/complete/'+${item.cid}}">완료하기</a>
+                            </th:block>
+                            <th:block th:if="${item.complete}">
+                                <span th:text="작업완료"></span>
+                            </th:block>
                         </div>
                     </div>
                 </div>

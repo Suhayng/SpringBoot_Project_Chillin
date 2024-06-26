@@ -11,6 +11,8 @@ import static com.chillin.domain.QBoard.*;
 
 import static com.chillin.domain.QUser.*;
 
+import static com.chillin.domain.QRep.*;
+
 import com.chillin.domain.RepComplain;
 import com.chillin.dto.BoardComplainDTO;
 import com.chillin.dto.ComplainManageDTO;
@@ -143,18 +145,18 @@ public class BCQueryDSLImpl implements BCQueryDSL {
 
         BooleanExpression searchCondition = null;
 
-        if(type.equals("blind")){
+        if (type.equals("blind")) {
             searchCondition = board.blind.eq(true);
-        }else if(type.equals("complete")){
+        } else if (type.equals("complete")) {
             searchCondition = boardComplain.complete.eq(true);
-        }else if(type.equals("non_complete")){
+        } else if (type.equals("non_complete")) {
             searchCondition = boardComplain.complete.eq(false);
         }
 
         List<ComplainManageDTO> list = queryFactory.select(
                         Projections.fields(
                                 ComplainManageDTO.class
-                                ,boardComplain.boardComplainId.as("cid")
+                                , boardComplain.boardComplainId.as("cid")
                                 , board.boardId.as("target")
                                 , board.title
                                 , board.blind
@@ -182,7 +184,7 @@ public class BCQueryDSLImpl implements BCQueryDSL {
     @Modifying
     public void blinding(Long bid, String action) {
         boolean setting = false;
-        if(action.equals("do")){
+        if (action.equals("do")) {
             setting = true;
         }
         queryFactory.update(board)
@@ -199,6 +201,79 @@ public class BCQueryDSLImpl implements BCQueryDSL {
         queryFactory.update(boardComplain)
                 .set(boardComplain.complete, true)
                 .where(boardComplain.boardComplainId.eq(cid))
+                .execute();
+    }
+
+    @Override
+    public List<ComplainManageDTO> getRepList(int startRow, int pageSize, String type) {
+
+        BooleanExpression searchCondition = null;
+
+        if (type.equals("blind")) {
+            searchCondition = rep.blind.eq(true);
+        } else if (type.equals("complete")) {
+            searchCondition = repComplain.complete.eq(true);
+        } else if (type.equals("non_complete")) {
+            searchCondition = repComplain.complete.eq(false);
+        }
+
+        List<ComplainManageDTO> list = queryFactory.select(
+                        Projections.fields(
+                                ComplainManageDTO.class
+                                , repComplain.repComplainId.as("cid")
+                                , board.boardId.as("target")
+                                , rep.content.as("title")
+                                , rep.blind
+                                , rep.repId.as("rid")
+                                , user.userId.as("uid")
+                                , user.nickname
+                                , repComplain.reason
+                                , repComplain.detail
+                                , repComplain.complete))
+                .from(repComplain)
+                .innerJoin(rep)
+                .on(repComplain.rep.repId.eq(rep.repId))
+                .fetchJoin()
+                .innerJoin(user)
+                .on(rep.user.userId.eq(user.userId))
+                .fetchJoin()
+                .innerJoin(board)
+                .on(rep.board.boardId.eq(board.boardId))
+                .fetchJoin()
+                .where(searchCondition)
+                .offset(startRow).limit(pageSize)
+                .fetch();
+
+        return list;
+    }
+
+    @Override
+    @Modifying
+    @Transactional
+    public void repBlinding(Long cid, String action) {
+        boolean setting = false;
+        if (action.equals("do")) {
+            setting = true;
+        }
+        Long rid = queryFactory.select(repComplain.rep.repId)
+                .from(repComplain)
+                .where(repComplain.repComplainId.eq(cid))
+                .fetchOne();
+
+        queryFactory.update(rep)
+                .set(rep.blind, setting)
+                .where(rep.repId.eq(rid))
+                .execute();
+    }
+
+    @Override
+    @Modifying
+    @Transactional
+    public void repCompleting(Long cid) {
+
+        queryFactory.update(repComplain)
+                .set(repComplain.complete, true)
+                .where(repComplain.repComplainId.eq(cid))
                 .execute();
     }
 

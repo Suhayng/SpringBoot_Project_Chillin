@@ -68,4 +68,25 @@ public class BoardComplainServiceImpl implements BoardComplainService{
     public void completing(Long cid) {
         bcRepository.completing(cid);
     }
+
+    @Override
+    public List<ComplainManageDTO> getRepList(int page, int pageSize, String type) {
+
+        int startRow = (page - 1)*pageSize;
+
+        List<ComplainManageDTO> list =  bcRepository.getRepList(startRow,pageSize,type);
+
+        return list;
+    }
+
+    @Override
+    public void repBlinding(Long cid, String action) {
+        bcRepository.repBlinding(cid,action);
+        bcRepository.repCompleting(cid);
+    }
+
+    @Override
+    public void repCompleting(Long cid) {
+        bcRepository.repCompleting(cid);
+    }
 }

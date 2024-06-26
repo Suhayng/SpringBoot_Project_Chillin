@@ -17,4 +17,10 @@ public interface BoardComplainService {
     void blinding(Long bid, String action);
 
     void completing(Long cid);
+
+    List<ComplainManageDTO> getRepList(int page, int pageSize, String type);
+
+    void repBlinding(Long cid, String action);
+
+    void repCompleting(Long cid);
 }
