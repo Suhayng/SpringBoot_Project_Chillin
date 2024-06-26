@@ -80,6 +80,12 @@
     cursor:pointer;
 }
 
+.rep_siren{
+    width: 14px;
+    object-fit: contain;
+    position: relative;
+    top: 3px;
+}
 .rep_complain{
     background-color: white;
     border:0;

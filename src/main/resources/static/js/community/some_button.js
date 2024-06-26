@@ -210,15 +210,30 @@ document.getElementById('board_bookmark_button').onclick = function () {
 }
 
 let modal = document.getElementById('hidden_div');
+
+let complain_form = document.getElementById('complain_form');
+let complain_input = document.getElementById('complain_id');
+
 document.getElementById('board_complain_button').onclick = function () {
     if (isLogin) {
+        complain_form.action = '/board/complain';
+        complain_input.name='bid';
+        complain_input.value=board_id;
         modal.classList.remove('hidden_modal')
     }
 }
 
 document.getElementById('bc_complain_reset').onclick = function () {
+    complain_form.action = '';
     modal.classList.add('hidden_modal')
 }
 
 
-
+let rep_complain = function (rid){
+    if (isLogin) {
+        complain_form.action = '/rep/complain';
+        complain_input.name='rid';
+        complain_input.value=rid;
+        modal.classList.remove('hidden_modal')
+    }
+}

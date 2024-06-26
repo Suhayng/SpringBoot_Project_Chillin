@@ -97,7 +97,7 @@
         <div id="hidden_div" class="hidden_modal">
             <div id="modalContainer">
                 <div id="complain_modal">
-                    <form th:action="@{/board/complain}" method="post">
+                    <form method="post" id="complain_form">
                         <h2>신고</h2>
                         <label for="bc_reason">신고 이유를 선택해주세요</label>
                         <br>
@@ -114,7 +114,9 @@
                         <br>
                         <textarea id="bcdetail" name="detail" placeholder="세부적인 신고 사항을 기입해주세요"></textarea>
 
-                        <input type="hidden" name="bid" th:value="${board.bid}">
+                        <input type="hidden" id="complain_id">
+
+                        <input type="hidden" name="return_board" th:value="${board.bid}">
 
                         <button type="submit" id="bc_complain_submit">전송</button>
                         <button type="button" id="bc_complain_reset">

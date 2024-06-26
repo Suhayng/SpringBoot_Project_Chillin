@@ -278,8 +278,15 @@ let append_reps2 = function () {
 
             let complain_div = document.createElement('button');
             complain_div.type = 'button';
-            complain_div.classList.add('rep_complain')
-            let complain_temp = document.createTextNode('임시 신고');
+            complain_div.classList.add('rep_complain');
+            complain_div.onclick = function (){
+                rep_complain(now.rid);
+            }
+            let complain_img = document.createElement('img');
+            complain_img.src = '/images/siren.png';
+            complain_img.classList.add('rep_siren');
+            let complain_temp = document.createTextNode(' 신고');
+            complain_div.appendChild(complain_img);
             complain_div.appendChild(complain_temp);
 
             let date_div = document.createElement('div');

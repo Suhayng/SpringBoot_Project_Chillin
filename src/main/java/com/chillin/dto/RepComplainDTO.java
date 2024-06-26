@@ -7,15 +7,14 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BoardComplainDTO {
+public class RepComplainDTO {
 
-    private Long bcid;
+    private Long rcid;
     private String reason;
     private String detail;
-    private Long bid;
+    private Long rid;
     private Long uid;
 
     private Long return_board;
-
 
 }
