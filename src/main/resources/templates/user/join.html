@@ -12,7 +12,7 @@
 
     <th:block layout:fragment="css">
         <!-- 각 페이지의 css -->
-        <link rel="stylesheet" th:href="@{/css/main/index.css}">
+        <link rel="stylesheet" th:href="@{/css/user/join.css}">
     </th:block>
 
     <th:block layout:fragment="javascript">
@@ -20,64 +20,68 @@
     </th:block>
 </head>
 <body>
-    <th:block layout:fragment="content">
-        <div class="content">
+<th:block layout:fragment="content">
+    <div class="content">
 
-            <!--------------------------------------------------------->
+        <!--------------------------------------------------------->
 
 
-            <img th:src="@{/images/logo.png}"/>
+        <div id="join_wrap">
+
+            <img th:src="@{/images/logo.png}" id="login_logo"/>
             <h1>칠린에 오신것을 환영합니다.</h1>
 
             <h3>회원가입에 필요한 기본정보를 입력해주세요.</h3>
 
-            <form th:method="post" th:action="@{/join}" th:object="${dto}">
+
+            <form th:method="post" th:action="@{/join}" th:object="${dto}" id="form_contain">
                 <ul>
-                    <li><label for="id">아이디(이메일)</label></li>
+                    <li class="form_label"><label for="id">아이디(이메일)</label></li>
                     <li>
-                        <input type="text" th:field="*{id}" name="id" id="id"
+                        <input type="text" th:field="*{id}" name="id" id="id" class ="form_input"
                                placeholder="이메일 형식으로 입력해주세요.">
-                        <input type="button" id="btn_chek_id" value="중복확인">
+                        <input type="button" id="btn_chek_id" class="chek_btn" value="중복확인">
                     </li>
-                    <li th:if="${#fields.hasErrors('id')}" th:errors="*{id}">id</li>
+                    <li th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="error_text">id</li>
                     <li id="id_check"></li>
 
 
-
-                    <li><label for="password">비밀번호</label></li>
+                    <li class="form_label"><label for="password">비밀번호</label></li>
                     <li>
                         <input type="password" th:field="*{password}" name="password" id="password"
-                        placeholder="4자이상 10자 이하로 입력해주세요." required>
+                               class ="form_input form_input_large"
+                               placeholder="4자이상 10자 이하로 입력해주세요." required>
                     </li>
-                    <li th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password</li>
+                    <li th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error_text">password</li>
 
-                    <li><label for="chek_pw">비밀번호 확인</label></li>
+                    <li class="form_label"><label for="chek_pw">비밀번호 확인</label></li>
                     <li>
-                        <input type="password" name="chek_pw" id="chek_pw" required
+                        <input type="password" name="chek_pw" id="chek_pw"
+                               class ="form_input form_input_large" required
                                placeholder="비밀 번호를 한번 더 입력해주세요.">
                     </li>
                     <li id="password_check"></li>
 
 
-                    <li><label for="nickName">닉네임</label></li>
+                    <li class="form_label"><label for="nickName">닉네임</label></li>
                     <li>
-                        <input type="text" th:field="*{nickName}" name="nickName" id="nickName"
-                        placeholder="숫자, 한글, 영문자로 입력해주세요.">
-                        <input type="button" id="btn_chek_nick" value="중복확인">
+                        <input type="text" th:field="*{nickName}" name="nickName" id="nickName" class ="form_input"
+                               placeholder="숫자, 한글, 영문자로 입력해주세요.">
+                        <input type="button" id="btn_chek_nick" class="chek_btn" value="중복확인">
                     </li>
-                    <li th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}">nickName</li>
+                    <li th:if="${#fields.hasErrors('nickName')}" th:errors="*{nickName}" class="error_text">nickName</li>
                     <li id="nick_check"></li>
 
 
-
-                    <li><label for="name">이름</label></li>
+                    <li class="form_label"><label for="name">이름</label></li>
                     <li>
                         <input type="text" th:field="*{name}" name="name" id="name"
-                        placeholder="한글 또는 영문자로 입력해주세요.">
+                               class ="form_input form_input_large"
+                               placeholder="한글 또는 영문자로 입력해주세요." required>
                     </li>
-                    <li th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name</li>
+                    <li th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error_text">name</li>
 
-                    <li>
+                    <li id="join_btn">
                         <button type="submit" id="btn_join">회원가입</button>
                         <button type="reset" id="reset">초기화</button>
                     </li>
@@ -86,19 +90,19 @@
             </form>
 
 
-                <div>
-                    이미 회원이신가요? <a th:href="@{/login}" th:text="로그인">로그인</a>
-                </div>
-
-
-
-
-
-
-            <!--------------------------------------------------------->
+            <div id="join_bottom">
+               <div>이미 회원이신가요? <a th:href="@{/login}" th:text="로그인" id="link_login">로그인</a></div>
+                <div> </div>
+            </div>
 
 
         </div>
-    </th:block>
+
+
+        <!--------------------------------------------------------->
+
+
+    </div>
+</th:block>
 </body>
 </html>

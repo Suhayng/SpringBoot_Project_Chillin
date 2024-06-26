@@ -38,10 +38,9 @@ class MypageServiceTest {
         MessageDTO dto= MessageDTO.builder()
                 .sender(1L)
                 .receiver(2L)
-                .is_read(false)
                 .content("test다!!")
                 .build();
-        assertThat(service.writeMessage(dto)).isEqualTo(true);
+        assertThat(service.writeMessage(dto)).isEqualTo(1L);
     }
 
 

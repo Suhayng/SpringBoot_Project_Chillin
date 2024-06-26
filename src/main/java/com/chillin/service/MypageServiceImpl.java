@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,7 +91,7 @@ public class MypageServiceImpl implements MypageService {
 
         List<MessageDTO> dtolist = new ArrayList<>();
 
-        for(Message item:messageList){
+        for (Message item : messageList) {
             MessageDTO dto = new MessageDTO();
 
             dto.setMeid(item.getMessageId());
@@ -101,9 +103,9 @@ public class MypageServiceImpl implements MypageService {
             dto.setSenderNickName(item.getSender().getNickname());
             dto.setReceiverNickName(item.getReceiver().getNickname());
 
-            if(userId == item.getSender().getUserId()){
+            if (userId == item.getSender().getUserId()) {
                 dto.setCheck(true);
-            }else {
+            } else {
                 dto.setCheck(false);
             }
 
@@ -114,7 +116,9 @@ public class MypageServiceImpl implements MypageService {
         return dtolist;
     }
 
-    /**쪽지 상세페이지 목록*/
+    /**
+     * 쪽지 상세페이지 목록
+     */
     @Override
     public List<MessageDTO> getMessageDetailList(Long userId, Long messageId) {
 
@@ -122,7 +126,7 @@ public class MypageServiceImpl implements MypageService {
 
         List<MessageDTO> dtolist = new ArrayList<>();
 
-        for(Message item:messageList){
+        for (Message item : messageList) {
             MessageDTO dto = new MessageDTO();
 
             dto.setMeid(item.getMessageId());
@@ -134,9 +138,9 @@ public class MypageServiceImpl implements MypageService {
             dto.setSenderNickName(item.getSender().getNickname());
             dto.setReceiverNickName(item.getReceiver().getNickname());
 
-            if(userId == item.getSender().getUserId()){
+            if (userId == item.getSender().getUserId()) {
                 dto.setCheck(true);
-            }else {
+            } else {
                 dto.setCheck(false);
             }
 
@@ -146,16 +150,34 @@ public class MypageServiceImpl implements MypageService {
         return dtolist;
     }
 
-    /**쪽지 보내기*/
+    /**
+     * 쪽지 보내기
+     */
     @Override
     public Long writeMessage(MessageDTO dto) {
-        messageRepository.writeMessage(dto);
 
-        return dto.getSender();
+        Optional<User> bySender = userRepository.findById(dto.getSender());
+        Optional<User> byReceiver = userRepository.findById(dto.getReceiver());
+
+// 값이 존재할 경우 해당 값을 사용하고, 값이 없을 경우 예외를 발생
+        User sender = bySender.orElseThrow(() -> new NoSuchElementException("보낸사람이 존재하지 않습니다"));
+        User receiver = byReceiver.orElseThrow(() -> new NoSuchElementException("받는사람이 존재하지 않습니다"));
+
+        Message message = new Message();
+        message.setContent(dto.getContent());
+        message.setIsRead(false);
+        message.setSender(sender);
+        message.setReceiver(receiver);
+
+        Message save = messageRepository.save(message);
+
+        return save.getSender().getUserId();
 
     }
 
-    /**북마크 리스트*/
+    /**
+     * 북마크 리스트
+     */
     @Override
     public List<BoardDTO> getBookmarkList(Long userId) {
         List<BoardDTO> bookmarkList = boardRepository.getBookmarkList(userId);
@@ -163,7 +185,9 @@ public class MypageServiceImpl implements MypageService {
         return bookmarkList;
     }
 
-    /**작성한 글 리스트*/
+    /**
+     * 작성한 글 리스트
+     */
     @Override
     public List<BoardDTO> getMyBoardList(Long userId) {
         List<BoardDTO> myList = boardRepository.getMyBoardList(userId);

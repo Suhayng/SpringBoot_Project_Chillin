@@ -73,20 +73,4 @@ public class MessageQueryDSLImpl implements MessageQueryDSL {
         return messageList;
     }
 
-    @Override
-    @Transactional
-    @Modifying
-    public void writeMessage(MessageDTO dto) {
-
-        String sql = " INSERT INTO message(is_read, receiver, sender, time, content) " +
-                " VALUES (0 , :receiver, :sender, now(), :content) ";
-        Query query = entityManager.createNativeQuery(sql);
-        query.setParameter("receiver", dto.getReceiver());
-        query.setParameter("sender", dto.getSender());
-        query.setParameter("content", dto.getContent());
-        query.executeUpdate();
-
-    }
-
-
 }
