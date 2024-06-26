@@ -217,8 +217,8 @@ let complain_input = document.getElementById('complain_id');
 document.getElementById('board_complain_button').onclick = function () {
     if (isLogin) {
         complain_form.action = '/board/complain';
-        complain_input.name='bid';
-        complain_input.value=board_id;
+        complain_input.name = 'bid';
+        complain_input.value = board_id;
         modal.classList.remove('hidden_modal')
     }
 }
@@ -229,11 +229,128 @@ document.getElementById('bc_complain_reset').onclick = function () {
 }
 
 
-let rep_complain = function (rid){
+let rep_complain = function (rid) {
     if (isLogin) {
         complain_form.action = '/rep/complain';
-        complain_input.name='rid';
-        complain_input.value=rid;
+        complain_input.name = 'rid';
+        complain_input.value = rid;
         modal.classList.remove('hidden_modal')
     }
+}
+
+let user_see = function (uid, myid, nickname, user_span) {
+
+    user_span.replaceChildren();
+
+    let ucdiv = document.getElementById('user_click_div');
+    if (ucdiv != null) {
+
+        document.getElementById('user_click_div').remove();
+    }
+    let user_click_div = document.createElement('div');
+    user_click_div.id = 'user_click_div';
+
+    let user_click_name = document.createElement('div');
+    user_click_name.id = 'user_click_name';
+    let click_nickname = document.createTextNode(nickname);
+    user_click_name.appendChild(click_nickname);
+
+    let hr_tag = document.createElement('hr');
+
+    let user_click_message = document.createElement('div');
+    user_click_message.classList.add('user_click_some')
+    let message_a = document.createElement('a');
+    if(myid != null && myid !=='') {
+        message_a.href = '/mypage/messagedetail/' + myid + '/' + uid;
+    }
+    let message_text = document.createTextNode('쪽지 보내기');
+    message_a.appendChild(message_text);
+    user_click_message.appendChild(message_a);
+
+    let user_click_board = document.createElement('div');
+
+    user_click_board.classList.add('user_click_some');
+    let user_board_a = document.createElement('a');
+    user_board_a.href = '/community/user/' + uid;
+    let user_board_text = document.createTextNode('작성 글 보기');
+    user_board_a.appendChild(user_board_text);
+    user_click_board.appendChild(user_board_a);
+
+    user_click_div.appendChild(user_click_name);
+    user_click_div.appendChild(hr_tag);
+    user_click_div.appendChild(user_click_message);
+    user_click_div.appendChild(user_click_board);
+
+
+    let hide_button = document.createElement('button');
+    hide_button.id = 'click_hide_button';
+    hide_button.type = 'button';
+    let hide_text = document.createTextNode('X');
+    hide_button.appendChild(hide_text);
+    hide_button.onclick = function () {
+        user_span.replaceChildren();
+    }
+
+    user_click_div.appendChild(hide_button);
+    user_span.appendChild(user_click_div);
+}
+
+let writer_user_see = function (uid,nickname){
+
+    console.log('이게 오긴 하네 ㅋ');
+    let writer_click_position = document.getElementById('writer_click_position');
+
+    let ucdiv = document.getElementById('user_click_div');
+    if (ucdiv != null) {
+
+        document.getElementById('user_click_div').remove();
+    }
+    let user_click_div = document.createElement('div');
+    user_click_div.id = 'user_click_div';
+
+    let user_click_name = document.createElement('div');
+    user_click_name.id = 'user_click_name';
+    let click_nickname = document.createTextNode(nickname);
+    user_click_name.appendChild(click_nickname);
+
+    let hr_tag = document.createElement('hr');
+
+    let user_click_message = document.createElement('div');
+    user_click_message.classList.add('user_click_some')
+    let message_a = document.createElement('a');
+    if(my_id != null && my_id !=='') {
+        message_a.href = '/mypage/messagedetail/' + my_id + '/' + uid;
+    }
+    let message_text = document.createTextNode('쪽지 보내기');
+    message_a.appendChild(message_text);
+    user_click_message.appendChild(message_a);
+
+    let user_click_board = document.createElement('div');
+
+    user_click_board.classList.add('user_click_some');
+    let user_board_a = document.createElement('a');
+    user_board_a.href = '/community/user/' + uid;
+    let user_board_text = document.createTextNode('작성 글 보기');
+    user_board_a.appendChild(user_board_text);
+    user_click_board.appendChild(user_board_a);
+
+    user_click_div.appendChild(user_click_name);
+    user_click_div.appendChild(hr_tag);
+    user_click_div.appendChild(user_click_message);
+    user_click_div.appendChild(user_click_board);
+
+
+    let hide_button = document.createElement('button');
+    hide_button.id = 'click_hide_button';
+    hide_button.type = 'button';
+    let hide_text = document.createTextNode('X');
+    hide_button.appendChild(hide_text);
+    hide_button.onclick = function () {
+        writer_click_position.replaceChildren();
+    }
+
+    user_click_div.appendChild(hide_button);
+    writer_click_position.appendChild(user_click_div);
+
+
 }

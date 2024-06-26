@@ -1,4 +1,3 @@
-
 window.onload = function () {
     //append_reps();
     board_boomup_count();
@@ -7,114 +6,6 @@ window.onload = function () {
     append_reps2()
 }
 
-/** 숫자 못받아오는 친구임 deprecated */
-let append_reps = function () {
-
-    fetch('/getReps/' + board_id, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        }
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error('create error')
-        } else {
-            return response.json()
-        }
-    }).then(data => {
-        let data_len = data.length;
-        document.getElementById('rep_count')
-            .innerHTML = data_len + '개의 댓글';
-
-        let rep_list = document.getElementById('rep_list');
-
-        for (let i = 0; i < data_len; i++) {
-            let now = data[i];
-
-            let rep_div = document.createElement('div');
-            rep_div.classList.add('rep_div');
-
-            let user_div = document.createElement('div');
-            let user_button = document.createElement('button');
-            user_button.type = 'button';
-            user_button.classList.add('user_button')
-            user_button.onclick = function () {
-                user_see(now.uid);
-            }
-            let user_text = document.createTextNode('작성자 : ' + now.nickname);
-            user_button.appendChild(user_text);
-            user_div.appendChild(user_button);
-
-            let content_boom = document.createElement('div');
-            content_boom.classList.add('content_boom');
-
-            let content_div = document.createElement('pre');
-            content_div.classList.add('rep_content');
-            let content_text = document.createTextNode(now.content);
-            content_div.appendChild(content_text);
-
-            let boom_div = document.createElement('div');
-            boom_div.classList.add('boom_zone');
-/*
-
-            rep_boom_create(boom_div,now.rid);
-*/
-
-            let boom_temp = document.createTextNode('임시 붐따');
-            boom_div.appendChild(boom_temp);
-
-            content_boom.appendChild(content_div);
-            content_boom.appendChild(boom_div);
-
-
-            let complain_date_div = document.createElement('div');
-            complain_date_div.classList.add('cddiv');
-
-            let complain_date = document.createElement('div');
-            complain_date.classList.add('complain_date');
-
-            let rep_delete = document.createElement('button');
-            rep_delete.type = 'button';
-            rep_delete.classList.add('rep_delete_button');
-            let rd_text = document.createTextNode('댓글 삭제');
-            rep_delete.appendChild(rd_text);
-            rep_delete.onclick = function () {
-                delete_rep(now.rid);
-            }
-
-            let complain_div = document.createElement('button');
-            complain_div.type = 'button';
-            complain_div.classList.add('rep_complain')
-            let complain_temp = document.createTextNode('임시 신고');
-            complain_div.appendChild(complain_temp);
-
-            let date_div = document.createElement('div');
-            date_div.classList.add('write_date');
-            let raw_date = now.writeDate.toString();
-            let clean_date = raw_date.slice(2,10) +'  ' + raw_date.slice(11,19);
-            let date_text = document.createTextNode(clean_date);
-            date_div.appendChild(date_text);
-
-            complain_date.appendChild(rep_delete);
-            complain_date.appendChild(complain_div);
-            complain_date.appendChild(date_div);
-
-            complain_date_div.appendChild(complain_date)
-
-            rep_div.appendChild(user_div);
-            rep_div.appendChild(content_boom);
-            rep_div.appendChild(complain_date_div);
-
-            rep_list.appendChild(rep_div)
-
-        }
-    }).catch(error => {
-        console.log('getReps fetch' + error);
-    }).finally(() => {
-        console.log('getReps - finally')
-    });
-
-}
 
 let delete_rep = function (rid) {
 
@@ -175,7 +66,7 @@ document.getElementById('rep_create').onclick = function () {
             }
         }).then(data => {
 
-            if(data.uid == null || data.uid === ''){
+            if (data.uid == null || data.uid === '') {
                 throw new Error('로그인은 하고 댓글 써주세요');
             }
 
@@ -192,12 +83,6 @@ document.getElementById('rep_create').onclick = function () {
         });
     }
 }
-
-let user_see = function (uid) {
-
-    alert('어 버튼 맞아' + uid);
-}
-
 
 let append_reps2 = function () {
 
@@ -229,12 +114,21 @@ let append_reps2 = function () {
             let user_button = document.createElement('button');
             user_button.type = 'button';
             user_button.classList.add('user_button')
-            user_button.onclick = function () {
-                user_see(now.uid);
-            }
+
+            let user_span = document.createElement('div');
             let user_text = document.createTextNode('작성자 : ' + now.nickname);
-            user_button.appendChild(user_text);
+            user_span.appendChild(user_text);
+            user_button.appendChild(user_span);
+
+            let user_click_position = document.createElement('span');
+            user_click_position.classList.add('user_click_position');
             user_div.appendChild(user_button);
+            user_div.appendChild(user_click_position)
+            if (my_id !== now.uid) {
+                user_button.onclick = function () {
+                    user_see(now.uid,my_id,now.nickname,user_click_position);
+                }
+            }
 
             let content_boom = document.createElement('div');
             content_boom.classList.add('content_boom');
@@ -248,14 +142,14 @@ let append_reps2 = function () {
             boom_div.classList.add('boom_zone');
 
 
-            rep_boom_create(boom_div,now.rid,now.boomup,now.boomdown,now.status);
+            rep_boom_create(boom_div, now.rid, now.boomup, now.boomdown, now.status);
 
 
-/*
+            /*
 
-            let boom_temp = document.createTextNode('임시 붐따');
-            boom_div.appendChild(boom_temp);
-*/
+                        let boom_temp = document.createTextNode('임시 붐따');
+                        boom_div.appendChild(boom_temp);
+            */
 
             content_boom.appendChild(content_div);
             content_boom.appendChild(boom_div);
@@ -279,7 +173,7 @@ let append_reps2 = function () {
             let complain_div = document.createElement('button');
             complain_div.type = 'button';
             complain_div.classList.add('rep_complain');
-            complain_div.onclick = function (){
+            complain_div.onclick = function () {
                 rep_complain(now.rid);
             }
             let complain_img = document.createElement('img');
@@ -292,7 +186,7 @@ let append_reps2 = function () {
             let date_div = document.createElement('div');
             date_div.classList.add('write_date');
             let raw_date = now.writeDate.toString();
-            let clean_date = raw_date.slice(2,10) +'  ' + raw_date.slice(11,19);
+            let clean_date = raw_date.slice(2, 10) + '  ' + raw_date.slice(11, 19);
             let date_text = document.createTextNode(clean_date);
             date_div.appendChild(date_text);
 

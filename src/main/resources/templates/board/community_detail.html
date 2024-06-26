@@ -66,7 +66,10 @@
                 </div>
             </div>
 
-            <div id="writer_div" th:text="'작성자 : '+${board.nickname}"></div>
+            <div id="writer_div">
+                <button type="button" id="writer_button" th:text="'작성자 : '+${board.nickname}"
+                th:onclick="writer_user_see([[${board.uid}]],[[${board.nickname}]])"></button><div id="writer_click_position"></div>
+            </div>
             <div id="write_date_div"
                  th:text="'작성일 : '+${#temporals.format(board.writeDate,'yyyy-MM-dd HH:mm:ss')}"></div>
             <div id="content_div" th:utext="${board.content}"></div>
@@ -126,10 +129,21 @@
                 </div>
             </div>
         </div>
+<!--
+
+        <div id="user_click_div" class="hidden_click_div">
+            <div id="user_click_name"></div>
+            <hr>
+            <div class="user_click_some"><a id="user_click_message">쪽지 보내기</a></div>
+            <div class="user_click_some"><a id="user_click_board">작성 글 검색</a></div>
+            <button type="button" id="user_click_hide">숨기기</button>
+        </div>
+-->
+
         <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
         <script th:src="@{/js/community/remove_modify.js}"></script>
         <th:block th:if="${session.uid!=null}">
-            <script>login()</script>
+            <script>login([[${session.uid}]])</script>
         </th:block>
         <script>
             setBoardId([[${board.bid}]])
