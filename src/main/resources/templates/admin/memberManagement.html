@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout/BaseLayout}">
+<head>
+    <meta charset="UTF-8">
+
+    <th:block layout:fragment="title">
+        <link rel="icon" th:href="@{/images/title.png}">
+        <title>칠 린 | 회원 관리</title>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <!-- 각 페이지의 css -->
+        <link rel="stylesheet" th:href="@{/css/admin/admin_member.css}">
+    </th:block>
+
+    <th:block layout:fragment="javascript">
+        <!-- 각 페이지의 javascript -->
+    </th:block>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="content">
+        <!-- 각 페이지의 content 작성-->
+
+        <div class="bookmark_wrap">
+
+            <aside>
+                <h2>관리자 페이지</h2>
+                <ul>
+                    <li><a th:href="@{|/admin|}">
+                        <img th:src="@{/images/user.png}"/>
+                        <span>회원 관리</span>
+                    </a></li>
+                    <li><a th:href="@{|/|}">
+                        <img th:src="@{/images/writing.png}"/>
+                        <span id="mypage_select">신고 관리</span>
+                    </a></li>
+                </ul>
+            </aside>
+
+            <div id="user_line"></div>
+
+
+            <section>
+
+
+
+            </section>
+        </div>
+
+    </div>
+</th:block>
+</body>
+</html>

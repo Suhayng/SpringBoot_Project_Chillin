@@ -4,7 +4,7 @@
 
 <div class="header" th:fragment="header">
     <div class="header_wrap">
-    <link rel="stylesheet" th:href="@{/css/main/header.css}">
+        <link rel="stylesheet" th:href="@{/css/main/header.css}">
 
         <div class="top_logo">
             <a th:href="@{/}"><img th:src="@{/images/logo.png}" alt="logo"></a>
@@ -31,18 +31,28 @@
                 </th:block>
                 <!-- 세션에 값이 있으면 -->
                 <th:block th:unless="${session.uid == null}">
-                    <li>
-                        <a th:href="@{/logout}">로그아웃</a>
-                    </li>
-                    <li>
-                        <a th:href="|/mypage/${session.uid}|">마이페이지</a>
-                    </li>
+                    <!-- 관리자 일 때-->
+                    <th:block th:if="${session.uid == 7}">
+                        <li>
+                            <a th:href="@{/logout}">로그아웃</a>
+                        </li>
+                        <li>
+                            <a th:href="|/admin|">관리자페이지</a>
+                        </li>
+                    </th:block>
+                    <!-- 일반 회원일 때 -->
+                    <th:block th:unless="${session.uid == 7}">
+                        <li>
+                            <a th:href="@{/logout}">로그아웃</a>
+                        </li>
+                        <li>
+                            <a th:href="|/mypage/${session.uid}|">마이페이지</a>
+                        </li>
+                    </th:block>
                 </th:block>
             </ul>
         </div>
     </div>
-<!--        <div class="top_line"></div>-->
-
 </div>
 
 </html>
