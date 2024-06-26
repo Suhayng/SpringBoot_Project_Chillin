@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.List;
 
 @Controller
@@ -54,10 +55,12 @@ public class MypageController {
 
     }
 
-    /**회원 탈퇴하기*/
+    /**마이페이지 - 회원 탈퇴하기*/
     @GetMapping("/delete_user/{userId}")
     public @ResponseBody long userDelete(@PathVariable Long userId){
         long id = mypageService.deleteUser(userId);
+
+        log.info("..........delid.... {}", id);
 
         return id;
     }
@@ -97,10 +100,20 @@ public class MypageController {
 
         //userId는 로그인한 사용자 messageID는 상대방 계정
 
+        // 전체 쪽지 목록 가져오기
         List<MessageDTO> list = mypageService.getMessageDetailList(userId, messageId);
+
+        //list에서 받은사람이 userid인 것들은 다 읽음 처리 하기
+//        mypageService.setIsRead(list, userId);
+
+
+        // 상대방 계정 닉네임 가져오기
+        UserDTO messageUser = mypageService.getUser(messageId);
+        String messageNickname = messageUser.getNickName();
 
         model.addAttribute("userId", userId);
         model.addAttribute("messageId", messageId);
+        model.addAttribute("messageNickname", messageNickname);
         model.addAttribute("list", list);
 
         return "mypage/mypage_message_detail";

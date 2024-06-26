@@ -6,12 +6,15 @@ let init = function (inits) {
 
 window.onload = function () {
 
-    //기존 사용자 아이디/닉네임
+    //기존 사용자 아이디/닉네임/userid
     let user_id = params.dto_id;
     let user_nickName = params.dto_nickName;
+    let user_userid = params.dto_userid;
+
 
     // console.log("user_id : "+ user_id);
     // console.log("user_nickName: "+ user_nickName);
+    // console.log("useruid : "+ user_userid);
 
 
 //수정 저장버튼
@@ -223,6 +226,46 @@ window.onload = function () {
         document.getElementById("password_check").appendChild(checkspan);
 
     };
+
+    /**회원 탈퇴하기*/
+    let deleteUserBtn = document.getElementById('deleteuser_btn');
+
+    deleteUserBtn.addEventListener('click', function () {
+
+
+        const userConfirmed = confirm('회원 탈퇴하시겠습니까?');
+
+        // 사용자가 확인 버튼을 눌렀을 때
+        if (userConfirmed) {
+
+            fetch('/delete_user/' + user_userid, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                    , 'Accept': 'application/json'
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                    if (data == user_userid) {
+
+                        alert('회원 탈퇴가 완료되었습니다.');
+                        location.href = '/logout';
+
+                    } else {
+                        alert('회원 탈퇴에 실패했습니다. 다시 시도해 주세요.');
+                    }
+                })
+                .catch(error => {
+                    console.error('회원 탈퇴 중 오류 발생:', error);
+                    alert('회원 탈퇴 중 오류가 발생했습니다.');
+                });
+        } else {
+            // 사용자가 취소 버튼을 눌렀을 때
+            console.log('회원 탈퇴를 취소했습니다.');
+        }
+    });
 
 
 }//window
