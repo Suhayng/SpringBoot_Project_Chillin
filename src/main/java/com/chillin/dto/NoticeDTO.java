@@ -16,4 +16,6 @@ public class NoticeDTO {
 
     private LocalDateTime writeDate;
     private LocalDateTime modifyDate;
+
+    private Boolean success;
 }
