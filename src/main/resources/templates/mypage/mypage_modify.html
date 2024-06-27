@@ -24,6 +24,7 @@
                 let inits = {
                     dto_id: [[${dto.getId()}]]
                     , dto_nickName: [[${dto.getNickName()}]]
+                    , dto_userid: [[${dto.getUserId()}]]
                 }
 
                 init(inits);
@@ -119,7 +120,7 @@
                         <li th:if="${#fields.hasErrors('name')}" th:errors="*{name}">name</li>
 
                         <li id="form_bottom">
-                            <a th:href="@{|/delete_user/${dto.getUserId()}|}">회원 탈퇴 하기</a>
+                            <button type="button" id="deleteuser_btn">회원 탈퇴 하기</button>
                             <div id="buttons">
                                 <button type="submit" id="btn_modi">수정</button>
                                 <button type="reset" id="reset">초기화</button>

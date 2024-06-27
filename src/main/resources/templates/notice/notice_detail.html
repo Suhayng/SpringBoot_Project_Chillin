@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout/BaseLayout}">
+<head>
+    <meta charset="UTF-8">
+
+    <th:block layout:fragment="title">
+
+        <title>Chillin</title>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <!-- 각 페이지의 css -->
+        <link rel="stylesheet" th:href="@{/css/board/detail.css}">
+
+    </th:block>
+
+    <th:block layout:fragment="javascript">
+        <!-- 각 페이지의 javascript -->
+
+    </th:block>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="content">
+        <div id="detail_wrap">
+            <div id="title_and_some">
+                <div id="title_div" th:text="${board.title}"></div>
+            </div>
+
+            <div id="write_date_div"
+                 th:text="'작성일 : '+${#temporals.format(board.writeDate,'yyyy-MM-dd HH:mm:ss')}"></div>
+            <div id="content_div" th:utext="${board.content}"></div>
+
+
+            <div id="clear_right"></div>
+
+            <div id="remove_modify">
+                <button id="remove_button">삭제</button>
+                <button id="modify_button">수정</button>
+            </div>
+
+        </div>
+
+        <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+        <script th:src="@{/js/notice/notice_modify.js}"></script>
+        <script th:inline="javascript">
+                init([[${board.noticeId}]])
+        </script>
+    </div>
+</th:block>
+</body>
+</html>
