@@ -8,4 +8,10 @@ public interface NoticeService {
     Page<NoticeDTO> noticeList(String searchTxt, Pageable pageable);
 
     NoticeDTO getNotice(Long noticeId);
+
+    boolean insertNotice(NoticeDTO dto);
+
+    void delete(Long noticeId);
+
+    Boolean modifyNotice(NoticeDTO dto);
 }
