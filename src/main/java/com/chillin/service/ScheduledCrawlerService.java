@@ -18,7 +18,7 @@ public class ScheduledCrawlerService {
     // 정각마다 크롤링 수행
     @Scheduled(cron = "0 0 0/1 * * *")
     public void Crawling() {
-//        newsService.startCrawling();
+        newsService.startCrawling();
     }
 
 }
