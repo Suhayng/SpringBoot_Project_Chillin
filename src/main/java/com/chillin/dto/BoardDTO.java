@@ -29,4 +29,6 @@ public class BoardDTO {
     private Integer boomup;
     private Integer boomdown;
 
+    private String timeAgo;
+
 }
