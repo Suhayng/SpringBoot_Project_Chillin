@@ -212,6 +212,21 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
     }
 
     @Override
+    public Long getTotalBoard(String search) {
+
+        BooleanExpression searchCondition = null;
+        if(search != null){
+            searchCondition = board.title.contains(search);
+        }
+        Long totalBoardCount = queryFactory.select(board.count())
+                .from(board)
+                .where(searchCondition)
+                .fetchOne();
+
+        return totalBoardCount;
+    }
+
+    @Override
     public List<BoardDTO> getDayList() {
 
 

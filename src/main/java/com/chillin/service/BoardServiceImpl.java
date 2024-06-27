@@ -250,6 +250,14 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.getWeekList();
     }
 
+    @Override
+    public Long getTotalPage(String search,int pageSize) {
+        Long getTotalBoard =boardRepository.getTotalBoard(search);
+        Long pageNum = getTotalBoard / pageSize + (getTotalBoard%pageSize == 0 ? 0 : 1);
+
+        return pageNum;
+    }
+
     private String uploading(String filePath, MultipartFile image) {
 
         UUID uuid = UUID.randomUUID();

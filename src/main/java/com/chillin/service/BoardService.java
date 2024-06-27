@@ -34,4 +34,6 @@ public interface BoardService {
     List<BoardDTO> getDayList();
 
     List<BoardDTO> getWeekList();
+
+    Long getTotalPage(String search,int pageSize);
 }
