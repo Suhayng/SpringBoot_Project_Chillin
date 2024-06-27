@@ -76,9 +76,11 @@
                 </th:block>
             </div>
 
-            <div>
+
+            <div id="create_notice" th:if="${session.uid == 7}">
                 <a th:href="@{/notice/create}" th:text="글쓰기"></a>
             </div>
+
 
         </div>
     </div>
