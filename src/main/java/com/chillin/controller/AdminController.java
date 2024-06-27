@@ -1,25 +1,31 @@
 package com.chillin.controller;
 
+
+import com.chillin.dto.BoardDTO;
+import com.chillin.dto.UserDTO;
+
 import com.chillin.dto.ComplainManageDTO;
 import com.chillin.service.BoardComplainService;
 import com.chillin.dto.NewsDTO;
 import com.chillin.dto.NoticeDTO;
+
 import com.chillin.service.AdminService;
 import com.chillin.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -29,8 +35,10 @@ public class AdminController {
     private final UserService userService;
     private final BoardComplainService complainService;
 
+
     private final AdminService adminService;
 
+    /** 관리자 - 회원 관리 */
     @GetMapping("/admin")
     public String MemberManagement(HttpSession session
             , Model model) {
@@ -45,14 +53,26 @@ public class AdminController {
         // 관리자 uid와 세션 uid 같은지 체크
         if (sessionUid == 7) {
 
+            List<UserDTO> userList = adminService.getUserList();
 
+            model.addAttribute("userList", userList);
             return "/admin/memberManagement";
         } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");
             return "redirect:/";
         }
-
     }
+
+
+    @GetMapping("/admin/user/{uid}")
+    public String MemberBoardList(@PathVariable Long uid
+                                ,Model model){
+
+        List<BoardDTO> boardDTOS = adminService.getUserBoardList(uid);
+        model.addAttribute("boardList" , boardDTOS);
+        return "/admin/memberBoard";
+    }
+
 
     @GetMapping("/admin/complain_manage/board/{type}")
     public String complainManagement(HttpSession session
@@ -226,5 +246,6 @@ public class AdminController {
             return "redirect:/";
         }
     }
+
 
 }

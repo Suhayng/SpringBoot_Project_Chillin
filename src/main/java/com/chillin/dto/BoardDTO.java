@@ -31,4 +31,6 @@ public class BoardDTO {
 
     private String timeAgo;
 
+    private Long UpDownCount;
+    private Long complainCount;
 }

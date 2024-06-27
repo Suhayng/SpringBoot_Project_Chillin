@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 @Service
@@ -42,5 +43,51 @@ public class NoticeServiceImpl implements NoticeService{
                 .writeDate(find.getWriteDate())
                 .modifyDate(find.getModifyDate())
                 .build();
+    }
+
+    @Override
+    public boolean insertNotice(NoticeDTO dto) {
+
+        boolean result = false;
+
+        NoticeBoard noticeBoard = NoticeBoard.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .build();
+        NoticeBoard save = noticeRepository.save(noticeBoard);
+
+        Long noticeId = save.getNoticeId();
+
+        if (noticeId > 0) {
+            dto.setNoticeId(noticeId);
+            dto.setWriteDate(save.getWriteDate());
+        }
+
+        result = true;
+
+        return result;
+    }
+
+    @Override
+    public void delete(Long noticeId) {
+
+        noticeRepository.deleteById(noticeId);
+
+    }
+
+    @Override
+    @Transactional
+    public Boolean modifyNotice(NoticeDTO dto) {
+
+        NoticeBoard noticeBoard = noticeRepository.findById(dto.getNoticeId())
+                .orElseThrow(RuntimeException::new);
+
+
+        noticeBoard.setTitle(dto.getTitle());
+        noticeBoard.setContent(dto.getContent());
+
+        noticeRepository.save(noticeBoard);
+
+        return true;
     }
 }
