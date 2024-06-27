@@ -41,15 +41,21 @@
                             <ul th:each="item:${boardList}">
                                 <a th:href="@{'/community/'+${item.bid}}">
                                     <li>
-                                        <th:block th:text="${item.nickname}"></th:block>
-                                        <th:block th:text="${item.timeAgo}"></th:block>
-                                        <span>
-                                    <!--<img th:src="@{/images/boomup.png}">-->
-                                    <th:block th:text="${item.boomup}+'붐업'"></th:block>
-                                    </span></br>
-
+                                        <div class="content-wrapper">
+                                            <div class="left-content">
+                                                <th:block th:text="${item.nickname}"></th:block>
+                                                <span>
+                                                <th:block th:text="${item.timeAgo}"></th:block>
+                                                </span>
+                                            </div>
+                                            <div class="right-content">
+                                                 <span>
+                                                     <img th:src="@{/images/boomup.png}" class="boomup-icon">
+                                                     <th:block th:text="${item.boomup}"></th:block>
+                                                 </span>
+                                            </div>
+                                        </div>
                                         <th:block th:text="${item.title}"></th:block>
-
                                     </li>
                                 </a>
 
@@ -64,12 +70,20 @@
                             <ul th:each="item:${dayFavList}">
                                 <a th:href="@{'/community/'+${item.bid}}">
                                     <li>
-                                        <th:block th:text="${item.nickname}"></th:block>
-                                        <th:block th:text="${item.timeAgo}"></th:block>
-                                        <span>
-                                    <!--<img th:src="@{/images/boomup.png}">-->
-                                    <th:block th:text="${item.boomup}+'붐업'"></th:block>
-                                    </span></br>
+                                        <div class="content-wrapper">
+                                            <div class="left-content">
+                                                <th:block th:text="${item.nickname}"></th:block>
+                                                <span>
+                                                <th:block th:text="${item.timeAgo}"></th:block>
+                                                </span>
+                                            </div>
+                                            <div class="right-content">
+                                                 <span>
+                                                     <img th:src="@{/images/boomup.png}" class="boomup-icon">
+                                                     <th:block th:text="${item.boomup}"></th:block>
+                                                 </span>
+                                            </div>
+                                        </div>
                                         <th:block th:text="${item.title}"></th:block>
                                     </li>
                                 </a>
@@ -96,7 +110,7 @@
                     <div class="block">
                         <div class="block_title">
                             <a th:href="@{/notice}">
-                            <h2>공지사항</h2>
+                                <h2>공지사항</h2>
                             </a>
                         </div>
                         <div class="block_content" th:if="!${noticeList.isEmpty()}">

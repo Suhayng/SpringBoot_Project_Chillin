@@ -92,3 +92,29 @@ form {
     display: flex;
     text-align: center;
 }
+
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.right-content {
+    text-align: right;
+}
+
+.boomup-icon {
+    width: 20px; /* 이미지 크기 조절 */
+    height: 20px;
+    vertical-align: middle;
+}
+
+.left-content > span {
+    color: #999999;
+    padding-left: 6px;
+}
+
+.left-content {
+    margin-bottom: 8px;
+    color: #6363a3;
+}
