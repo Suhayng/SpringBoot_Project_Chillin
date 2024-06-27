@@ -37,7 +37,7 @@
 
             <div id="clear_right"></div>
 
-            <div id="remove_modify">
+            <div id="remove_modify" th:if="${session.uid == 7}">
                 <button id="remove_button">삭제</button>
                 <button id="modify_button">수정</button>
             </div>
