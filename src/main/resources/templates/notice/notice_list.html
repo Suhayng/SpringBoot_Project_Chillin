@@ -12,7 +12,7 @@
 
     <th:block layout:fragment="css">
         <!-- 각 페이지의 css -->
-        <link rel="stylesheet" th:href="@{/css/news/news.css}">
+        <link rel="stylesheet" th:href="@{/css/notice/notice_list.css}">
     </th:block>
 
     <th:block layout:fragment="javascript">
@@ -39,7 +39,7 @@
                 <thead>
                 <tr class="title">
                     <th>제목</th>
-                    <th>작성일</th>
+                    <th class="th_2">작성일</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -50,7 +50,7 @@
                                 <th:block th:text="${item.title}"></th:block>
                             </a>
                         </td>
-                        <td th:text="${#temporals.format(item.writeDate, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${#temporals.format(item.writeDate, 'yyyy-MM-dd HH:mm')}" class="td_center"></td>
                     </tr>
                 </th:block>
                 </tbody>
@@ -75,6 +75,11 @@
                     <a th:href="@{/notice(page=${endPage}+1, searchTxt=${searchtxt})}" th:text="다음"></a>
                 </th:block>
             </div>
+
+            <div>
+                <a th:href="@{/notice/create}" th:text="글쓰기"></a>
+            </div>
+
         </div>
     </div>
 </th:block>

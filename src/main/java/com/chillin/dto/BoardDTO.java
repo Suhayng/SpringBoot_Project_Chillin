@@ -34,4 +34,6 @@ public class BoardDTO {
 
     private Boolean blind;
 
+    private Long UpDownCount;
+    private Long complainCount;
 }

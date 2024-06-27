@@ -12,4 +12,10 @@ import org.springframework.stereotype.Repository;
 public interface NoticeRepository extends JpaRepository<NoticeBoard, Long> {
 
     Page<NoticeBoard> findByTitleContaining(String title, Pageable pageable);
+
+    @Override
+    <S extends NoticeBoard> S save(S entity);
+
+    @Override
+    void deleteById(Long aLong);
 }
