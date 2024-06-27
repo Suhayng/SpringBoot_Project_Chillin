@@ -99,13 +99,13 @@
                             <h2>공지사항</h2>
                             </a>
                         </div>
-                        <div class="block_content">
-                            <ul>
-                                <li>게시글 1</li>
-                                <li>게시글 2</li>
-                                <li>게시글 3</li>
-                                <li>게시글 4</li>
-                                <li>게시글 5</li>
+                        <div class="block_content" th:if="!${noticeList.isEmpty()}">
+                            <ul th:each="item:${noticeList}">
+                                <li>
+                                    <a th:href="@{|/notice/${item.noticeId}|}">
+                                        <th:block th:text="${item.title}"></th:block>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>

@@ -4,6 +4,8 @@ import com.chillin.dto.NoticeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface NoticeService {
     Page<NoticeDTO> noticeList(String searchTxt, Pageable pageable);
 
@@ -14,4 +16,6 @@ public interface NoticeService {
     void delete(Long noticeId);
 
     Boolean modifyNotice(NoticeDTO dto);
+
+    List<NoticeDTO> mainNoticeList();
 }
