@@ -1,20 +1,28 @@
 package com.chillin.service;
 
 import com.chillin.domain.NoticeBoard;
+import com.chillin.domain.QNoticeBoard;
 import com.chillin.dto.NoticeDTO;
 import com.chillin.repository.notice.NoticeRepository;
+import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static com.chillin.domain.QNoticeBoard.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class NoticeServiceImpl implements NoticeService{
 
     private final NoticeRepository noticeRepository;
+    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public Page<NoticeDTO> noticeList(String searchTxt, Pageable pageable) {
@@ -89,5 +97,26 @@ public class NoticeServiceImpl implements NoticeService{
         noticeRepository.save(noticeBoard);
 
         return true;
+    }
+
+    @Override
+    public List<NoticeDTO> mainNoticeList() {
+        List<Tuple> fetch = jpaQueryFactory.select(noticeBoard.title, noticeBoard.noticeId)
+                .from(noticeBoard)
+                .orderBy(noticeBoard.noticeId.desc())
+                .offset(0)
+                .limit(5)
+                .fetch();
+
+        List<NoticeDTO> noticeDTOList = fetch.stream().map(item -> {
+            NoticeDTO dto = NoticeDTO.builder()
+                    .title(item.get(noticeBoard.title))
+                    .noticeId(item.get(noticeBoard.noticeId))
+                    .build();
+            return dto;
+        }).collect(Collectors.toList());
+
+
+        return noticeDTOList;
     }
 }
