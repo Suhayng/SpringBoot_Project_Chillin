@@ -30,6 +30,7 @@ public class RepQueryDSLImpl implements RepQueryDSL {
 
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public List<RepDTO> getReps(Long bid) {
 
@@ -41,6 +42,7 @@ public class RepQueryDSLImpl implements RepQueryDSL {
                                 , rep.writeDate
                                 , rep.user.userId.as("uid")
                                 , rep.board.boardId.as("bid")
+                                , rep.blind
                                 , rep.user.nickname
                         )).from(rep)
                         .where(rep.board.boardId.eq(bid))
@@ -61,6 +63,7 @@ public class RepQueryDSLImpl implements RepQueryDSL {
                                 , rep.user.userId.as("uid")
                                 , rep.board.boardId.as("bid")
                                 , rep.user.nickname
+                                , rep.blind
                         )).from(rep)
                         /*.leftJoin(repBoom) *//* 영속성으로 쿼리가 덜 날라가지 않을까.. 하는 마음*//*
                         .on(rep.repId.eq(repBoom.rep.repId))
@@ -79,7 +82,7 @@ public class RepQueryDSLImpl implements RepQueryDSL {
 
             String status = "no";
 
-            if(uid !=null) {
+            if (uid != null) {
                 status = queryFactory.select(
                                 repBoom.upDown.when(true).then("up")
                                         .otherwise("down")
@@ -107,7 +110,7 @@ public class RepQueryDSLImpl implements RepQueryDSL {
     public String getStatusMine(Long rid, Long uid) {
         String status = "no";
 
-        if(uid !=null) {
+        if (uid != null) {
             status = queryFactory.select(
                             repBoom.upDown.when(true).then("up")
                                     .otherwise("down")
@@ -154,7 +157,7 @@ public class RepQueryDSLImpl implements RepQueryDSL {
     }
 
     @Override
-    public void getOneRepBoom(Long rid, Map<String,Object> map) {
+    public void getOneRepBoom(Long rid, Map<String, Object> map) {
 
         Tuple tuple = queryFactory.select(
                         repBoom.upDown.when(true).then(1).otherwise(0).sum().as("boomup")
@@ -163,13 +166,13 @@ public class RepQueryDSLImpl implements RepQueryDSL {
                 .from(repBoom)
                 .where(repBoom.rep.repId.eq(rid))
                 .fetchOne();
-        Integer boomup = tuple.get(0,Integer.class);
-        if(boomup == null) boomup = 0;
-        map.put("boomup",boomup);
+        Integer boomup = tuple.get(0, Integer.class);
+        if (boomup == null) boomup = 0;
+        map.put("boomup", boomup);
 
-        Integer boomdown = tuple.get(1,Integer.class);
-        if(boomdown == null) boomdown = 0;
-        map.put("boomdown",boomdown);
+        Integer boomdown = tuple.get(1, Integer.class);
+        if (boomdown == null) boomdown = 0;
+        map.put("boomdown", boomdown);
     }
 }
   /*

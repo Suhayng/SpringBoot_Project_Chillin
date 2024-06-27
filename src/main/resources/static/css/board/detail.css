@@ -6,7 +6,10 @@
     margin-right: auto;
     padding-top: 40px;
 }
-
+.blind_text{
+    text-align: center;
+    color: #888888;
+}
 #title_and_some{
     width: 100%;
     display: flex;

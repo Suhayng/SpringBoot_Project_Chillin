@@ -31,4 +31,7 @@ public class BoardDTO {
 
     private String timeAgo;
 
+
+    private Boolean blind;
+
 }

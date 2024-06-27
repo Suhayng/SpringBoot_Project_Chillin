@@ -26,4 +26,5 @@ public class RepDTO {
 
     private String status;
 
+    private Boolean blind;
 }
