@@ -72,6 +72,31 @@ public class AdminController {
         }
     }
 
+
+    /**
+     * 그 글에 대한 신고를 모아보는 곳
+     */
+    @GetMapping("/admin/complain/board/{bid}")
+    public String boardUnionComplain(@PathVariable("bid") Long bid
+            , HttpSession session
+            , Model model) {
+
+        Long sessionUid = (Long) session.getAttribute("uid");
+
+        // 관리자 uid와 세션 uid 같은지 체크
+        if (sessionUid == 7) {
+
+            List<ComplainManageDTO> list = complainService.boardUnionComplain(bid);
+            model.addAttribute("list", list);
+            return "/admin/complain_management";
+        } else {
+            log.info("관리자 페이지 접근 권한이 없습니다.");
+            return "redirect:/";
+        }
+    }
+
+
+
     @GetMapping("/board/blind/{action}/{bid}")
     public String blinding(@PathVariable("action") String action
             , @PathVariable("bid") Long bid
@@ -111,6 +136,7 @@ public class AdminController {
         }
     }
 
+
     @GetMapping("/admin/complain_manage/rep/{type}")
     public String complainRepManagement(HttpSession session
             , @PathVariable("type") String type
@@ -137,6 +163,24 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/admin/complain/rep/{cid}")
+    public String repUnionComplain(@PathVariable("cid") Long cid
+            , HttpSession session
+            , Model model) {
+
+        Long sessionUid = (Long) session.getAttribute("uid");
+
+        // 관리자 uid와 세션 uid 같은지 체크
+        if (sessionUid == 7) {
+
+            List<ComplainManageDTO> list = complainService.repUnionComplain(cid);
+            model.addAttribute("list", list);
+            return "/admin/rep_comp_manage";
+        } else {
+            log.info("관리자 페이지 접근 권한이 없습니다.");
+            return "redirect:/";
+        }
+    }
     @GetMapping("/rep/blind/{action}/{cid}")
     public String repBlinding(@PathVariable("action") String action
             , @PathVariable("cid") Long cid
@@ -156,6 +200,7 @@ public class AdminController {
         }
 
     }
+
     @GetMapping("/rep/complain/complete/{cid}")
     public String repCompleting(@PathVariable("cid") Long cid
             , HttpSession session) {

@@ -23,4 +23,8 @@ public interface BoardComplainService {
     void repBlinding(Long cid, String action);
 
     void repCompleting(Long cid);
+
+    List<ComplainManageDTO> boardUnionComplain(Long bid);
+
+    List<ComplainManageDTO> repUnionComplain(Long cid);
 }

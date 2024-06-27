@@ -46,12 +46,14 @@
 
 
             <section id="complain_section">
-                <h2>댓글 신고</h2>
-                <div>
+                <h2>댓글 관리</h2>
+                <div id="comp_board_rep">
                     <a href="/admin/complain_manage/board/all">글 관리</a>
+                    <span>댓글 관리</span>
                 </div>
                 <div>
                     <a class="section_a" href="/admin/complain_manage/rep/all">전체보기</a>
+                    <a class="section_a" href="/admin/complain_manage/rep/open">공개 댓글</a>
                     <a class="section_a" href="/admin/complain_manage/rep/blind">블라인드 댓글</a>
                     <a class="section_a" href="/admin/complain_manage/rep/complete">완료 댓글</a>
                     <a class="section_a" href="/admin/complain_manage/rep/non_complete">미완료 댓글</a>
@@ -84,18 +86,18 @@
                         </div>
                         <div class="manage_button_div">
                             <th:block th:if="${item.blind}">
-                                <a th:href="@{'/rep/blind/cancel/'+${item.cid}}">블라인드 해제</a>
+                                <a th:href="@{'/rep/blind/cancel/'+${item.target}}" class="b_cancel_a">블라인드 해제</a>
                             </th:block>
                             <th:block th:unless="${item.blind}">
-                                <a th:href="@{'/rep/blind/do/'+${item.cid}}">블라인드 처리</a>
+                                <a th:href="@{'/rep/blind/do/'+${item.target}}" class="blind_a">블라인드 처리</a>
                             </th:block>
                         </div>
                         <div class="manage_button_div">
-                            <th:block th:unless="${item.complete}">
-                                <a th:href="@{'/rep/complain/complete/'+${item.cid}}">완료하기</a>
-                            </th:block>
                             <th:block th:if="${item.complete}">
-                                <span th:text="작업완료"></span>
+                                <span class="completed">완료된 신고</span>
+                            </th:block>
+                            <th:block th:unless="${item.complete}">
+                                <a th:href="@{'/rep/complain/complete/'+${item.cid}}" class="complete_a">완료하기</a>
                             </th:block>
                         </div>
                     </div>

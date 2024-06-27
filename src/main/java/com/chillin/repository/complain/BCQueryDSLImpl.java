@@ -147,6 +147,8 @@ public class BCQueryDSLImpl implements BCQueryDSL {
 
         if (type.equals("blind")) {
             searchCondition = board.blind.eq(true);
+        } else if (type.equals("open")) {
+            searchCondition = board.blind.eq(false);
         } else if (type.equals("complete")) {
             searchCondition = boardComplain.complete.eq(true);
         } else if (type.equals("non_complete")) {
@@ -174,6 +176,67 @@ public class BCQueryDSLImpl implements BCQueryDSL {
                 .fetchJoin()
                 .where(searchCondition)
                 .offset(startRow).limit(pageSize)
+                .fetch();
+
+        return list;
+    }
+
+    @Override
+    public List<ComplainManageDTO> getBoardUnionList(Long bid) {
+
+        List<ComplainManageDTO> list = queryFactory.select(
+                        Projections.fields(
+                                ComplainManageDTO.class
+                                , boardComplain.boardComplainId.as("cid")
+                                , board.boardId.as("target")
+                                , board.title
+                                , board.blind
+                                , user.userId.as("uid")
+                                , user.nickname
+                                , boardComplain.reason
+                                , boardComplain.detail
+                                , boardComplain.complete))
+                .from(boardComplain)
+                .innerJoin(board)
+                .on(boardComplain.board.boardId.eq(board.boardId))
+                .fetchJoin()
+                .innerJoin(user)
+                .on(board.user.userId.eq(user.userId))
+                .fetchJoin()
+                .where(board.boardId.eq(bid))
+                .fetch();
+
+        return list;
+    }
+
+    @Override
+    public List<ComplainManageDTO> getRepUnionList(Long cid) {
+
+        Long rid = queryFactory.select(repComplain.rep.repId)
+                .from(repComplain)
+                .where(repComplain.repComplainId.eq(cid))
+                .fetchOne();
+
+        List<ComplainManageDTO> list = queryFactory.select(
+                        Projections.fields(
+                                ComplainManageDTO.class
+                                , repComplain.repComplainId.as("cid")
+                                , rep.board.boardId.as("target")
+                                , rep.content.as("title")
+                                , rep.blind
+                                , user.userId.as("uid")
+                                , user.nickname
+                                , repComplain.reason
+                                , repComplain.detail
+                                , repComplain.complete))
+                .from(repComplain)
+                .innerJoin(rep)
+                .on(repComplain.rep.repId.eq(rep.repId))
+                .fetchJoin()
+                .innerJoin(user)
+                .on(rep.user.userId.eq(user.userId))
+                .fetchJoin()
+                .where(rep.repId.eq(rid))
                 .fetch();
 
         return list;
@@ -211,6 +274,8 @@ public class BCQueryDSLImpl implements BCQueryDSL {
 
         if (type.equals("blind")) {
             searchCondition = rep.blind.eq(true);
+        }else if (type.equals("open")) {
+            searchCondition = rep.blind.eq(false);
         } else if (type.equals("complete")) {
             searchCondition = repComplain.complete.eq(true);
         } else if (type.equals("non_complete")) {
@@ -276,6 +341,7 @@ public class BCQueryDSLImpl implements BCQueryDSL {
                 .where(repComplain.repComplainId.eq(cid))
                 .execute();
     }
+
 
     private Long countComplain(Long bid) {
         return queryFactory.select(boardComplain.count())

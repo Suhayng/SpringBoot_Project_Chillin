@@ -59,6 +59,21 @@ public class BoardComplainServiceImpl implements BoardComplainService{
         return list;
     }
 
+
+    @Override
+    public List<ComplainManageDTO> boardUnionComplain(Long bid) {
+        List<ComplainManageDTO> list =  bcRepository.getBoardUnionList(bid);
+
+        return list;
+    }
+
+    @Override
+    public List<ComplainManageDTO> repUnionComplain(Long cid) {
+        List<ComplainManageDTO> list =  bcRepository.getRepUnionList(cid);
+
+        return list;
+    }
+
     @Override
     public void blinding(Long bid, String action) {
         bcRepository.blinding(bid,action);
@@ -89,4 +104,5 @@ public class BoardComplainServiceImpl implements BoardComplainService{
     public void repCompleting(Long cid) {
         bcRepository.repCompleting(cid);
     }
+
 }
