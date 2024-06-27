@@ -20,34 +20,5 @@ public class AdminServiceImpl implements AdminService{
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
-    private final NoticeRepository noticeRepository;
 
-    @Override
-    public Page<NoticeDTO> noticeList(String searchTxt, Pageable pageable) {
-
-        Page<NoticeBoard> noticePage = noticeRepository.findByTitleContaining(searchTxt, pageable);
-
-        return noticePage.map(item -> NoticeDTO.builder()
-                .noticeId(item.getNoticeId())
-                .title(item.getTitle())
-                .content(item.getContent())
-                .writeDate(item.getWriteDate())
-                .modifyDate(item.getModifyDate())
-                .build());
-
-    }
-
-    @Override
-    public NoticeDTO getNotice(Long noticeId) {
-        Optional<NoticeBoard> noticeBoard = noticeRepository.findById(noticeId);
-        NoticeBoard find = noticeBoard.orElseThrow(() -> new RuntimeException());
-
-        return NoticeDTO.builder()
-                .noticeId(find.getNoticeId())
-                .title(find.getTitle())
-                .content(find.getContent())
-                .writeDate(find.getWriteDate())
-                .modifyDate(find.getModifyDate())
-                .build();
-    }
 }
