@@ -98,6 +98,32 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="page">
+
+                <!-- 이전 버튼 -->
+                <th:block th:class="before" th:if="${startPage>1}">
+                    <a th:href="@{/community(page=${startPage}-1, search=${search})}" th:text="이전"></a>
+                </th:block>
+
+
+                <!-- 페이지 블록 -->
+                <th:block th:class="page_block" th:each="index:${#numbers.sequence(startPage, endPage)}">
+                    <span th:if="${index==thisPage}" th:text="${index}"></span>
+                    <span th:if="${index!=thisPage}">
+                        <a th:href="@{/community(page=${index},searchTxt=${searchtxt})}"><span th:text="${index}"/></a>
+                    </span>
+                </th:block>
+
+                <!-- 다음 버튼 -->
+                <th:block th:class="next" th:if="${endPage < totalPage}">
+                    <a th:href="@{/community(page=${endPage}+1, search=${search})}" th:text="다음"></a>
+                </th:block>
+
+            </div>
+            <div id="create_community">
+                <a href="/community/create">글쓰기</a>
+            </div>
         </div>
     </div>
 </th:block>

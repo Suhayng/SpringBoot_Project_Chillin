@@ -258,13 +258,18 @@ public class BoardController {
             iPage = 1;
         }
 
-        int pageSize = 10;
+
+        int pageSize = 10; // page 안에 몇개의 row
+        int blockSize = 5;
 
         /* title로만 할거여서.. */
+
+        Long totalPage = boardService.getTotalPage(search,pageSize);
         List<BoardDTO> recentList = boardService.getRecentList(search,iPage,pageSize);
+
         model.addAttribute("recent",recentList);
 
-        if(search == null || "".equals(search) && iPage == 1){
+        if((search == null || "".equals(search)) && iPage == 1){
             /* 이럴 때만 일간, 주간 인기글 나오게 */
             List<BoardDTO> dayList = boardService.getDayList();
             List<BoardDTO> weekList = boardService.getWeekList();
@@ -278,6 +283,16 @@ public class BoardController {
         /*
         * 페이징에 관련된 부분 넣기
         * */
+        int startPage = ((iPage -1)/blockSize)*blockSize + 1;
+        int endPage = startPage + blockSize - 1;
+        endPage = endPage < totalPage ? endPage : totalPage.intValue();
+
+        model.addAttribute("thisPage",iPage);
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("search", search);
+        model.addAttribute("totalPage",totalPage);
+
         return "board/community_list";
     }
 
