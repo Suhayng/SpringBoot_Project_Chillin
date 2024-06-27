@@ -7,7 +7,7 @@
 
     <th:block layout:fragment="title">
         <link rel="icon" th:href="@{/images/title.png}">
-        <title>칠 린 | 관리자 - 회원 관리</title>
+        <title>칠 린 | 회원 관리</title>
     </th:block>
 
     <th:block layout:fragment="css">
@@ -17,6 +17,7 @@
 
     <th:block layout:fragment="javascript">
         <!-- 각 페이지의 javascript -->
+        <script th:src="@{/js/admin/member_management.js}"></script>
     </th:block>
 </head>
 <body>
@@ -67,7 +68,7 @@
                                 </a>
                             </td>
                             <td>
-                                <button th:class="delete_btn">회원 삭제</button>
+                                <button th:class="delete_btn" th:onclick="|deleteUser(${item.userId})|">회원 탈퇴</button>
                             </td>
                         </tr>
                     </th:block>
@@ -79,7 +80,5 @@
     </div>
 </th:block>
 </body>
-<script>
 
-</script>
 </html>
