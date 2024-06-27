@@ -1,12 +1,16 @@
 package com.chillin.service;
 
 import com.chillin.dto.BoardComplainDTO;
+import com.chillin.dto.ComplainManageDTO;
 import com.chillin.dto.RepComplainDTO;
 import com.chillin.repository.board.BoardRepository;
 import com.chillin.repository.complain.BoardComplainRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -44,4 +48,61 @@ public class BoardComplainServiceImpl implements BoardComplainService{
         }
 
     }
+
+    @Override
+    public List<ComplainManageDTO> getBoardList(int page, int pageSize,String type) {
+
+        int startRow = (page - 1)*pageSize;
+
+        List<ComplainManageDTO> list =  bcRepository.getBoardList(startRow,pageSize,type);
+
+        return list;
+    }
+
+
+    @Override
+    public List<ComplainManageDTO> boardUnionComplain(Long bid) {
+        List<ComplainManageDTO> list =  bcRepository.getBoardUnionList(bid);
+
+        return list;
+    }
+
+    @Override
+    public List<ComplainManageDTO> repUnionComplain(Long cid) {
+        List<ComplainManageDTO> list =  bcRepository.getRepUnionList(cid);
+
+        return list;
+    }
+
+    @Override
+    public void blinding(Long bid, String action) {
+        bcRepository.blinding(bid,action);
+    }
+
+    @Override
+    public void completing(Long cid) {
+        bcRepository.completing(cid);
+    }
+
+    @Override
+    public List<ComplainManageDTO> getRepList(int page, int pageSize, String type) {
+
+        int startRow = (page - 1)*pageSize;
+
+        List<ComplainManageDTO> list =  bcRepository.getRepList(startRow,pageSize,type);
+
+        return list;
+    }
+
+    @Override
+    public void repBlinding(Long cid, String action) {
+        bcRepository.repBlinding(cid,action);
+        bcRepository.repCompleting(cid);
+    }
+
+    @Override
+    public void repCompleting(Long cid) {
+        bcRepository.repCompleting(cid);
+    }
+
 }
