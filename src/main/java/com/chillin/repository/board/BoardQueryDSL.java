@@ -33,4 +33,6 @@ public interface BoardQueryDSL {
     List<BoardDTO> getMyBoardList(Long uid);
 
     List<BoardDTO> getUserBoardList(Long uid);
+
+
 }

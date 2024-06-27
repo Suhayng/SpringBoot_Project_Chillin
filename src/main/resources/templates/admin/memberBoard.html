@@ -7,7 +7,7 @@
 
     <th:block layout:fragment="title">
         <link rel="icon" th:href="@{/images/title.png}">
-        <title>칠 린 | 관리자 - 회원 게시판 </title>
+        <title>칠 린 | 관리자 - 작성된 글 보기 </title>
     </th:block>
 
     <th:block layout:fragment="css">
@@ -44,31 +44,33 @@
             <div id="user_line"></div>
 
             <section>
-                <h3>회원 관리</h3>
+
+                <h3>
+                </h3>
                 <table>
                     <thead>
                     <tr th:class="title">
-                        <th>회원번호</th>
-                        <th>아이디</th>
-                        <th>이름</th>
-                        <th>닉네임</th>
+                        <th>글번호</th>
+                        <th>제목</th>
+                        <th>작성일</th>
+                        <th>수정일</th>
+                        <th>붐업수</th>
+                        <th>신고수</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <th:block th:class="block-list" th:if="!${userList.isEmpty()}">
-                        <tr th:each="item:${userList}">
-                            <td th:text="${item.userId}"></td>
-                            <td th:text="${item.id}"></td>
-                            <td th:text="${item.name}"></td>
-                            <td th:text="${item.nickName}"></td>
+                    <th:block th:class="block-list" th:if="!${boardList.isEmpty()}">
+                        <tr th:each="item:${boardList}">
+                            <td th:text="${item.bid}"></td>
                             <td>
-                                <button th:class="delete_btn">회원 삭제</button>
-                            </td>
-                            <td>
-                                <a th:href="@{|/admin/user/${item.userId}|}">
-                                    <button th:class="user_board_list">글보기</button>
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <span th:text="${item.title}"></span>
                                 </a>
                             </td>
+                            <td th:text="${#temporals.format(item.writeDate,'yy.MM.dd HH:mm')}"></td>
+                            <td th:text="${#temporals.format(item.modifyDate,'yy.MM.dd HH:mm')}"></td>
+                            <td th:text="${item.upDownCount}"></td>
+                            <td th:text="${item.complainCount}"></td>
                         </tr>
                     </th:block>
                     </tbody>

@@ -4,6 +4,7 @@ import com.chillin.domain.Board;
 import com.chillin.domain.BoardBoom;
 
 import static com.chillin.domain.QBoardBoom.*;
+import static com.chillin.domain.QBoardComplain.boardComplain;
 import static com.chillin.domain.QBookmark.*;
 import static com.chillin.domain.QBoard.*;
 import static com.chillin.domain.QUser.*;
@@ -18,6 +19,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ import static com.chillin.domain.QRepBoom.repBoom;
 import static com.chillin.domain.QBookmark.*;
 
 @RequiredArgsConstructor
+@Slf4j
 public class BoardQueryDSLImpl implements BoardQueryDSL {
 
     private final JPAQueryFactory queryFactory;
@@ -352,4 +355,58 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
                 .fetch();
         return list;
     }
+
+    /** 회원이 쓴 글 조회 */
+    @Override
+    public List<BoardDTO> getUserBoardList(Long uid) {
+
+        List<Tuple> fetch = queryFactory.select(
+                          board.boardId
+                        , board.title
+                        , board.writeDate
+                        , board.modifyDate
+                        , boardBoom.upDown.count())
+                .from(board)
+                .innerJoin(boardBoom).on(board.boardId.eq(boardBoom.board.boardId))
+                .where(board.user.userId.eq(uid))
+                .groupBy(board.title, board, board.writeDate, board.modifyDate)
+                .fetch();
+
+        List<BoardDTO> boardDTOS = new ArrayList<>();
+
+        for (Tuple tuple : fetch) {
+            Long boardId = tuple.get(board.boardId);
+            String title = tuple.get(board.title);
+            LocalDateTime writeDate = tuple.get(board.writeDate);
+            LocalDateTime modifyDate = tuple.get(board.modifyDate);
+            Long updownCount = tuple.get(boardBoom.upDown.count());
+
+            // 서브쿼리로 신고수 가져오기
+            Long complainCount = queryFactory.select(boardComplain.count())
+                    .from(boardComplain)
+                    .where(boardComplain.board.boardId.eq(boardId))
+                    .fetchOne();
+
+            BoardDTO dto = new BoardDTO();
+            dto.setBid(boardId);
+            dto.setTitle(title);
+            dto.setWriteDate(writeDate);
+            dto.setModifyDate(modifyDate);
+            dto.setUpDownCount(updownCount);
+            dto.setComplainCount(complainCount);
+
+            log.info("board...{}", boardId);
+            log.info("title...{}", title);
+            log.info("writedate...{}", writeDate);
+            log.info("modifyDate...{}", modifyDate);
+            log.info("updownCount...{}", updownCount);
+            log.info("complainCount...{}", complainCount);
+
+            boardDTOS.add(dto);
+        }
+
+        return boardDTOS;
+    }
+
+
 }

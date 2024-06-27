@@ -10,10 +10,6 @@ import com.chillin.dto.UserDTO;
 import java.util.List;
 
 public interface AdminService {
-    Page<NoticeDTO> noticeList(String searchTxt, Pageable pageable);
-
-    NoticeDTO getNotice(Long noticeId);
-
     List<UserDTO> getUserList();
 
     List<BoardDTO> getUserBoardList(Long uid);

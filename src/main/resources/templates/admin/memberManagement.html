@@ -62,12 +62,12 @@
                             <td th:text="${item.name}"></td>
                             <td th:text="${item.nickName}"></td>
                             <td>
-                                <button th:class="delete_btn">회원 삭제</button>
-                            </td>
-                            <td>
                                 <a th:href="@{|/admin/user/${item.userId}|}">
                                     <button th:class="user_board_list">글보기</button>
                                 </a>
+                            </td>
+                            <td>
+                                <button th:class="delete_btn">회원 삭제</button>
                             </td>
                         </tr>
                     </th:block>
