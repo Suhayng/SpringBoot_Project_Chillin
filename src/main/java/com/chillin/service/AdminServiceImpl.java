@@ -24,6 +24,7 @@ public class AdminServiceImpl implements AdminService{
 
     private final UserRepository userRepository;
     private final BoardRepository boardRepository;
+
     private final ModelMapper modelMapper;
 
 
@@ -46,4 +47,5 @@ public class AdminServiceImpl implements AdminService{
         List<BoardDTO> boardDTOS= boardRepository.getUserBoardList(uid);
         return boardDTOS;
     }
+
 }
