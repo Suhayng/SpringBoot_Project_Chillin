@@ -24,4 +24,6 @@ public interface MypageService {
     List<BoardDTO> getBookmarkList(Long userId);
 
     List<BoardDTO> getMyBoardList(Long userId);
+
+    void setIsRead(List<MessageDTO> list, Long userId);
 }

@@ -5,7 +5,6 @@ import com.chillin.domain.BoardBoom;
 import com.chillin.domain.User;
 import com.chillin.dto.BoardDTO;
 import com.chillin.repository.board.BoardRepository;
-import groovy.lang.Tuple;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

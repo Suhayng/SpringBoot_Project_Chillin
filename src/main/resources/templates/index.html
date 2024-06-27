@@ -29,30 +29,30 @@
                 <aside class="sidebar">
                     <img th:src="@{/images/banner_2.png}" alt="배너">
                 </aside>
-                <!--
-                                <div class="main_wrap">
-                -->
-
-                <!--     <div th:class="search">
-                         <form action="/main" method="get">
-                             &lt;!&ndash;                    <img th:src="@{/images/find.png}" alt="돋보기">&ndash;&gt;
-                             <input type="text" name="searchTxt" placeholder="관심 있는 내용을 검색해보세요!">
-                         </form>
-                     </div>-->
-
                 <main class="main_content">
 
                     <div class="block">
                         <div class="block_title">
-                            <h2>커뮤니티</h2>
+                            <a th:href="@{/community}">
+                                <h2>커뮤니티</h2>
+                            </a>
                         </div>
-                        <div class="block_content">
-                            <ul>
-                                <li>게시글 1</li>
-                                <li>게시글 2</li>
-                                <li>게시글 3</li>
-                                <li>게시글 4</li>
-                                <li>게시글 5</li>
+                        <div class="block_content" th:if="!${boardList.isEmpty()}">
+                            <ul th:each="item:${boardList}">
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <li>
+                                        <th:block th:text="${item.nickname}"></th:block>
+                                        <th:block th:text="${item.timeAgo}"></th:block>
+                                        <span>
+                                    <!--<img th:src="@{/images/boomup.png}">-->
+                                    <th:block th:text="${item.boomup}+'붐업'"></th:block>
+                                    </span></br>
+
+                                        <th:block th:text="${item.title}"></th:block>
+
+                                    </li>
+                                </a>
+
                             </ul>
                         </div>
                     </div>
@@ -60,13 +60,20 @@
                         <div class="block_title">
                             <h2>오늘의 인기글</h2>
                         </div>
-                        <div class="block_content">
-                            <ul>
-                                <li>게시글 1</li>
-                                <li>게시글 2</li>
-                                <li>게시글 3</li>
-                                <li>게시글 4</li>
-                                <li>게시글 5</li>
+                        <div class="block_content" th:if="!${dayFavList.isEmpty()}">
+                            <ul th:each="item:${dayFavList}">
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <li>
+                                        <th:block th:text="${item.nickname}"></th:block>
+                                        <th:block th:text="${item.timeAgo}"></th:block>
+                                        <span>
+                                    <!--<img th:src="@{/images/boomup.png}">-->
+                                    <th:block th:text="${item.boomup}+'붐업'"></th:block>
+                                    </span></br>
+                                        <th:block th:text="${item.title}"></th:block>
+                                    </li>
+                                </a>
+
                             </ul>
                         </div>
                     </div>
@@ -88,7 +95,9 @@
                     </div>
                     <div class="block">
                         <div class="block_title">
+                            <a th:href="@{/notice}">
                             <h2>공지사항</h2>
+                            </a>
                         </div>
                         <div class="block_content">
                             <ul>
