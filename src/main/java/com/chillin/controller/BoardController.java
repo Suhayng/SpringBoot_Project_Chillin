@@ -295,5 +295,16 @@ public class BoardController {
 
         return "board/community_list";
     }
+/*
+
+    @GetMapping("/community/user/{nickname}")
+    public String userBoard(@PathVariable(value = "nickname",required = false) String nickname
+            ,Model model){
+        List<BoardDTO> userBoard = boardService.getUserBoard(nickname);
+        model.addAttribute("recent",userBoard);
+        return "board/community_list";
+    }
+
+*/
 
 }

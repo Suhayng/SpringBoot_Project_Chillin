@@ -271,7 +271,7 @@ let user_see = function (uid, myid, nickname, user_span) {
 
     user_click_board.classList.add('user_click_some');
     let user_board_a = document.createElement('a');
-    user_board_a.href = '/community/user/' + uid;
+    user_board_a.href = '/community/user/' + nickname;
     let user_board_text = document.createTextNode('작성 글 보기');
     user_board_a.appendChild(user_board_text);
     user_click_board.appendChild(user_board_a);

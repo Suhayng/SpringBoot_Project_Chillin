@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,13 @@ public class BoardComplainServiceImpl implements BoardComplainService{
 
         if(prevWrite){
             boolean blind = bcRepository.write(dto,uid,true); // completed 를 강제로 1로 둬서 블라인드를 주지는 않게
+
+            System.out.println("============================");
+            System.out.println("============================");
+            boardSlack(dto.getBid(),dto.getReason(),dto.getDetail());
+            System.out.println("============================");
+            System.out.println("============================");
+
             if(blind){
                 /*블라인드 하는 행위*/
             }
@@ -32,6 +41,31 @@ public class BoardComplainServiceImpl implements BoardComplainService{
             bcRepository.write(dto,uid,false); // complete 를 0 으로 둬서 5개 쌓이면 블라인드 주게
         }
 
+    }
+
+    /** 슬랙으로 보내는 행위 */
+    private void boardSlack(Long bid,String reason, String detail) {
+        try {
+            String pythonExe = "C:\\Users\\db400tea\\AppData\\Local\\Programs\\Python\\Python312\\python.exe";
+            String pythonScriptPath = "C:\\Users\\db400tea\\Desktop\\CHILLIN\\SpringBoot_Project_Chillin\\chillin\\src\\main\\resources\\static\\python\\slack.py";
+            String goToBoard = "localhost:8080/community/"+bid;
+            ProcessBuilder processBuilder = new ProcessBuilder(pythonExe, pythonScriptPath,goToBoard,reason,detail);
+            processBuilder.redirectErrorStream(true);
+            Process process = processBuilder.start();
+
+            // 출력 읽기
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            // 프로세스 종료 코드 확인
+            int exitCode = process.waitFor();
+            System.out.println("Exited with code: " + exitCode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
