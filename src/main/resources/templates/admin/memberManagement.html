@@ -13,6 +13,68 @@
     <th:block layout:fragment="css">
         <!-- 각 페이지의 css -->
         <link rel="stylesheet" th:href="@{/css/admin/admin_member.css}">
+        <style>
+            .title th {
+                /*background-color: #f2f2f2;*/
+                padding: 10px;
+                text-align: center;
+                width: 7vw;
+            }
+
+            table {
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            tr {
+                border-bottom: 1px solid #ddd;
+            }
+
+            td {
+                padding: 10px;
+                width: 80px;
+                text-align: center;
+            }
+
+            .title .id {
+                width: 19vh;
+            }
+
+            .button-group {
+                display: flex;
+                gap: 5px;
+            }
+
+            .button-group button {
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .button-group button span {
+                writing-mode: horizontal-tb;
+            }
+
+            .user_board_list,
+            .delete_btn {
+                background-color: #D9FFFE;
+                border: none;
+                color: white;
+                padding: 8px 16px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .delete_btn {
+                background-color: #F0F0F0;
+            }
+
+        </style>
     </th:block>
 
     <th:block layout:fragment="javascript">
@@ -50,9 +112,11 @@
                     <thead>
                     <tr th:class="title">
                         <th>회원번호</th>
-                        <th>아이디</th>
+                        <th th:class="id">아이디</th>
                         <th>이름</th>
                         <th>닉네임</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -63,12 +127,17 @@
                             <td th:text="${item.name}"></td>
                             <td th:text="${item.nickName}"></td>
                             <td>
-                                <a th:href="@{|/admin/user/${item.userId}|}">
-                                    <button th:class="user_board_list">글보기</button>
-                                </a>
+                                <div class="button-group">
+                                    <a th:href="@{|/admin/user/${item.userId}|}">
+                                    <button class="user_board_list"><span>글보기</span></button>
+                                    <input type="hidden" th:value="${item.nickName}" name="nickname">
+                                    </a>
+                                </div>
                             </td>
                             <td>
-                                <button th:class="delete_btn" th:onclick="|deleteUser(${item.userId})|">회원 탈퇴</button>
+                                <div class="button-group">
+                                    <button class="delete_btn" th:onclick="|deleteUser(${item.userId})|"><span>회원 탈퇴</span></button>
+                                </div>
                             </td>
                         </tr>
                     </th:block>

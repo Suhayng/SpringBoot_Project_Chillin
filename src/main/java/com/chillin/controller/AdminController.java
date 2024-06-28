@@ -70,6 +70,7 @@ public class AdminController {
 
         List<BoardDTO> boardDTOS = adminService.getUserBoardList(uid);
         model.addAttribute("boardList" , boardDTOS);
+//        model.addAttribute("nickname", nickname);
         return "/admin/memberBoard";
     }
 
