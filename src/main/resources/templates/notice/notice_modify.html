@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout/BaseLayout}">
+<head>
+    <meta charset="UTF-8">
+
+    <th:block layout:fragment="title">
+        <link rel="icon" th:href="@{/images/title.png}">
+        <title>칠 린 | 공지사항</title>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <!-- 각 페이지의 css --><!--
+        <link rel="stylesheet" th:href="@{/css/main/index.css}">-->
+        <link rel="stylesheet" th:href="@{/css/board/editor_form.css}">
+    </th:block>
+
+    <th:block layout:fragment="javascript">
+        <!-- 각 페이지의 javascript -->
+    </th:block>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="content">
+
+        <div id="create_modify_wrap">
+            <form>
+                <div id="title_div">
+                    <div th:class="label_text">
+                        <label for="board_title">제목</label>
+                    </div>
+                    <input type="text" id="board_title" placeholder="제목을 입력하세요" th:value="${board.title}">
+                </div>
+
+                <div id="content_div">
+                    <div th:class="label_text">
+                        <label>본문</label>
+                    </div>
+                    <div id="editor" th:utext="${board.content}">
+                    </div>
+                </div>
+
+                <div id="button_div">
+                    <button type="button" id="reset_button" th:class="buttons">취소</button>
+                    <button type="button" id="send_editor" th:class="buttons">전송</button>
+                </div>
+
+                <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+                <script th:src="@{/js/community/modifyEditor.js}"></script>
+                <script th:src="@{/js/notice/notice_modify_button.js}"></script>
+                <script>setBoardId([[${board.noticeId}]])</script>
+            </form>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
+
+
+
+
+

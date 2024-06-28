@@ -1,0 +1,139 @@
+#join_wrap{
+    width: 74%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#join_wrap ul {
+    margin:0;
+}
+#login_logo{
+    width: 128px;
+    margin: 55px 55px 30px;
+}
+
+#join_wrap h1{
+    font-size: 2rem;
+    margin: 12px;
+}
+
+#join_wrap h3{
+    font-size: 1rem;
+    color: #959595;
+    margin: 30px 0;
+    display:flex;
+    flex-basis:100%;
+    align-items:center;
+    width: 100%;
+}
+
+#join_wrap h3::before{
+    content:" ";
+    flex-grow:1;
+    margin:0px 16px;
+    background:#D9FFFE;
+    height:1.5px;
+    display:inline-block;
+    text-shadow:none;
+    width: 25%;
+}
+
+#join_wrap h3::after {
+    content:" ";
+    flex-grow:1;
+    margin:0px 16px;
+    background:#D9FFFE;
+    height:1.5px;
+    display:inline-block;
+    text-shadow:none;
+    width: 25%;
+}
+
+
+
+#form_contain{
+    border: 2px solid #BDDCEF;
+    padding: 40px 15%;
+    border-radius: 28px;
+    margin: 20px 0 0;
+}
+
+
+
+#join_wrap ul{
+    padding: 0;
+}
+#join_wrap ul li{
+    margin: 12px
+}
+
+#join_wrap form{
+    width: 40%;
+}
+
+#join_wrap form ul li{
+    margin: 0;
+}
+
+#join_wrap .form_input {
+    width: 73%;
+    height: 28px;
+    border: 1px solid #45A5E2;
+    border-radius: 6px;
+}
+
+#join_wrap .form_label{
+    margin: 36px 0 8px 0;
+}
+
+.chek_btn{
+    width: 20%;
+    height: 36px;
+    background-color: #45A5E2;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    margin: 0 0 0 3%;
+}
+
+#join_wrap .form_input_large{
+    width: 100%;
+}
+
+.error_text{
+    margin: 2px 0 0 0;
+    color:red;
+}
+
+#join_wrap #join_btn{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#join_wrap #join_btn button{
+    width: 75%;
+    height: 36px;
+    margin: 60px 0 20px;
+    background-color: #EFCEEA;
+    border: none;
+    border-radius: 6px;
+}
+
+#join_wrap #join_btn #reset{
+    background-color: #A6A6A6;
+    width: 20%;
+
+}
+
+#join_wrap #join_bottom{
+    width: 64%;
+    margin: 48px 0 72px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+#join_wrap #join_bottom #link_login{
+    border-bottom: 1px solid #959595;
+}

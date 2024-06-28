@@ -1,0 +1,89 @@
+.message_wrap{
+    width: 74%;
+    margin: 0 auto;
+    display: flex;
+}
+
+aside{
+    margin: 0 40px 0 0;
+    width: 160px;
+}
+aside h2 {
+    font-size: 14px;
+    color: #4F4E4E;
+}
+
+aside ul{
+    padding:0;
+}
+
+aside ul li a{
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+aside img{
+    width: 24px;
+}
+
+aside ul li span{
+    padding: 0 8px;
+}
+
+#mypage_select{
+    color: #45A5E2;
+}
+
+#user_line{
+    min-height: 90vh;
+    border-left: 1px solid #45A5E2;
+
+}
+
+section{
+    padding: 0 0 0 40px;
+    width: 80%;
+}
+
+/*-----------------------------------*/
+
+
+.message_table{
+    margin-top: 24px;
+    padding: 12px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 36px;
+    border-top : 1px solid #333333;
+    table-layout: fixed;
+}
+
+.message_col1{
+    width: 15%;
+}
+.message_col2{
+    width: 40%;
+    height: 50px;
+}
+.message_col3{
+    width: 15%;
+}
+
+.td_center{
+    text-align: center;
+}
+
+tr td{
+    border-bottom:1px solid #b3b3b3 ;
+}
+
+td a div{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+tbody tr td{
+    padding: 8px;
+}

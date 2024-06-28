@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout/BaseLayout}">
+<head>
+    <meta charset="UTF-8">
+
+    <th:block layout:fragment="title">
+        <link rel="icon" th:href="@{/images/title.png}">
+        <title>칠 린 | 커뮤니티</title>
+    </th:block>
+
+    <th:block layout:fragment="css">
+        <!-- 각 페이지의 css --><!--
+        <link rel="stylesheet" th:href="@{/css/main/index.css}">-->
+        <link rel="stylesheet" th:href="@{/css/board/community_list.css}">
+
+    </th:block>
+
+    <th:block layout:fragment="javascript">
+        <!-- 각 페이지의 javascript -->
+    </th:block>
+</head>
+<body>
+
+<th:block layout:fragment="content">
+    <div class="content">
+        <div id="community_list_wrap">
+            <div class="search_div">
+                <form method="get" th:action="@{/community}">
+                    <input type="text" name="search" maxlength="20"
+                           placeholder="제목으로 내용을 검색해보세요">
+                    <button class="search_button" type="submit">
+                        <img th:src="@{/images/magnifier.png}" alt="검색">
+                    </button>
+                </form>
+            </div>
+            <th:block th:if="${day_week eq true}">
+                <div id="day_week">
+                    <div class="day_week_list">
+                        <h3>오늘의 인기글</h3>
+                        <hr>
+                        <ol>
+                            <li th:each="item:${day_list}">
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <span th:text="${item.title}"></span>
+                                </a>
+                                <div class="li_boom_zone">
+                                    <img th:src="@{/images/boomup.png}">
+                                    <span th:text="${item.boomup}"></span>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="day_week_list">
+                        <h3>주간 인기글</h3>
+                        <hr>
+                        <ol>
+                            <li th:each="item:${week_list}">
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <span th:text="${item.title}"></span>
+                                </a>
+                                <div class="li_boom_zone">
+                                    <img th:src="@{/images/boomup.png}">
+                                    <span th:text="${item.boomup}"></span>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </th:block>
+            <div class="recent_list">
+                <table class="recent_table">
+                    <thead>
+                    <tr>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item:${recent}">
+                        <td>
+                            <div class="recent_title">
+                                <a th:href="@{'/community/'+${item.bid}}">
+                                    <span th:text="${item.title}"></span>
+                                </a>
+                                <th:block th:if="${item.boomup != null}">
+                                <span>
+                                    <img th:src="@{/images/boomup.png}">
+                                    <span th:text="${item.boomup}"></span>
+                                </span>
+                                </th:block>
+                            </div>
+                        </td>
+                        <td class="td_center" th:text="${item.nickname}"></td>
+                        <td class="td_center" th:text="${#temporals.format(item.writeDate,'yy.MM.dd')}"></td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <th:block th:if="${startPage != null}">
+                <div class="page">
+
+                    <!-- 이전 버튼 -->
+                    <th:block th:class="before" th:if="${startPage>1}">
+                        <a th:href="@{/community(page=${startPage}-1, search=${search})}" th:text="이전"></a>
+                    </th:block>
+
+
+                    <!-- 페이지 블록 -->
+                    <th:block th:class="page_block" th:each="index:${#numbers.sequence(startPage, endPage)}">
+                        <span th:if="${index==thisPage}" th:text="${index}"></span>
+                        <span th:if="${index!=thisPage}">
+                        <a th:href="@{/community(page=${index},searchTxt=${searchtxt})}"><span th:text="${index}"/></a>
+                    </span>
+                    </th:block>
+
+                    <!-- 다음 버튼 -->
+                    <th:block th:class="next" th:if="${endPage < totalPage}">
+                        <a th:href="@{/community(page=${endPage}+1, search=${search})}" th:text="다음"></a>
+                    </th:block>
+
+                </div>
+            </th:block>
+            <div id="create_community">
+                <a href="/community/create">글쓰기</a>
+            </div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
