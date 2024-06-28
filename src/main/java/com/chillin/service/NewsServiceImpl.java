@@ -49,7 +49,9 @@ public class NewsServiceImpl implements NewsService {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
         options.addArguments("--disable-popup-blocking"); // 팝업 무시하기
-//        options.addArguments("headless"); // 창 없이 프로세스 사용
+        options.addArguments("headless"); // 창 없이 프로세스 사용
+        options.addArguments("--start-maximized");
+        options.addArguments("--window-size=1920,1080");
         webDriver = new ChromeDriver(options);
 
         try {
