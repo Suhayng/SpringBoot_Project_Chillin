@@ -68,12 +68,18 @@
 
             <div id="writer_div">
                 <button type="button" id="writer_button" th:text="'작성자 : '+${board.nickname}"
-                th:onclick="writer_user_see([[${board.uid}]],[[${board.nickname}]])"></button><div id="writer_click_position"></div>
+                        th:onclick="writer_user_see([[${board.uid}]],[[${board.nickname}]])"></button>
+                <div id="writer_click_position"></div>
             </div>
             <div id="write_date_div"
                  th:text="'작성일 : '+${#temporals.format(board.writeDate,'yyyy-MM-dd HH:mm:ss')}"></div>
-            <div id="content_div" th:utext="${board.content}"></div>
 
+            <th:block th:if="${board.blind}">
+                <div class="blind_text">※블라인드 처리된 게시물입니다.※</div>
+            </th:block>
+            <th:block th:unless="${board.blind}">
+                <div id="content_div" th:utext="${board.content}"></div>
+            </th:block>
 
             <div id="clear_right"></div>
 
@@ -111,6 +117,7 @@
                             <option value="잘못된 정보">잘못된 정보</option>
                             <option value="아동 학대">아동 학대</option>
                             <option value="스팸 게시물">스팸 게시물</option>
+                            <option value="무리한 요구">무리한 요구</option>
                         </select>
                         <br><br>
                         <label for="bcdetail">세부 내용</label>
@@ -129,16 +136,16 @@
                 </div>
             </div>
         </div>
-<!--
+        <!--
 
-        <div id="user_click_div" class="hidden_click_div">
-            <div id="user_click_name"></div>
-            <hr>
-            <div class="user_click_some"><a id="user_click_message">쪽지 보내기</a></div>
-            <div class="user_click_some"><a id="user_click_board">작성 글 검색</a></div>
-            <button type="button" id="user_click_hide">숨기기</button>
-        </div>
--->
+                <div id="user_click_div" class="hidden_click_div">
+                    <div id="user_click_name"></div>
+                    <hr>
+                    <div class="user_click_some"><a id="user_click_message">쪽지 보내기</a></div>
+                    <div class="user_click_some"><a id="user_click_board">작성 글 검색</a></div>
+                    <button type="button" id="user_click_hide">숨기기</button>
+                </div>
+        -->
 
         <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
         <script th:src="@{/js/community/remove_modify.js}"></script>

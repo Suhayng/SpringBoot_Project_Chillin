@@ -126,17 +126,25 @@ let append_reps2 = function () {
             user_div.appendChild(user_click_position)
             if (my_id !== now.uid) {
                 user_button.onclick = function () {
-                    user_see(now.uid,my_id,now.nickname,user_click_position);
+                    user_see(now.uid, my_id, now.nickname, user_click_position);
                 }
             }
 
             let content_boom = document.createElement('div');
             content_boom.classList.add('content_boom');
 
-            let content_div = document.createElement('pre');
-            content_div.classList.add('rep_content');
-            let content_text = document.createTextNode(now.content);
-            content_div.appendChild(content_text);
+            let content_div;
+            if (!now.blind) {
+                content_div = document.createElement('pre');
+                content_div.classList.add('rep_content');
+                let content_text = document.createTextNode(now.content);
+                content_div.appendChild(content_text);
+            }else{
+                content_div = document.createElement('div');
+                content_div.classList.add('blind_text');
+                let content_text = document.createTextNode('※블라인드 처리된 댓글입니다.※');
+                content_div.appendChild(content_text);
+            }
 
             let boom_div = document.createElement('div');
             boom_div.classList.add('boom_zone');

@@ -75,6 +75,7 @@ public class BoardServiceImpl implements BoardService {
                 .modifyDate(find.getModifyDate())
                 .uid(find.getUser().getUserId())
                 .nickname(find.getUser().getNickname())
+                .blind(find.getBlind())
                 .build();
         return dto;
     }
