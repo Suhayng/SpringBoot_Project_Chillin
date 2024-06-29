@@ -1,11 +1,16 @@
 package com.chillin.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.chillin.config.S3Config;
 import com.chillin.domain.Board;
 import com.chillin.domain.BoardBoom;
 import com.chillin.domain.User;
 import com.chillin.dto.BoardDTO;
 import com.chillin.repository.board.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,17 +27,32 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
 
+    private final S3Config s3Config;
+
+    @Value("${cloud.aws.s3.bucket}")
+    String bucket;
     @Override
     public Map<String, Object> fileUpload(String filePath, MultipartFile image) {
         Map<String, Object> data = new HashMap<>();
 
         if (image != null) {
             String originalName = image.getOriginalFilename();
-            String fileName = uploading(filePath, image);
+            //String fileName = uploading(filePath, image);
+            File localFile = uploading2(filePath, image);
+            String fileName = localFile.getName();
+
+
+            //String fileLoc = "http://localhost:8080/getImage/"+fileName;
+            s3Config.amazonS3Client()
+                    .putObject(new PutObjectRequest(bucket, fileName,localFile));
+            String s3Url = s3Config.amazonS3Client().getUrl(bucket,fileName).toString();
 
             data.put("uploaded", 1);
             data.put("fileName", fileName);
-            data.put("url", "http://localhost:8080/getImage/" + fileName);
+            //data.put("url", "http://localhost:8080/getImage/" + fileName);
+            data.put("url", s3Url);
+
+
         }
 
         return data;
@@ -285,4 +305,28 @@ public class BoardServiceImpl implements BoardService {
         }
         return fileName;
     }
+
+    private File uploading2(String filePath, MultipartFile image) {
+
+        UUID uuid = UUID.randomUUID();
+        String fileName = image.getOriginalFilename();
+
+        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
+                .replace("+", "%20");
+
+        fileName = uuid + "_" + fileName;
+
+        File save = new File(filePath, fileName);
+
+        try {
+            image.transferTo(save);
+        } catch (IOException e) {
+            save.delete();
+            throw new RuntimeException();
+        }
+        return save;
+    }
+
+
+
 }
