@@ -121,7 +121,7 @@
                     </thead>
                     <tbody>
                     <th:block th:class="block-list" th:if="!${userList.isEmpty()}">
-                        <tr th:each="item:${userList}">
+                        <tr th:class="tr_box" th:each="item:${userList}">
                             <td th:text="${item.userId}"></td>
                             <td th:text="${item.id}"></td>
                             <td th:text="${item.name}"></td>

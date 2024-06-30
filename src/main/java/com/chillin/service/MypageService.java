@@ -25,5 +25,7 @@ public interface MypageService {
 
     List<BoardDTO> getMyBoardList(Long userId);
 
-    void setIsRead(List<MessageDTO> list, Long userId);
+    int setIsRead(Long userId, Long messageId);
+
+    boolean checkRead(Long userId);
 }

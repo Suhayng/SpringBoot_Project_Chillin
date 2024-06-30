@@ -12,4 +12,5 @@ public interface MessageQueryDSL {
     List<Message> getMessageDetailList(Long userId, Long messageId);
 
 
+    List<Message> getMessageUnread(Long userId);
 }

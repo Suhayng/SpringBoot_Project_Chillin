@@ -61,6 +61,7 @@
                     </a></li>
                     <li><a th:href="@{|/mypage/message/${dto.getUserId()}|}">
                         <img th:src="@{/images/message.png}"/><span>쪽지</span>
+                        <div th:if="${checkRead == false}" id="checkRead"></div>
                     </a></li>
                 </ul>
             </aside>

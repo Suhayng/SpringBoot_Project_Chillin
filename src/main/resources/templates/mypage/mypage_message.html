@@ -44,6 +44,7 @@
                         <li><a th:href="@{|/mypage/message/${userId}|}">
                             <img th:src="@{/images/message_click.png}"/>
                             <span id="mypage_select">쪽지</span>
+                            <div th:if="${checkRead == false}" id="checkRead"></div>
                         </a></li>
                     </ul>
                 </aside>
@@ -58,6 +59,8 @@
                     <table class="message_table">
                         <tbody>
                         <tr th:each="item:${list}">
+                            <td class="unread"  th:if="${item.check.equals(false) && item.is_read.equals(false)}"></td>
+                            <td class="read"  th:unless="${item.check.equals(false) && item.is_read.equals(false)}"></td>
                             <td class="td_center message_col1" th:text="${item.check ? item.receiverNickName : item.senderNickName}"></td>
                             <td  class="message_col2"><a th:href="@{|/mypage/messagedetail/${userId}/${item.check ? item.receiver : item.sender}|}">
                                 <div th:text="${item.getContent()}"></div></a></td>
