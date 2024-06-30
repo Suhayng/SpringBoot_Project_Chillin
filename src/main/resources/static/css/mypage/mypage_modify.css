@@ -46,6 +46,14 @@ section{
     width: 52%;
 }
 
+#checkRead{
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #EFCEEA;
+}
+
 /*---------------마이페이지 공통사항-----------------------------*/
 
 section ul{

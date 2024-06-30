@@ -51,7 +51,8 @@ public class MessageQueryDSLImpl implements MessageQueryDSL {
                 "                         OR     " +
                 "                            (m.receiver = :userId                   " +
                 "                            AND m.sender = latest.other_user_id     " +
-                "                            AND m.time = latest.max_sent_time)      ";
+                "                            AND m.time = latest.max_sent_time)      " +
+                "      ORDER BY m.time DESC       ";
 
         Query query = entityManager.createNativeQuery(sql, Message.class)
                 .setParameter("userId", userId);
@@ -68,6 +69,17 @@ public class MessageQueryDSLImpl implements MessageQueryDSL {
                 .where(message.sender.userId.eq(userId).and(message.receiver.userId.eq(messageId))
                         .or(message.sender.userId.eq(messageId).and(message.receiver.userId.eq(userId))))
                 .orderBy(message.time.desc())
+                .fetch();
+
+        return messageList;
+    }
+
+    @Override
+    public List<Message> getMessageUnread(Long userId) {
+        //유저가 받은 메시지 중 안읽은 메시지
+        List<Message> messageList = queryFactory.select(message)
+                .from(message)
+                .where(message.receiver.userId.eq(userId).and(message.isRead.eq(false)))
                 .fetch();
 
         return messageList;

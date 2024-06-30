@@ -44,6 +44,7 @@
                     <li><a th:href="@{|/mypage/message/${userId}|}">
                         <img th:src="@{/images/message_click.png}"/>
                         <span id="mypage_select">쪽지</span>
+                        <div th:if="${checkRead == false}" id="checkRead"></div>
                     </a></li>
                 </ul>
             </aside>

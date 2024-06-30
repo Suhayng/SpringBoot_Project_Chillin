@@ -190,6 +190,19 @@ window.onload = function () {
         input_id.style.removeProperty('background');
         input_pw.style.removeProperty('background');
         input_chek_pw.style.removeProperty('background');
+        let existingSpannick = document.getElementById('nick-check-span');
+        if (existingSpannick) {
+            document.getElementById("nick_check").removeChild(existingSpannick);
+        }
+        let existingSpanid = document.getElementById('id-check-span');
+        if (existingSpanid) {
+            document.getElementById("id_check").removeChild(existingSpanid);
+        }
+        // 기존 span 요소를 찾고, 있으면 제거
+        let existingSpanpw = document.getElementById('pw-check-span');
+        if (existingSpanpw) {
+            document.getElementById("password_check").removeChild(existingSpanpw);
+        }
     }
 
 

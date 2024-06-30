@@ -154,8 +154,39 @@ public class MypageServiceImpl implements MypageService {
     /**쪽지 읽음 처리*/
     @Override
     @Transactional
-    public void setIsRead(List<MessageDTO> list, Long userId) {
+    public int setIsRead(Long userId, Long messageId) {
 
+        //유저가 받은 메시지 중 안읽은 메시지 리스트
+        List<Message> received = messageRepository.getMessageUnread(userId);
+
+        if(received.size()>0){
+
+            for (Message item : received) {
+                if(item.getSender().getUserId().equals(messageId)){
+                    item.setIsRead(true);
+                    messageRepository.save(item);
+                }
+            }
+
+        }
+
+
+        return received.size();
+
+    }
+
+    @Override
+    public boolean checkRead(Long userId) {
+        //유저가 받은 메시지 중 안읽은 메시지 리스트
+        List<Message> received = messageRepository.getMessageUnread(userId);
+
+        if(received.size()>0){
+            // 안읽은 메시지가 있으면 false
+            return false;
+        }else {
+            // 다 읽었으면 true
+            return true;
+        }
     }
 
     /**

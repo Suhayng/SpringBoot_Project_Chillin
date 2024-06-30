@@ -33,6 +33,10 @@ public class MypageController {
 
         model.addAttribute("dto", dto);
 
+        //안읽은 메시지 있는지 확인
+        boolean checkRead = mypageService.checkRead(userId);
+        model.addAttribute("checkRead", checkRead);
+
         return "mypage/mypage_modify";
 
     }
@@ -51,7 +55,7 @@ public class MypageController {
     @GetMapping("/mypage_modify_alert/{userId}")
     public String userModifyAlert(@PathVariable long userId, Model model){
         model.addAttribute("userId", userId);
-        return "/mypage/mypage_modify_alert";
+        return "mypage/mypage_modify_alert";
 
     }
 
@@ -75,6 +79,10 @@ public class MypageController {
         model.addAttribute("userId", userId);
         model.addAttribute("list", list);
 
+        //안읽은 메시지 있는지 확인
+        boolean checkRead = mypageService.checkRead(userId);
+        model.addAttribute("checkRead", checkRead);
+
         return "mypage/mypage_bookmark";
     }
 
@@ -87,6 +95,10 @@ public class MypageController {
 
         model.addAttribute("userId", userId);
         model.addAttribute("list", list);
+
+        //안읽은 메시지 있는지 확인
+        boolean checkRead = mypageService.checkRead(userId);
+        model.addAttribute("checkRead", checkRead);
 
 
         return "mypage/mypage_message";
@@ -104,7 +116,7 @@ public class MypageController {
         List<MessageDTO> list = mypageService.getMessageDetailList(userId, messageId);
 
         //list에서 받은사람이 userid인 것들은 다 읽음 처리 하기
-//        mypageService.setIsRead(list, userId);
+        mypageService.setIsRead(userId, messageId);
 
 
         // 상대방 계정 닉네임 가져오기
@@ -115,6 +127,10 @@ public class MypageController {
         model.addAttribute("messageId", messageId);
         model.addAttribute("messageNickname", messageNickname);
         model.addAttribute("list", list);
+
+        //안읽은 메시지 있는지 확인
+        boolean checkRead = mypageService.checkRead(userId);
+        model.addAttribute("checkRead", checkRead);
 
         return "mypage/mypage_message_detail";
     }
@@ -147,6 +163,10 @@ public class MypageController {
 
         model.addAttribute("userId", userId);
         model.addAttribute("list", list);
+
+        //안읽은 메시지 있는지 확인
+        boolean checkRead = mypageService.checkRead(userId);
+        model.addAttribute("checkRead", checkRead);
 
         return "mypage/mypage_boardlist";
     }
