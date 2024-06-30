@@ -1,14 +1,12 @@
 package com.chillin;
 
-import com.slack.api.bolt.App;
-import com.slack.api.model.event.MessageEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class ChillinApplicationTests {
 
-
+/*
         public App initSlackApp() {
             App app = new App();
 
@@ -21,7 +19,7 @@ class ChillinApplicationTests {
             });
 
             return app;
-        }
+        }*/
 
 
 }

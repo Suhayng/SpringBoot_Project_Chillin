@@ -56,7 +56,7 @@ public class AdminController {
             List<UserDTO> userList = adminService.getUserList();
 
             model.addAttribute("userList", userList);
-            return "/admin/memberManagement";
+            return "admin/memberManagement";
         } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");
             return "redirect:/";
@@ -71,7 +71,7 @@ public class AdminController {
         List<BoardDTO> boardDTOS = adminService.getUserBoardList(uid);
         model.addAttribute("boardList" , boardDTOS);
 //        model.addAttribute("nickname", nickname);
-        return "/admin/memberBoard";
+        return "admin/memberBoard";
     }
 
 
@@ -94,7 +94,7 @@ public class AdminController {
             int pageSize = 10;
             List<ComplainManageDTO> list = complainService.getBoardList(page, pageSize, type);
             model.addAttribute("list", list);
-            return "/admin/complain_management";
+            return "admin/complain_management";
         } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");
             return "redirect:/";
@@ -117,7 +117,7 @@ public class AdminController {
 
             List<ComplainManageDTO> list = complainService.boardUnionComplain(bid);
             model.addAttribute("list", list);
-            return "/admin/complain_management";
+            return "admin/complain_management";
         } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");
             return "redirect:/";
@@ -185,7 +185,7 @@ public class AdminController {
             int pageSize = 10;
             List<ComplainManageDTO> list = complainService.getRepList(page, pageSize, type);
             model.addAttribute("list", list);
-            return "/admin/rep_comp_manage";
+            return "admin/rep_comp_manage";
         } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");
             return "redirect:/";
@@ -204,7 +204,7 @@ public class AdminController {
 
             List<ComplainManageDTO> list = complainService.repUnionComplain(cid);
             model.addAttribute("list", list);
-            return "/admin/rep_comp_manage";
+            return "admin/rep_comp_manage";
         } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");
             return "redirect:/";

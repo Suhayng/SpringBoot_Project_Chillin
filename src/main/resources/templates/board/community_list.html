@@ -85,10 +85,12 @@
                                 <a th:href="@{'/community/'+${item.bid}}">
                                     <span th:text="${item.title}"></span>
                                 </a>
+                                <th:block th:if="${item.boomup != null}">
                                 <span>
                                     <img th:src="@{/images/boomup.png}">
                                     <span th:text="${item.boomup}"></span>
                                 </span>
+                                </th:block>
                             </div>
                         </td>
                         <td class="td_center" th:text="${item.nickname}"></td>

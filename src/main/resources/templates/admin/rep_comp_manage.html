@@ -86,10 +86,10 @@
                         </div>
                         <div class="manage_button_div">
                             <th:block th:if="${item.blind}">
-                                <a th:href="@{'/rep/blind/cancel/'+${item.target}}" class="b_cancel_a">블라인드 해제</a>
+                                <a th:href="@{'/rep/blind/cancel/'+${item.cid}}" class="b_cancel_a">블라인드 해제</a>
                             </th:block>
                             <th:block th:unless="${item.blind}">
-                                <a th:href="@{'/rep/blind/do/'+${item.target}}" class="blind_a">블라인드 처리</a>
+                                <a th:href="@{'/rep/blind/do/'+${item.cid}}" class="blind_a">블라인드 처리</a>
                             </th:block>
                         </div>
                         <div class="manage_button_div">

@@ -245,6 +245,16 @@ public class BCQueryDSLImpl implements BCQueryDSL {
     @Override
     @Transactional
     @Modifying
+    public void repBlindingRid(Long rid) {
+        queryFactory.update(rep)
+                .set(rep.blind,true)
+                .where(rep.repId.eq(rid))
+                .execute();
+    }
+
+    @Override
+    @Transactional
+    @Modifying
     public void blinding(Long bid, String action) {
         boolean setting = false;
         if (action.equals("do")) {

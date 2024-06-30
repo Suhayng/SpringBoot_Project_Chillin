@@ -31,4 +31,6 @@ public interface BCQueryDSL {
     List<ComplainManageDTO> getBoardUnionList(Long bid);
 
     List<ComplainManageDTO> getRepUnionList(Long cid);
+
+    void repBlindingRid(Long rid);
 }

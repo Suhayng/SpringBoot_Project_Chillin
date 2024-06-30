@@ -23,26 +23,28 @@ public class BoardComplainServiceImpl implements BoardComplainService{
     @Override
     @Transactional
     public void insertBoardComplain(BoardComplainDTO dto,Long uid) {
-        boolean prevWrite = bcRepository.prevBoardWrite(dto.getBid(),uid);
+        boolean prevWrite = bcRepository.prevBoardWrite(dto.getBid(), uid);
 
-        if(prevWrite){
-            boolean blind = bcRepository.write(dto,uid,true); // completed 를 강제로 1로 둬서 블라인드를 주지는 않게
+        if (prevWrite) {
+            bcRepository.write(dto, uid, true); // completed 를 강제로 1로 둬서 블라인드를 주지는 않게
+
+        } else {
+            boolean blind = bcRepository.write(dto, uid, false); // complete 를 0 으로 둬서 5개 쌓이면 블라인드 주게
+
 
             System.out.println("============================");
             System.out.println("============================");
-            boardSlack(dto.getBid(),dto.getReason(),dto.getDetail());
+            //boardSlack(dto.getBid(),dto.getReason(),dto.getDetail());
             System.out.println("============================");
             System.out.println("============================");
 
-            if(blind){
+            if (blind) {
                 /*블라인드 하는 행위*/
+                blinding(dto.getBid(), "do");
             }
-        }else {
-            bcRepository.write(dto,uid,false); // complete 를 0 으로 둬서 5개 쌓이면 블라인드 주게
+
         }
-
     }
-
     /** 슬랙으로 보내는 행위 */
     private void boardSlack(Long bid,String reason, String detail) {
         try {
@@ -68,19 +70,25 @@ public class BoardComplainServiceImpl implements BoardComplainService{
         }
     }
 
+
     @Override
     public void insertRepComplain(RepComplainDTO dto, Long uid) {
         boolean prevWrite = bcRepository.prevRepWrite(dto.getRid(),uid);
 
         if(prevWrite){
-            boolean blind = bcRepository.write(dto,uid,true); // completed 를 강제로 1로 둬서 블라인드를 주지는 않게
-            if(blind){
-                /*블라인드 하는 행위*/
-            }
+            bcRepository.write(dto,uid,true); // completed 를 강제로 1로 둬서 블라인드를 주지는 않게
+
         }else {
-            bcRepository.write(dto,uid,false); // complete 를 0 으로 둬서 5개 쌓이면 블라인드 주게
+            boolean blind = bcRepository.write(dto,uid,false); // complete 를 0 으로 둬서 5개 쌓이면 블라인드 주게
+            if(blind){
+                repBlinding(dto.getRid());
+            }
         }
 
+    }
+
+    private void repBlinding(Long rid){
+        bcRepository.repBlindingRid(rid);
     }
 
     @Override

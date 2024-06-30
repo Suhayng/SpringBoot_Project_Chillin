@@ -1,11 +1,17 @@
 package com.chillin.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
+import com.chillin.config.S3Config;
 import com.chillin.domain.Board;
 import com.chillin.domain.BoardBoom;
 import com.chillin.domain.User;
 import com.chillin.dto.BoardDTO;
 import com.chillin.repository.board.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,24 +28,56 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
 
+    private final S3Config s3Config;
+
+    /**
+     * 첫 String 은 sessionId, Set의 String 은 이미지 url
+     */
+    private final Map<String, Set<String>> imgMap = new HashMap<>();
+
+    @Value("${cloud.aws.s3.bucket}")
+    String bucket;
+
     @Override
-    public Map<String, Object> fileUpload(String filePath, MultipartFile image) {
+    public Map<String, Object> fileUpload(String filePath, MultipartFile image, String sessionId) {
         Map<String, Object> data = new HashMap<>();
+        Set<String> mySet;
+        if (imgMap.containsKey(sessionId)) {
+            mySet = imgMap.get(sessionId);
+        } else {
+            mySet = new HashSet<>();
+            imgMap.put(sessionId, mySet);
+        }
 
         if (image != null) {
             String originalName = image.getOriginalFilename();
-            String fileName = uploading(filePath, image);
+            //String fileName = uploading(filePath, image);
+            File localFile = uploading2(filePath, image);
+            String fileName = localFile.getName();
+
+            //String fileLoc = "http://localhost:8080/getImage/"+fileName;
+            PutObjectResult result = s3Config.amazonS3Client()
+                    .putObject(new PutObjectRequest(bucket, fileName, localFile));
+            String s3Url = s3Config.amazonS3Client().getUrl(bucket, fileName).toString();
+
+            mySet.add(fileName);
 
             data.put("uploaded", 1);
             data.put("fileName", fileName);
-            data.put("url", "http://localhost:8080/getImage/" + fileName);
+            //data.put("url", "http://localhost:8080/getImage/" + fileName);
+            data.put("url", s3Url);
+
+
         }
 
         return data;
     }
 
     @Override
-    public boolean insertBoard(BoardDTO dto) {
+    public boolean insertBoard(BoardDTO dto, String sessionId) {
+
+        deleteNonInsert(dto.getContent(), sessionId);
+        imgMap.remove(sessionId);
 
         boolean result = false;
 
@@ -62,6 +100,48 @@ public class BoardServiceImpl implements BoardService {
         return result;
     }
 
+    private Set<String> parsedImg(String content) {
+        Set<String> set = new HashSet<>();
+        String[] parsing1 = content.split("<img src=\"");
+
+        String prefix = "https://kdt-java5-1.s3.ap-northeast-2.amazonaws.com/";
+        for (int i = 0; i < parsing1.length; i++) {
+            String[] parse2 = parsing1[i].split("\">");
+            for (int j = 0; j < parse2.length; j++) {
+                if (parse2[j].contains(prefix)) {
+                    String parse3 = parse2[j].split(prefix)[1];
+                    set.add(parse3);
+                }
+            }
+        }
+        return set;
+    }
+
+    private void deleteNonInsert(String content, String sessionId) {
+        Set<String> saved = parsedImg(content);
+
+        Set<String> uploaded = imgMap.get(sessionId);
+        Iterator<String> uploadedIta = uploaded.iterator();
+        while (uploadedIta.hasNext()) {
+            String target = uploadedIta.next();
+            /*contain이 제대로 일을 안해서 for문 돌아야될 거 같음*/
+            Iterator<String> savedIta = saved.iterator();
+            boolean isDelete = true;
+            while (savedIta.hasNext()) {
+                String savedOne = savedIta.next().replace("%25", "%");
+                if (savedOne.equals(target)) {
+                    isDelete = false;
+                    break;
+                }
+            }
+            if (isDelete) s3Config.amazonS3Client().deleteObject(bucket, target);
+            /*if(!saved.contains(target)){
+                //S3 삭제 작업
+                s3Config.amazonS3Client().deleteObject(bucket,target);
+            }*/
+        }
+    }
+
     @Override
     public BoardDTO getDetail(Long bid) {
 
@@ -79,10 +159,10 @@ public class BoardServiceImpl implements BoardService {
                 .build();
         return dto;
     }
-
+/*
     @Override
     public void delete(Long bid, String id) {
-        /*id 에서 uid 갖고와야함*/
+        *//*id 에서 uid 갖고와야함*//*
         Long uid = 2l;
 
         Board board = boardRepository.findById(bid).orElseThrow(() -> new RuntimeException());
@@ -91,18 +171,30 @@ public class BoardServiceImpl implements BoardService {
             boardRepository.delete(board);
         }
 
-    }
+    }*/
 
     @Override
     public void delete(Long bid) {
         Board board = boardRepository.findById(bid).orElseThrow(() -> new RuntimeException());
         boardRepository.delete(board);
+
+        deleteImg(board.getContent());
+
+    }
+
+    private void deleteImg(String content) {
+        Set<String> imgs = parsedImg(content);
+        Iterator<String> imgsIta = imgs.iterator();
+        while (imgsIta.hasNext()){
+            String toDeleteImg = imgsIta.next().replace("%25","%");
+            s3Config.amazonS3Client().deleteObject(bucket, toDeleteImg);
+        }
     }
 
     @Override
     @Transactional
-    public boolean modifyBoard(BoardDTO dto) {
-
+    public boolean modifyBoard(BoardDTO dto, String sessionId) {
+        /*걍 시작할라고.. ;;*/
         boolean result = false;
 
         Long uid = dto.getUid();
@@ -110,14 +202,66 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(RuntimeException::new);
 
         if (uid.equals(prev.getUser().getUserId())) {
+            String prevContent = prev.getContent();
+            String nowContent = dto.getContent();
+
             prev.setTitle(dto.getTitle());
-            prev.setContent(dto.getContent());
+            prev.setContent(nowContent);
             boardRepository.save(prev);
+
+            /*
+                prev와 now의 비교를 통한 삭제할 이미지 삭제하기
+            */
+            deleteModifyingImg(prevContent, nowContent, sessionId);
+
 
             result = true;
         }
 
         return result;
+    }
+
+    private void deleteModifyingImg(String prevContent, String nowContent, String sessionId) {
+        Set<String> prev = parsedImg(prevContent);
+        Set<String> now = parsedImg(nowContent);
+        Set<String> uploading = imgMap.get(sessionId);
+
+        /* 예전 글에는 있었다가 삭제된거 */
+        Iterator<String> prevIta = prev.iterator();
+        while (prevIta.hasNext()) {
+            String prevImg = prevIta.next();
+            Iterator<String> nowIta = now.iterator();
+            boolean isDelete = true;
+            while (nowIta.hasNext()) {
+                String nowImg = nowIta.next();
+                if (nowImg.equals(prevImg)) {
+                    isDelete = false;
+                    break;
+                }
+            }
+            if (isDelete) {
+                String deleteKey = prevImg.replace("%25", "%");
+                s3Config.amazonS3Client().deleteObject(bucket, deleteKey);
+            }
+        }
+        /* 이제 막 올렸는데 빠꾸친거 */
+        if (uploading != null) {
+            Iterator<String> uploadingIta = uploading.iterator();
+            while (uploadingIta.hasNext()) {
+                String uploadingImg = uploadingIta.next();
+                Iterator<String> nowIta = now.iterator();
+                boolean isDelete = true;
+                while (nowIta.hasNext()) {
+                    String nowImg = nowIta.next().replace("%25", "%");
+                    if (uploadingImg.equals(nowImg)) {
+                        isDelete = false;
+                        break;
+                    }
+                }
+                if (isDelete) s3Config.amazonS3Client().deleteObject(bucket, uploadingImg);
+            }
+        }
+        imgMap.remove(sessionId);
     }
 
     @Override
@@ -133,9 +277,9 @@ public class BoardServiceImpl implements BoardService {
             //myBoom = boardRepository.boardMyBoom(uid,bid);
             boomTest = boardRepository.boardMyBoom(uid, bid);
 
-            if(boomTest == null){
-                map.put("status","no");
-            }else{
+            if (boomTest == null) {
+                map.put("status", "no");
+            } else {
                 myBoom = (Boolean) boomTest;
 
                 if (myBoom == true) map.put("status", "up");
@@ -152,26 +296,26 @@ public class BoardServiceImpl implements BoardService {
     public Map<String, Object> boomupBoard(Long uid, Long bid, String status) {
         Map<String, Object> map = null;
 
-        if(status.equals("no")){
+        if (status.equals("no")) {
             /*insert -> 1*/
-            boardRepository.insertBoom(true,bid,uid);
+            boardRepository.insertBoom(true, bid, uid);
 
             map = boardRepository.getBoardBoom(bid);
-            map.put("status","up");
-        }else if(status.equals("up")){
+            map.put("status", "up");
+        } else if (status.equals("up")) {
             /*delete*/
-            boardRepository.deleteBoom(bid,uid);
+            boardRepository.deleteBoom(bid, uid);
             map = boardRepository.getBoardBoom(bid);
-            map.put("status","no");
+            map.put("status", "no");
 
-        }else if(status.equals("down")){
+        } else if (status.equals("down")) {
             /*update -> 1*/
-            boardRepository.changeDown(true,bid,uid);
+            boardRepository.changeDown(true, bid, uid);
             map = boardRepository.getBoardBoom(bid);
-            map.put("status","up");
-        }else{
+            map.put("status", "up");
+        } else {
             map = boardRepository.getBoardBoom(bid);
-            map.put("status","fail");
+            map.put("status", "fail");
         }
         return map;
     }
@@ -180,24 +324,24 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public Map<String, Object> boomdownBoard(Long uid, Long bid, String status) {
         Map<String, Object> map = null;
-        if(status.equals("no")){
+        if (status.equals("no")) {
             /*insert -> 0*/
-            boardRepository.insertBoom(false,bid,uid);
+            boardRepository.insertBoom(false, bid, uid);
             map = boardRepository.getBoardBoom(bid);
-            map.put("status","down");
-        }else if(status.equals("down")){
+            map.put("status", "down");
+        } else if (status.equals("down")) {
             /*delete*/
-            boardRepository.deleteBoom(bid,uid);
+            boardRepository.deleteBoom(bid, uid);
             map = boardRepository.getBoardBoom(bid);
-            map.put("status","no");
-        }else if(status.equals("up")){
-            boardRepository.changeDown(false,bid,uid);
+            map.put("status", "no");
+        } else if (status.equals("up")) {
+            boardRepository.changeDown(false, bid, uid);
             map = boardRepository.getBoardBoom(bid);
-            map.put("status","down");
+            map.put("status", "down");
             /*update -> 0*/
-        }else{
+        } else {
             map = boardRepository.getBoardBoom(bid);
-            map.put("status","fail");
+            map.put("status", "fail");
         }
         return map;
     }
@@ -205,13 +349,13 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public String isBookmarked(Long uid, Long bid) {
 
-        Long bookmarkObject = boardRepository.isBookmarked(uid,bid);
-        if(bookmarkObject == null){
+        Long bookmarkObject = boardRepository.isBookmarked(uid, bid);
+        if (bookmarkObject == null) {
             return "no";
-        }else{
-            if(bookmarkObject > 0) {
+        } else {
+            if (bookmarkObject > 0) {
                 return "yes";
-            }else{
+            } else {
                 return "no";
             }
         }
@@ -219,24 +363,24 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public String bookmaring(Long uid, Long bid, String status) {
-        if("no".equals(status)){
+        if ("no".equals(status)) {
             /*yes 로 return 하고 , insert 를 보냄 */
-            boardRepository.insertBookmark(bid,uid);
+            boardRepository.insertBookmark(bid, uid);
             return "yes";
-        }else if("yes".equals(status)){
+        } else if ("yes".equals(status)) {
             /*no 로 return 하고 , delete 를 보냄 */
-            boardRepository.deleteBookmark(bid,uid);
+            boardRepository.deleteBookmark(bid, uid);
             return "no";
-        }else {
+        } else {
             return "fail";
         }
     }
 
     @Override
     public List<BoardDTO> getRecentList(String search, int iPage, int pageSize) {
-        int startRow = (iPage - 1)*pageSize;
+        int startRow = (iPage - 1) * pageSize;
         List<BoardDTO> recentList
-                = boardRepository.getRecentList(search, startRow,pageSize);
+                = boardRepository.getRecentList(search, startRow, pageSize);
 
         return recentList;
     }
@@ -252,11 +396,17 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Long getTotalPage(String search,int pageSize) {
-        Long getTotalBoard =boardRepository.getTotalBoard(search);
-        Long pageNum = getTotalBoard / pageSize + (getTotalBoard%pageSize == 0 ? 0 : 1);
+    public Long getTotalPage(String search, int pageSize) {
+        Long getTotalBoard = boardRepository.getTotalBoard(search);
+        Long pageNum = getTotalBoard / pageSize + (getTotalBoard % pageSize == 0 ? 0 : 1);
 
         return pageNum;
+    }
+
+    @Override
+    public List<BoardDTO> getUserBoard(String nickname) {
+
+        return boardRepository.getUserBoard(nickname);
     }
 
     private String uploading(String filePath, MultipartFile image) {
@@ -279,4 +429,27 @@ public class BoardServiceImpl implements BoardService {
         }
         return fileName;
     }
+
+    private File uploading2(String filePath, MultipartFile image) {
+
+        UUID uuid = UUID.randomUUID();
+        String fileName = image.getOriginalFilename();
+
+        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
+                .replace("+", "%20");
+
+        fileName = uuid + "_" + fileName;
+
+        File save = new File(filePath, fileName);
+
+        try {
+            image.transferTo(save);
+        } catch (IOException e) {
+            save.delete();
+            throw new RuntimeException();
+        }
+        return save;
+    }
+
+
 }

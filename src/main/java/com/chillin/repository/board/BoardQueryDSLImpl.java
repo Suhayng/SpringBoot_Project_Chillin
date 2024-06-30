@@ -423,5 +423,25 @@ public class BoardQueryDSLImpl implements BoardQueryDSL {
         return boardDTOS;
     }
 
+    @Override
+    public List<BoardDTO> getUserBoard(String nickname) {
+
+        List<BoardDTO> list =  queryFactory.select(Projections.fields(
+                BoardDTO.class
+                ,board.boardId.as("bid")
+                ,board.title
+                ,board.user.nickname
+                ,board.writeDate
+                ))
+                .from(board)
+                .innerJoin(user)
+                .on(board.user.userId.eq(user.userId))
+                .fetchJoin()
+                .where(user.nickname.eq(nickname))
+                .fetch();
+
+        return list;
+    }
+
 
 }

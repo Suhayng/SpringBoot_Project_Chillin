@@ -51,12 +51,14 @@ public class BoardController {
 
     @PostMapping("/editor/image")
     @ResponseBody
-    public Map<String, Object> editorImage(@RequestParam("upload") MultipartFile image) {
+    public Map<String, Object> editorImage(@RequestParam("upload") MultipartFile image
+            ,HttpSession session) {
 
         System.out.println(filePath);
         Map<String, Object> data = new HashMap<>();
+
         if (image != null) {
-            data = boardService.fileUpload(filePath, image);
+            data = boardService.fileUpload(filePath, image, session.getId());
         }
         return data;
     }
@@ -96,7 +98,7 @@ public class BoardController {
             dto.setSuccess(false);
         } else {
             dto.setUid(uid);
-            boolean success = boardService.insertBoard(dto);
+            boolean success = boardService.insertBoard(dto,session.getId());
             dto.setSuccess(success);
         }
 
@@ -142,7 +144,7 @@ public class BoardController {
             dto.setBid(bid);
             //String id = "testid";
             dto.setUid(uid);
-            boolean success = boardService.modifyBoard(dto);
+            boolean success = boardService.modifyBoard(dto, session.getId());
             dto.setSuccess(success);
         }
 
@@ -306,5 +308,14 @@ public class BoardController {
     }
 
 */
+
+    @GetMapping("/community/user/{nickname}")
+    public String userBoard(@PathVariable(value = "nickname",required = false) String nickname
+            ,Model model){
+        List<BoardDTO> userBoard = boardService.getUserBoard(nickname);
+        model.addAttribute("recent",userBoard);
+        return "board/community_list";
+    }
+
 
 }

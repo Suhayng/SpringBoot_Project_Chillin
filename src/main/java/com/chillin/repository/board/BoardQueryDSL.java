@@ -37,4 +37,5 @@ public interface BoardQueryDSL {
     List<BoardDTO> getUserBoardList(Long uid);
 
 
+    List<BoardDTO> getUserBoard(String nickname);
 }
