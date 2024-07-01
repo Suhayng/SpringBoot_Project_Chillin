@@ -90,10 +90,36 @@ public class AdminController {
 
         // 관리자 uid와 세션 uid 같은지 체크
         if (sessionUid == 7) {
-            int page = Integer.parseInt(spage);
+
+            int page = 1;
+            try{
+                page = Integer.parseInt(spage);
+            }catch (Exception e){
+                System.out.println("니 숫자 안넣었지");
+                page = 1;
+            }
+
             int pageSize = 10;
+            int blockSize = 5;
+
+            Long count = complainService.getBoardListCount(type);
+            Long totalPage = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+
             List<ComplainManageDTO> list = complainService.getBoardList(page, pageSize, type);
             model.addAttribute("list", list);
+
+
+            int startPage = ((page -1)/blockSize)*blockSize + 1;
+            int endPage = startPage + blockSize - 1;
+            endPage = endPage < totalPage ? endPage : totalPage.intValue();
+            if(endPage == 0) endPage = 1;
+
+            model.addAttribute("thisPage",page);
+            model.addAttribute("startPage",startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("totalPage",totalPage);
+            model.addAttribute("type",type);
+
             return "admin/complain_management";
         } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");
@@ -181,10 +207,35 @@ public class AdminController {
 
         // 관리자 uid와 세션 uid 같은지 체크
         if (sessionUid == 7) {
-            int page = Integer.parseInt(spage);
+
+            int page = 1;
+            try{
+                page = Integer.parseInt(spage);
+            }catch (Exception e){
+                System.out.println("니 숫자 안넣었지");
+                page = 1;
+            }
+
+
             int pageSize = 10;
+            int blockSize = 5;
+            Long count = complainService.getRepListCount(type);
+            Long totalPage = count/pageSize + (count%pageSize == 0 ? 0 : 1);
+
             List<ComplainManageDTO> list = complainService.getRepList(page, pageSize, type);
             model.addAttribute("list", list);
+            int startPage = ((page -1)/blockSize)*blockSize + 1;
+            int endPage = startPage + blockSize - 1;
+            endPage = endPage < totalPage ? endPage : totalPage.intValue();
+            if(endPage == 0) endPage = 1;
+
+            model.addAttribute("thisPage",page);
+            model.addAttribute("startPage",startPage);
+            model.addAttribute("endPage", endPage);
+            model.addAttribute("totalPage",totalPage);
+            model.addAttribute("type",type);
+
+
             return "admin/rep_comp_manage";
         } else {
             log.info("관리자 페이지 접근 권한이 없습니다.");

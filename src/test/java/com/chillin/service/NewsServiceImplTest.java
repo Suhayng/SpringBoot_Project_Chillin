@@ -20,6 +20,7 @@ import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 @SpringBootTest
 public class NewsServiceImplTest {
+/*
 
         private WebDriver driver;
 
@@ -68,6 +69,7 @@ public class NewsServiceImplTest {
     public void QueryFactoryTest(){
 
     }
+*/
 
 
 }

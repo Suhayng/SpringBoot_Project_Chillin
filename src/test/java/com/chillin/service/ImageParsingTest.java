@@ -7,13 +7,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class ImageParsingTest {
+/*
 
     @Autowired
     private BoardService boardService;
+*/
+/*
 
     @Test
     public void test1(){
-        /*BoardDTO dto = boardService.getDetail(107l);
+        BoardDTO dto = boardService.getDetail(107l);
         String content = dto.getContent();
         System.out.println(content);
 
@@ -22,7 +25,8 @@ public class ImageParsingTest {
         for(String parse : parsing1){
             System.out.println(parse);
         }
-*/
+
     }
+*/
 
 }

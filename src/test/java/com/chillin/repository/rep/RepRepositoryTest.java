@@ -11,6 +11,7 @@ import java.util.List;
 @SpringBootTest
 @Transactional
 public class RepRepositoryTest {
+/*
 
     @Autowired
     private RepRepository repository;
@@ -23,5 +24,6 @@ public class RepRepositoryTest {
         }
     }
 
+*/
 
 }

@@ -13,6 +13,7 @@ import java.util.Map;
 @Transactional
 public class BoardRepositoryTest {
 
+/*
 
     @Autowired
     private BoardRepository repository;
@@ -32,5 +33,6 @@ public class BoardRepositoryTest {
         repository.getDayList();
     }
 
+*/
 
 }

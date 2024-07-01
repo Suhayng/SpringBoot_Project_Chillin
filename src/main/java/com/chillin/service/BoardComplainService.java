@@ -27,4 +27,8 @@ public interface BoardComplainService {
     List<ComplainManageDTO> boardUnionComplain(Long bid);
 
     List<ComplainManageDTO> repUnionComplain(Long cid);
+
+    Long getBoardListCount(String type);
+
+    Long getRepListCount(String type);
 }

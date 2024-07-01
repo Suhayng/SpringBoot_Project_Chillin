@@ -46,8 +46,9 @@ public class BoardComplainServiceImpl implements BoardComplainService{
         }
     }
     /** 슬랙으로 보내는 행위 */
+
     private void boardSlack(Long bid,String reason, String detail) {
-        try {
+        /*try {
             String pythonExe = "C:\\Users\\db400tea\\AppData\\Local\\Programs\\Python\\Python312\\python.exe";
             String pythonScriptPath = "C:\\Users\\db400tea\\Desktop\\CHILLIN\\SpringBoot_Project_Chillin\\chillin\\src\\main\\resources\\static\\python\\slack.py";
             String goToBoard = "localhost:8080/community/"+bid;
@@ -67,7 +68,7 @@ public class BoardComplainServiceImpl implements BoardComplainService{
             System.out.println("Exited with code: " + exitCode);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 
@@ -100,7 +101,15 @@ public class BoardComplainServiceImpl implements BoardComplainService{
 
         return list;
     }
+    @Override
+    public Long getBoardListCount(String type) {
+        return bcRepository.getBoardListCount(type);
+    }
 
+    @Override
+    public Long getRepListCount(String type) {
+        return bcRepository.getRepListCount(type);
+    }
 
     @Override
     public List<ComplainManageDTO> boardUnionComplain(Long bid) {
@@ -115,6 +124,7 @@ public class BoardComplainServiceImpl implements BoardComplainService{
 
         return list;
     }
+
 
     @Override
     public void blinding(Long bid, String action) {

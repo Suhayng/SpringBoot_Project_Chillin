@@ -27,13 +27,16 @@
     <div class="content">
         <div id="community_list_wrap">
             <div class="search_div">
-                <form method="get" th:action="@{/community}">
-                    <input type="text" name="search" maxlength="20"
-                           placeholder="제목으로 내용을 검색해보세요">
-                    <button class="search_button" type="submit">
-                        <img th:src="@{/images/magnifier.png}" alt="검색">
-                    </button>
-                </form>
+                <th:block th:if="${hideSearch}"></th:block>
+                <th:block th:unless="${hideSearch}">
+                    <form method="get" th:action="@{/community}">
+                        <input type="text" name="search" maxlength="20"
+                               placeholder="제목으로 검색해보세요">
+                        <button class="search_button" type="submit">
+                            <img th:src="@{/images/magnifier.png}" alt="검색">
+                        </button>
+                    </form>
+                </th:block>
             </div>
             <th:block th:if="${day_week eq true}">
                 <div id="day_week">
@@ -126,7 +129,9 @@
                 </div>
             </th:block>
             <div id="create_community">
-                <a href="/community/create">글쓰기</a>
+                <th:block th:unless="${hideSearch}">
+                    <a href="/community/create">글쓰기</a>
+                </th:block>
             </div>
         </div>
     </div>

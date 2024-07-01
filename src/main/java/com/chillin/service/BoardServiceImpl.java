@@ -60,6 +60,8 @@ public class BoardServiceImpl implements BoardService {
                     .putObject(new PutObjectRequest(bucket, fileName, localFile));
             String s3Url = s3Config.amazonS3Client().getUrl(bucket, fileName).toString();
 
+            localFile.delete();
+
             mySet.add(fileName);
 
             data.put("uploaded", 1);
@@ -121,24 +123,26 @@ public class BoardServiceImpl implements BoardService {
         Set<String> saved = parsedImg(content);
 
         Set<String> uploaded = imgMap.get(sessionId);
-        Iterator<String> uploadedIta = uploaded.iterator();
-        while (uploadedIta.hasNext()) {
-            String target = uploadedIta.next();
-            /*contain이 제대로 일을 안해서 for문 돌아야될 거 같음*/
-            Iterator<String> savedIta = saved.iterator();
-            boolean isDelete = true;
-            while (savedIta.hasNext()) {
-                String savedOne = savedIta.next().replace("%25", "%");
-                if (savedOne.equals(target)) {
-                    isDelete = false;
-                    break;
+        if (uploaded != null) {
+            Iterator<String> uploadedIta = uploaded.iterator();
+            while (uploadedIta.hasNext()) {
+                String target = uploadedIta.next();
+                /*contain이 제대로 일을 안해서 for문 돌아야될 거 같음*/
+                Iterator<String> savedIta = saved.iterator();
+                boolean isDelete = true;
+                while (savedIta.hasNext()) {
+                    String savedOne = savedIta.next().replace("%25", "%");
+                    if (savedOne.equals(target)) {
+                        isDelete = false;
+                        break;
+                    }
                 }
-            }
-            if (isDelete) s3Config.amazonS3Client().deleteObject(bucket, target);
+                if (isDelete) s3Config.amazonS3Client().deleteObject(bucket, target);
             /*if(!saved.contains(target)){
                 //S3 삭제 작업
                 s3Config.amazonS3Client().deleteObject(bucket,target);
             }*/
+            }
         }
     }
 
@@ -185,8 +189,8 @@ public class BoardServiceImpl implements BoardService {
     private void deleteImg(String content) {
         Set<String> imgs = parsedImg(content);
         Iterator<String> imgsIta = imgs.iterator();
-        while (imgsIta.hasNext()){
-            String toDeleteImg = imgsIta.next().replace("%25","%");
+        while (imgsIta.hasNext()) {
+            String toDeleteImg = imgsIta.next().replace("%25", "%");
             s3Config.amazonS3Client().deleteObject(bucket, toDeleteImg);
         }
     }

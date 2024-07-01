@@ -313,6 +313,7 @@ public class BoardController {
     public String userBoard(@PathVariable(value = "nickname",required = false) String nickname
             ,Model model){
         List<BoardDTO> userBoard = boardService.getUserBoard(nickname);
+        model.addAttribute("hideSearch",true);
         model.addAttribute("recent",userBoard);
         return "board/community_list";
     }

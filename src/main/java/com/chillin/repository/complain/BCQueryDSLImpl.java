@@ -175,10 +175,58 @@ public class BCQueryDSLImpl implements BCQueryDSL {
                 .on(board.user.userId.eq(user.userId))
                 .fetchJoin()
                 .where(searchCondition)
+                .orderBy(boardComplain.boardComplainId.desc())
                 .offset(startRow).limit(pageSize)
                 .fetch();
 
         return list;
+    }
+
+
+    @Override
+    public Long getBoardListCount(String type) {
+
+        BooleanExpression searchCondition = null;
+
+        if (type.equals("blind")) {
+            searchCondition = board.blind.eq(true);
+        } else if (type.equals("open")) {
+            searchCondition = board.blind.eq(false);
+        } else if (type.equals("complete")) {
+            searchCondition = boardComplain.complete.eq(true);
+        } else if (type.equals("non_complete")) {
+            searchCondition = boardComplain.complete.eq(false);
+        }
+
+        Long count = queryFactory.select(boardComplain.count())
+                .from(boardComplain)
+                .where(searchCondition)
+                .fetchOne();
+
+        return count;
+    }
+
+    @Override
+    public Long getRepListCount(String type) {
+
+        BooleanExpression searchCondition = null;
+
+        if (type.equals("blind")) {
+            searchCondition = rep.blind.eq(true);
+        }else if (type.equals("open")) {
+            searchCondition = rep.blind.eq(false);
+        } else if (type.equals("complete")) {
+            searchCondition = repComplain.complete.eq(true);
+        } else if (type.equals("non_complete")) {
+            searchCondition = repComplain.complete.eq(false);
+        }
+
+        Long count = queryFactory.select(repComplain.count())
+                .from(repComplain)
+                .where(searchCondition)
+                .fetchOne();
+
+        return count;
     }
 
     @Override
@@ -204,6 +252,7 @@ public class BCQueryDSLImpl implements BCQueryDSL {
                 .on(board.user.userId.eq(user.userId))
                 .fetchJoin()
                 .where(board.boardId.eq(bid))
+                .orderBy(boardComplain.boardComplainId.desc())
                 .fetch();
 
         return list;
@@ -237,6 +286,7 @@ public class BCQueryDSLImpl implements BCQueryDSL {
                 .on(rep.user.userId.eq(user.userId))
                 .fetchJoin()
                 .where(rep.repId.eq(rid))
+                .orderBy(repComplain.repComplainId.desc())
                 .fetch();
 
         return list;
@@ -251,6 +301,7 @@ public class BCQueryDSLImpl implements BCQueryDSL {
                 .where(rep.repId.eq(rid))
                 .execute();
     }
+
 
     @Override
     @Transactional
@@ -316,6 +367,7 @@ public class BCQueryDSLImpl implements BCQueryDSL {
                 .on(rep.board.boardId.eq(board.boardId))
                 .fetchJoin()
                 .where(searchCondition)
+                .orderBy(repComplain.repComplainId.desc())
                 .offset(startRow).limit(pageSize)
                 .fetch();
 

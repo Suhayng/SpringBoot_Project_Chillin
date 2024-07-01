@@ -33,4 +33,8 @@ public interface BCQueryDSL {
     List<ComplainManageDTO> getRepUnionList(Long cid);
 
     void repBlindingRid(Long rid);
+
+    Long getBoardListCount(String type);
+
+    Long getRepListCount(String type);
 }

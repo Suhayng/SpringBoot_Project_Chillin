@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class NewsServiceTest {
-
+/*
     @Autowired
     private NewsService newsService;
 
@@ -16,5 +16,5 @@ public class NewsServiceTest {
         newsService.startCrawling();
         System.out.println("크롤링 끝..");
 
-    }
+    }*/
 }

@@ -101,6 +101,32 @@
                     </div>
                 </div>
 
+
+                <th:block th:if="${startPage != null}">
+                    <div class="page">
+
+                        <!-- 이전 버튼 -->
+                        <th:block th:class="before" th:if="${startPage>1}">
+                            <a th:href="@{'/admin/complain_manage/board/'+${type}(page=${startPage}-1)}"
+                               th:text="이전"></a>
+                        </th:block>
+
+
+                        <!-- 페이지 블록 -->
+                        <th:block th:class="page_block" th:each="index:${#numbers.sequence(startPage, endPage)}">
+                            <span th:if="${index==thisPage}" th:text="${index}"></span>
+                            <span th:if="${index!=thisPage}">
+                        <a th:href="@{'/admin/complain_manage/board/'+${type}(page=${index})}"><span th:text="${index}"/></a>
+                    </span>
+                        </th:block>
+
+                        <!-- 다음 버튼 -->
+                        <th:block th:class="next" th:if="${endPage < totalPage}">
+                            <a th:href="@{'/admin/complain_manage/board/'+${type}(page=${endPage+1})}" th:text="다음"></a>
+                        </th:block>
+
+                    </div>
+                </th:block>
             </section>
         </div>
 

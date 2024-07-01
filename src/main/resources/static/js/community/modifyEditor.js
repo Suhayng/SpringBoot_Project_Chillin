@@ -2,7 +2,7 @@
 let editor;
 ClassicEditor.create(document.querySelector('#editor'), {
     ckfinder: {
-        uploadUrl: 'http://localhost:8080/editor/image'
+        uploadUrl: 'http://43.203.219.64/editor/image'
     },mediaEmbed: {
         previewsInData:true
     },
