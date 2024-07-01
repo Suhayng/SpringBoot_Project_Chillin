@@ -30,12 +30,10 @@ aside img{
 aside ul li span{
     padding: 0 8px;
 }
-/*
 
 #mypage_select{
     color: #45A5E2;
 }
-*/
 
 #user_line{
     min-height: 90vh;
@@ -45,5 +43,8 @@ aside ul li span{
 
 section{
     padding: 0 40px;
-    width: 52%;
+    width: 64%;
 }
+
+
+

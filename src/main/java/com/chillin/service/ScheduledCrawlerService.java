@@ -6,7 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-@EnableScheduling
+//@EnableScheduling
 @RequiredArgsConstructor
 public class ScheduledCrawlerService {
 
@@ -14,6 +14,8 @@ public class ScheduledCrawlerService {
 
     // 정각마다 크롤링 수행
     @Scheduled(cron = "0 0 0/1 * * *")
+    // 10분 마다 크롤링 수행
+    //@Scheduled(cron = "0 0/10 * * * *")
     public void Crawling() {
         newsService.startCrawling();
     }
