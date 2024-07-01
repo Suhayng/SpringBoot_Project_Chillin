@@ -7,6 +7,7 @@ import com.chillin.dto.NewsDTO;
 import com.chillin.repository.news.NewsRepository;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -44,13 +45,17 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public void startCrawling() {
+        // WebDriverManager를 사용하여 크롬 드라이버 자동 설정
+        WebDriverManager.chromedriver().setup();
 
         // ChromeOption
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless"); // 창 없이 프로세스 사용
+        options.addArguments("--no-sandbox"); // 샌드박스 모드 비활성화
+        options.addArguments("--disable-dev-shm-usage"); //  /dev/shm 디렉토리의 사용을 비활성화하여 메모리 문제를 해결
+        options.addArguments("--remote-debugging-port=9222"); // 원격 디버깅 포트를 설정
         options.addArguments("--start-maximized");
         options.addArguments("--disable-popup-blocking"); // 팝업 무시하기
-        options.addArguments("headless"); // 창 없이 프로세스 사용
-        options.addArguments("--start-maximized");
         options.addArguments("--window-size=1920,1080");
         webDriver = new ChromeDriver(options);
 

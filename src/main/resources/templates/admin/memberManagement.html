@@ -74,6 +74,7 @@
                 background-color: #F0F0F0;
             }
 
+
         </style>
     </th:block>
 
@@ -95,11 +96,11 @@
                 <ul>
                     <li><a th:href="@{|/admin|}">
                         <img th:src="@{/images/user.png}"/>
-                        <span>회원 관리</span>
+                        <span id="mypage_select">회원 관리</span>
                     </a></li>
                     <li><a th:href="@{|/admin/complain_manage/board/all|}">
                         <img th:src="@{/images/writing.png}"/>
-                        <span id="mypage_select">신고 관리</span>
+                        <span>신고 관리</span>
                     </a></li>
                 </ul>
             </aside>
@@ -107,7 +108,7 @@
             <div id="user_line"></div>
 
             <section>
-                <h3>회원 관리</h3>
+              <!--  <span>회원 관리</span>-->
                 <table>
                     <thead>
                     <tr th:class="title">
