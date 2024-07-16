@@ -19,6 +19,9 @@
 - 실용적인 교육 자료를 제공하여 자녀의 성장과 교육에 도움이되는 정보를 얻을 수 있도록 함
 - 유용한 게시글은 추천하고, 부적절한 게시글은 신고를 하며 커뮤니티의 질서 유지
 
+   ### 요구사항
+![image](https://github.com/user-attachments/assets/7ee03633-3a8d-46d4-b05e-8e8bbf9befdd)
+![image](https://github.com/user-attachments/assets/fb9d4728-ee21-4545-b86e-517ae0ebb51d)
 
 
 
@@ -31,3 +34,7 @@
 ![title](https://img.shields.io/badge/amazonwebservices-232F3E?style=for-the-badge&logo=amazonwebservices&logoColor=white) ![title](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)  
  ![title](https://img.shields.io/badge/IntelliJ_IDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)   ![title](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)   ![title](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white)
 
+
+
+## ✔️ ERD
+![image](https://github.com/user-attachments/assets/b8f1e7d6-7a8b-4b99-a659-4901205b6345)
