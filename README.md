@@ -38,3 +38,7 @@
 
 ## ✔️ ERD
 ![image](https://github.com/user-attachments/assets/b8f1e7d6-7a8b-4b99-a659-4901205b6345)
+
+## ✔️ 시연 영상
+
+[![Video Label](https://img.youtube.com/vi/2SCt5BwZO8Q/0.jpg)](https://www.youtube.com/watch?v=2SCt5BwZO8Q)
